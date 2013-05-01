@@ -1,9 +1,6 @@
 
-import org.justceyin.expectations.constraints { 
-	ConstraintCheckResult
-}
-import org.justceyin.specifications.runners { 
-    SimpleSpecificationRunner 
+import org.justceyin.specifications { 
+    CompositeSpecification 
 }
 import org.justceyin.specifications.examples { 
     IntegerStackDeclarativeSpecification,
@@ -13,53 +10,8 @@ import org.justceyin.specifications.examples {
 import org.justceyin.specifications.reporters { 
     SimpleTextReporter 
 }
-
-"Modifies the message from a constraint check result to indent and prepend 'Correctly '."
-String correctly( String message ) {
-    return "  Correctly " + message.span(0,0).lowercased + message.span(1,1000);
-}
-
-"Modifies the message from a constraint check result to indent and prepend 'Incorrectly '."
-String incorrectly( String message ) {
-    return "  Incorrectly " + message.span(0,0).lowercased + message.span(1,1000);
-}
-
-"Checks that a constraint checking result is failure."
-shared void ensureFailure( ConstraintCheckResult result, String? expectedMessage = null ) {
-	
-    try {
-		assert ( !result.isSuccess );
-	
-	    if ( exists expectedMessage ) {
-	        assert ( expectedMessage == result.message );
-	    }
-
-        print( correctly( result.message ) );
-	}
-    catch ( AssertionException e ) {
-        print( incorrectly( result.message ) );
-        throw e;
-    }
-
-}
-
-"Checks that a constraint checking result is success."
-shared void ensureSuccess( ConstraintCheckResult result, String? expectedMessage = null ) {
-	
-    try {
-        assert ( result.isSuccess );
-    
-        if ( exists expectedMessage ) {
-            assert ( expectedMessage == result.message );
-        }
-
-        print( correctly( result.message ) );
-    }
-    catch ( AssertionException e ) {
-        print( incorrectly( result.message ) );
-        throw e;
-    }
-
+import org.justceyin.specifications.runners { 
+    SimpleSpecificationRunner 
 }
 
 "Exercises typical specifications."
@@ -84,4 +36,12 @@ shared void runSpecificationTests() {
     value runResult3 = SimpleSpecificationRunner( IntegerStackMixedSpecification() ).run();
     print( SimpleTextReporter().report( runResult3 ) );
     assert( runResult3.isSuccess );
+
+    print( "" );
+    print( "Integer Stack Composite Specification:" );
+    print( "--------------------------------------" );
+    value suite = CompositeSpecification( {IntegerStackDeclarativeSpecification(),IntegerStackImperativeSpecification()} );
+    value runResult4 = SimpleSpecificationRunner( suite ).run();
+    print( SimpleTextReporter().report( runResult4 ) );
+    assert( runResult4.isSuccess );
 }

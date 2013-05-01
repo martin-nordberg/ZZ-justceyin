@@ -86,7 +86,7 @@ shared class ConstraintCheckComposite(
     "A message summarizing the composite constraint checking result."
     String msg, 
     "A sequence of constraint checking results that are to be the children of this composite result."
-    shared {ConstraintCheckResult*} constraintCheckResults 
+    {ConstraintCheckResult*} constraintCheckResults 
 )
     extends ConstraintCheckResult( msg ) {
     
