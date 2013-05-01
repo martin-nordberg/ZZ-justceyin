@@ -2,7 +2,8 @@
 "Package containing predefined providers of constraints for built-in Ceylon types.
 
    Concrete Constraint Providers
-    `aBoolean` - Constraints on Boolean value.
+    `aBoolean` - Constraints on Boolean values.
+    `aDate` - Constraints on Date values.
     `aFloat` - Constraints specific to floating point numbers.
     `anInteger` - Constraints for integers.
     `aString` - Constraints on strings.
@@ -15,6 +16,6 @@
     `IntegralConstraints` - Constraints on types derived from Ceylon's Integral (mixin).
     `ListConstraints` - Constraints on lists (mixin).
     `NumberConstraints` - Constraints on general numbers (mixin).
- "
+"
 by "Martin E. Nordberg III"
 shared package org.justceyin.expectations.constraints.providers;

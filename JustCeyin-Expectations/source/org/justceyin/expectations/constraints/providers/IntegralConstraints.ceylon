@@ -1,4 +1,8 @@
-import org.justceyin.expectations.constraints { AdjectivalConstraint, Constraint }
+
+import org.justceyin.expectations.constraints { 
+    AdjectivalConstraint, 
+    Constraint 
+}
 
 "Mixin constraint interface for checking integral values - tests for zero and unit."
 by "Martin E. Nordberg III"
