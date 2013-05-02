@@ -1,5 +1,5 @@
 
-"Concrete object with constraints on integers"
+"Concrete object providing constraints on integers."
 by "Martin E. Nordberg III"
 shared object anInteger 
     extends ComparableConstraints<Integer>()

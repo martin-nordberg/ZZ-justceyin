@@ -2,12 +2,6 @@
 import org.justceyin.expectations.constraints { 
     Constraint 
 }
-import org.justceyin.specifications.requirements { 
-    BehaviorRequirement,
-    ExpectedExceptionRequirement,
-    NonexistenceRequirement,
-    Requirement 
-}
 
 "Intermediate result in a fluent interface for declarative specifications - represents a set of starting values
  and a set up operation that transforms those starting values into a testable outcome."

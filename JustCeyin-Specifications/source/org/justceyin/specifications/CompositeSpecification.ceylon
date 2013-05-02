@@ -17,7 +17,7 @@ shared class CompositeSpecification( {Specification*} specifications )
     shared String title = "TBD: Composite Specification";
         // TBD: Derive the title from the doc annotation (M6) of a derived class
     
-    "Execute all the child specifications."
+    "Executes all the child specifications and combines them into a composite result."
     shared actual ConstraintCheckResult check() {
         return ConstraintCheckComposite( title, this.childSpecifications.collect( checkSpecification ) );
     }

@@ -2,10 +2,6 @@
 import org.justceyin.expectations.constraints { 
     Constraint 
 }
-import org.justceyin.specifications.requirements { 
-    InitializationRequirement, 
-    Requirement 
-}
 
 "Starting point for a fluent interface declarative specification constraining multiple starting values."
 by "Martin E. Nordberg III"

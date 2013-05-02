@@ -10,7 +10,7 @@ import org.justceyin.specifications {
 shared class SimpleSpecificationRunner( Specification specification )
     satisfies SpecificationRunner
 {
-    
+
     "Runs this runner on its given specification."
     shared actual ConstraintCheckResult run() =>
         specification.check();

@@ -4,7 +4,7 @@ import org.justceyin.expectations.constraints {
     Constraint 
 }
 
-"Concrete object with constraints on Boolean values."
+"Concrete object providing constraints on Boolean values."
 by "Martin E. Nordberg III"
 shared object aBoolean
     extends ComparableConstraints<Float>()

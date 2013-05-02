@@ -4,7 +4,7 @@ import org.justceyin.expectations.constraints {
     Constraint 
 }
 
-"Concrete object supplying constraints on strings"
+"Concrete object providing constraints on strings."
 by "Martin E. Nordberg III"
 shared object aString
     extends ComparableConstraints<String>()

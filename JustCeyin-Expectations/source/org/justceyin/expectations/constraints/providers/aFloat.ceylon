@@ -4,7 +4,7 @@ import org.justceyin.expectations.constraints {
     Constraint 
 }
 
-"Concrete object with constraints on floating point numbers."
+"Concrete object providing constraints on floating point numbers."
 by "Martin E. Nordberg III"
 shared object aFloat 
     extends ComparableConstraints<Float>()

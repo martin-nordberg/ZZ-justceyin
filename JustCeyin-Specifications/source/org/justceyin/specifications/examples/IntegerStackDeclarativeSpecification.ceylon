@@ -3,12 +3,12 @@ import org.justceyin.expectations.constraints.providers {
     anInteger 
 }
 import org.justceyin.specifications { 
-    DeclarativeSpecification, 
-    StartingFrom, 
-    StartingFromAnyOf 
+    DeclarativeSpecification
 }
 import org.justceyin.specifications.requirements { 
-    Requirement 
+    Requirement, 
+    StartingFrom, 
+    StartingFromAnyOf 
 }
 
 "An example specification illustrating how to go about creating a declarative specification defined in

@@ -8,7 +8,7 @@ import org.justceyin.expectations.constraints {
     Constraint 
 }
 
-"Concrete object with constraints on dates."
+"Concrete object providing constraints on dates."
 by "Martin E. Nordberg III"
 shared object aDate
     extends ComparableConstraints<Date>()

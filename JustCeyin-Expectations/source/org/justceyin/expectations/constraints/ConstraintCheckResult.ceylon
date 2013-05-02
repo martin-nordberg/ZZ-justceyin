@@ -22,7 +22,7 @@ shared abstract class ConstraintCheckResult(
 "Top level helper function determines whether a constraint was checked successfully."
 by "Martin E. Nordberg III"
 shared Boolean isSuccessConstraintCheckResult( 
-    "The constraint heck result to be evaluated for success."
+    "The constraint check result to be evaluated for success."
     ConstraintCheckResult constraintCheckResult 
 ) {
     return constraintCheckResult.isSuccess;

@@ -9,11 +9,11 @@ import org.justceyin.expectations.constraints.providers {
     anInteger 
 }
 import org.justceyin.specifications { 
-    MixedSpecification, 
-    StartingFrom 
+    MixedSpecification
 }
 import org.justceyin.specifications.requirements { 
-    Requirement 
+    Requirement, 
+    StartingFrom 
 }
 
 "An example of mixing imperative tests and declarative requirements in a single specification."

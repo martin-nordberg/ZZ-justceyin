@@ -1,37 +1,45 @@
-
-"Package containing expectations - classes that initiate constraint checking within behavior-driven 
+"
+ Package containing expectations - classes that initiate constraint checking within behavior-driven 
  development specifications or within ordinary code for design-by-contract.
  
  This package is meant to be used in two ways:
  
- 1. Design by Contract - Fluent Assertions
- Use the `constrain` or `guarantee` functions to enforce a precondition or postcondition at run time
- in an ordinary function or in traditional testing code.
+ **1. Design by Contract - Fluent Assertions**
  
-    String elideLongText( Integer maxLength )( String text ) {
-    
-        // precondition
-        constrain( maxLength ).named( \"maxLength\" ).toBe( anInteger.greaterThan(5) );
+ Use the `constrain` and `guarantee` functions to enforce preconditions or postconditions at run time
+ in an ordinary function or in traditional testing code. Fluent assertions defined this way will
+ immediately throw a usual AssertionException if the expectation is not met. 
+
+ \`\`\`    
+     /** Example of using preconditions and postconditions. */
+     String elideLongText( Integer maxLength )( String text ) {
+     
+         // precondition
+         constrain( maxLength ).named( \"maxLength\" ).toBe( anInteger.greaterThan(5) );
+     
+         String result;
+         if ( text.size > maxLength ) {
+             value halfLength = maxLength/2 - 1;
+             result = text.segment( 0, maxLength-halfLength-3 ) + \"...\" + text.segment(text.size-halfLength,halfLength);
+         }
+         else {
+             result = text;
+         }
+     
+         // postcondition
+         guarantee( result ).named( \"result\" ).toBe( aString.withMaximumLength( maxLength ) );
+     
+         return result;
+     }
+ \`\`\`
+     
+ **2. Behavior-Driven Development - Fluent Outcomes**
  
-        String result;
-        if ( text.size > maxLength ) {
-            value halfLength = maxLength/2 - 1;
-            result = text.segment( 0, maxLength-halfLength-3 ) + \"...\" + text.segment(text.size-halfLength,halfLength);
-        }
-        else {
-            result = text;
-        }
-        
-        // postcondition
-        guarantee( result ).named( \"result\" ).toBe( aString.withMaximumLength( maxLength ) );
-        
-        return result;
-    }
- 
- 2. Behavior-Driven Development - Fluent Outcomes
  Use the `expect` function to set up a constraint to be checked in an imperative style 
- `org.justceyin.specifications.Specification`.
+ `org.justceyin.specifications.Specification`. Expectations used this way can be accumulated
+ by a specification runner and then output by a specification reporter.
  
+ \`\`\`
      shared class ElideLongTextSpecification()
         satisfies ImperativeSpecification { 
         
@@ -59,12 +67,10 @@
             testNonElision
         };
      }
+ \`\`\`
 
- The classes within this package are all intermediate results produced by constrain/guarantee or by expect.
- * `Expectation` - Defines the fluent interface of an expectation (`named`, `toBe`, `toOptionallyBe`, `toNotExist`).
- * `ExistentExpectation` - Implements `Expectation` for an actual value that is not null.
- * `NonexistentExpectation` - Implements `Expectation` for an actual value that is null.
- * `AssertedExpectation` - Wraps and adapts an `Expectation` so that the failure of its constraint immediately causes an `AssertionException`.  
- "
+ NOTE: The classes in this package are all intermediate results produced by constrain, guarantee, or expect. 
+ None are meant to be used directly.
+"
 by "Martin E. Nordberg III"
 shared package org.justceyin.expectations;
