@@ -12,6 +12,9 @@ import org.justceyin.specifications {
     ImperativeSpecification 
 }
 
+"An example specification illustrating how to go about creating an imperative specification defined in
+ terms of test methods, where each requirement uses the fluent interface of org.justceyin.expectations
+ to declare expected outcomes for the results of the test."
 shared class IntegerStackImperativeSpecification()
     satisfies ImperativeSpecification
 {

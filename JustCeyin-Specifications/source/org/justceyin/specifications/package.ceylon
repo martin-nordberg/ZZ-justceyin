@@ -3,7 +3,7 @@
  
  Two styles of specification are supported by this package: imperative and declarative.
  
- Imperative Specifications
+ **Imperative Specifications**
 
  * Inherit from `ImperativeSpecification`.
  * Implement a number of test methods, each taking a callable outcomes parameter.
@@ -11,7 +11,7 @@
  * Define an actual `tests` member that collects the test methods into a sequence. 
    (Subject to change when Ceylon implements annotations.)
  
- Declarative Specifications
+ **Declarative Specifications**
 
  * Inherit from `DeclarativeSpecification`.
  * Implement the `requirements` attribute which maps from requirement summary strings to `Requirement`
