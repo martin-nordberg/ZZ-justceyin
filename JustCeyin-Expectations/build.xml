@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     JustCeyin-Expectations                                                                
+     ====================================================================== -->
+<project name="justceyin-expectations" default="all">
+    <description>
+        ANT Build for JustCeyin-Expectations
+    </description>
+
+
+    <!-- Ceylon ANT Tasks -->
+    <property name="ceylon.home" value="/usr/lib/ceylon/0.5"/>
+    <property name="ceylon.ant.lib" value="${ceylon.home}/lib/ceylon-ant.jar"/>
+
+    <target name="ceylon-ant-taskdefs">
+
+        <!-- Create a path to the ceylon-ant.jar -->
+        <path id="ant-tasks">
+            <pathelement location="${ceylon.ant.lib}"/>
+        </path>
+
+        <!-- use a typedef to define all the ceylon tasks together -->
+        <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ant-tasks"/>
+
+    </target>
+
+
+    <!-- Clean -->
+    <target name="clean">
+        <delete dir="./modules"></delete>
+    </target>
+
+
+    <!-- Compile -->
+    <target name="compile" depends="ceylon-ant-taskdefs" description="Compile org.justceyin.expectations">
+        <ceylon-compile encoding="UTF-8">
+            <module name="org.justceyin.expectations"/>
+            <module name="org.justceyin.tests.expectations"/>
+        </ceylon-compile>
+    </target>
+
+
+    <!-- Test -->
+    <target name="test" depends="ceylon-ant-taskdefs">
+      <ceylon-run run="org.justceyin.tests.expectations.run"
+                  module="org.justceyin.tests.expectations/0.1-2013.05.01">
+      </ceylon-run>
+    </target>
+
+
+    <!-- Documentation -->
+    <target name="doc" depends="ceylon-ant-taskdefs" description="Compile org.justceyin.expectations">
+        <ceylon-doc encoding="UTF-8">
+            <module name="org.justceyin.expectations"/>
+            <module name="org.justceyin.tests.expectations"/>
+        </ceylon-doc>
+    </target>
+
+
+    <!-- All -->
+    <target name="all" depends="compile,test,doc" description="Compile, test, and document org.justceyin.expectations">
+    </target>
+
+
+</project>
