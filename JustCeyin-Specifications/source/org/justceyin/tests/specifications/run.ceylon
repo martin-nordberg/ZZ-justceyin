@@ -1,9 +1,19 @@
 
 doc "Run the self tests of module `org.justceyin.specifications`."
 void run() {
-    print( "Cey what you mean ...");
+
+    value log = TestResultLog();
     
-    runSpecificationTests();
+    try /*( log )*/ {
+        log.open();
+        
+        log.print( "Cey what you mean ...");
     
-    print( "All tests completed successfully.");
+        runSpecificationTests( log );
+    
+        log.print( "All tests completed successfully.");
+    }
+    finally {
+        log.close( null );
+    }
 }

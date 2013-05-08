@@ -74,7 +74,8 @@
             description="Document org.justceyin.expectations"
             depends="ceylon-ant-taskdefs">
         <ceylon-doc src="../JustCeyin-Expectations/source" 
-                    encoding="UTF-8">
+                    encoding="UTF-8" 
+        	        includesourcecode="true">
             <module name="org.justceyin.expectations"/>
         </ceylon-doc>
     </target>
@@ -84,7 +85,8 @@
             description="Document org.justceyin.specifications"
             depends="compile-expectations">
         <ceylon-doc src="../JustCeyin-Specifications/source" 
-                    encoding="UTF-8">
+                    encoding="UTF-8" 
+        	        includesourcecode="true">
             <module name="org.justceyin.specifications"/>
         </ceylon-doc>
     </target>

@@ -8,10 +8,20 @@ import org.justceyin.tests.expectations.constraints.providers {
 
 doc "Run the self tests of module `org.justceyin.expectations`."
 void run() {
-    print( "Cey what you mean ...");
     
-    runConstraintProviderTests();
-    runConstraintTests();
+    value log = TestResultLog();
     
-    print( "All tests completed successfully.");
+    try /*( log )*/ {
+        log.open();
+
+        log.print( "Cey what you mean ...");
+    
+        runConstraintProviderTests( log );
+        runConstraintTests( log );
+    
+        log.print( "All tests completed successfully.");
+    }
+    finally {
+        log.close( null );
+    }
 }

@@ -1,6 +1,7 @@
 
 import org.justceyin.specifications { 
-    CompositeSpecification 
+    CompositeSpecification, 
+    Specification 
 }
 import org.justceyin.specifications.examples { 
     IntegerStackDeclarativeSpecification,
@@ -14,34 +15,33 @@ import org.justceyin.specifications.runners {
     SimpleSpecificationRunner 
 }
 
-"Exercises typical specifications."
-shared void runSpecificationTests() {
-    print( "" );
-    print( "Integer Stack Declarative Specification:" );
-    print( "----------------------------------------" );
-    value runResult1 = SimpleSpecificationRunner( IntegerStackDeclarativeSpecification() ).run();
-    print( SimpleTextReporter().report( runResult1 ) );
+"Runs a specification; prints the report; ensures a successful outcome."
+void runSpecificationTest( TestResultLog log, Specification specification ) {
+    value runResult1 = SimpleSpecificationRunner( specification ).run();
+    log.print( SimpleTextReporter().report( runResult1 ) );
     assert( runResult1.isSuccess );
+}
 
-    print( "" );
-    print( "Integer Stack Imperative Specification:" );
-    print( "---------------------------------------" );
-    value runResult2 = SimpleSpecificationRunner( IntegerStackImperativeSpecification() ).run();
-    print( SimpleTextReporter().report( runResult2 ) );
-    assert( runResult2.isSuccess );
+"Exercises typical specifications."
+shared void runSpecificationTests( TestResultLog log ) {
+    log.print( "" );
+    log.print( "Integer Stack Declarative Specification:" );
+    log.print( "----------------------------------------" );
+    runSpecificationTest( log, IntegerStackDeclarativeSpecification() );
 
-    print( "" );
-    print( "Integer Stack Mixed Specification:" );
-    print( "----------------------------------" );
-    value runResult3 = SimpleSpecificationRunner( IntegerStackMixedSpecification() ).run();
-    print( SimpleTextReporter().report( runResult3 ) );
-    assert( runResult3.isSuccess );
+    log.print( "" );
+    log.print( "Integer Stack Imperative Specification:" );
+    log.print( "---------------------------------------" );
+    runSpecificationTest( log, IntegerStackImperativeSpecification() );
 
-    print( "" );
-    print( "Integer Stack Composite Specification:" );
-    print( "--------------------------------------" );
+    log.print( "" );
+    log.print( "Integer Stack Mixed Specification:" );
+    log.print( "----------------------------------" );
+    runSpecificationTest( log, IntegerStackMixedSpecification() );
+
+    log.print( "" );
+    log.print( "Integer Stack Composite Specification:" );
+    log.print( "--------------------------------------" );
     value suite = CompositeSpecification( {IntegerStackDeclarativeSpecification(),IntegerStackImperativeSpecification()} );
-    value runResult4 = SimpleSpecificationRunner( suite ).run();
-    print( SimpleTextReporter().report( runResult4 ) );
-    assert( runResult4.isSuccess );
+    runSpecificationTest( log, suite );
 }

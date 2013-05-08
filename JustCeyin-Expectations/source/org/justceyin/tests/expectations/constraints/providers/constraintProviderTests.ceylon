@@ -1,25 +1,29 @@
 
+import org.justceyin.tests.expectations { 
+    TestResultLog 
+}
+
 "Exercises all constraints."
-shared void runConstraintProviderTests() {
+shared void runConstraintProviderTests( TestResultLog log ) {
 
-    print( "" );
-    print( "Constraint Tests:" );
-    print( "-----------------" );
+    log.print( "" );
+    log.print( "Constraint Tests:" );
+    log.print( "-----------------" );
 
-    print( " Boolean Constraints:" );
-    runBooleanConstraintTests();
+    log.print( " Boolean Constraints:" );
+    runBooleanConstraintTests( log );
 
-    print( " Date Constraints:" );
-    runDateConstraintTests();
+    log.print( " Date Constraints:" );
+    runDateConstraintTests( log );
 
-    print( " Integer Constraints:" );
-    runIntegerConstraintTests();
+    log.print( " Integer Constraints:" );
+    runIntegerConstraintTests( log );
 
-    print( " Float Constraints:" );
-    runFloatConstraintTests();
+    log.print( " Float Constraints:" );
+    runFloatConstraintTests( log );
 
-    print( " String Constraints:" );
-    runStringConstraintTests();
+    log.print( " String Constraints:" );
+    runStringConstraintTests( log );
 
 }
 
