@@ -5,6 +5,16 @@
     <description>
         ANT Build for JustCeyin
     </description>
+	
+	
+	<!-- Utilities -->
+	<scriptdef language="javascript" name="lower">
+	    <attribute name="string" /> 
+	    <attribute name="to" />
+
+	    project.setProperty( attributes.get( "to" ),
+	                         attributes.get( "string" ).toLowerCase() );
+	</scriptdef>	
 
 
     <!-- All -->
@@ -16,13 +26,13 @@
     <!-- All JustCeyin-Expectations -->
     <target name="all-expectations"  
             description="Compile, test, and document org.justceyin.expectations"
-            depends="compile-expectations,test-expectations,doc-expectations">
+            depends="test-expectations,doc-expectations">
     </target>
 
     <!-- All JustCeyin-Specifications -->
     <target name="all-specifications"  
             description="Compile, test, and document org.justceyin.specifications"
-            depends="compile-specifications,test-specifications,doc-specifications">
+            depends="test-specifications,doc-specifications">
     </target>
 
 
@@ -44,70 +54,105 @@
     <target name="clean">
         <delete dir="./modules"></delete>
     </target>
-
+	
+	
+	<!-- COMPILE -->
+	<macrodef name="compile">
+		<attribute name="subsystem"/>
+		<attribute name="package"/>
+		<sequential>
+	        <ceylon-compile src="../JustCeyin-@{subsystem}/source" 
+	                        encoding="UTF-8">
+	            <module name="org.justceyin.@{package}"/>
+	        </ceylon-compile>
+		</sequential>
+    </macrodef>
 
     <!-- Compile JustCeyin-Expectations -->
     <target name="compile-expectations" 
             description="Compile org.justceyin.expectations"
             depends="ceylon-ant-taskdefs">
-        <ceylon-compile src="../JustCeyin-Expectations/source" 
-                        encoding="UTF-8">
-            <module name="org.justceyin.expectations"/>
-            <module name="org.justceyin.tests.expectations"/>
-        </ceylon-compile>
+    	<compile subsystem="Expectations"
+    		     package="expectations"/>
+    </target>
+
+    <!-- Compile JustCeyin-Expectations Tests -->
+    <target name="compile-expectations-tests" 
+            description="Compile org.justceyin.tests.expectations"
+            depends="compile-expectations">
+        <compile subsystem="Expectations" 
+                 package="tests.expectations"/>
     </target>
 
     <!-- Compile JustCeyin-Specifications -->
     <target name="compile-specifications" 
             description="Compile org.justceyin.specifications"
             depends="compile-expectations">
-        <ceylon-compile src="../JustCeyin-Specifications/source" 
-                        encoding="UTF-8">
-            <module name="org.justceyin.specifications"/>
-            <module name="org.justceyin.tests.specifications"/>
-        </ceylon-compile>
+        <compile subsystem="Specifications" 
+        	     package="specifications"/>
     </target>
 
+    <!-- Compile JustCeyin-Specifications Tests -->
+    <target name="compile-specifications-tests" 
+            description="Compile org.justceyin.tests.specifications"
+            depends="compile-specifications">
+        <compile subsystem="Specifications" 
+        	     package="tests.specifications"/>
+    </target>
+
+
+    <!-- DOCUMENT -->
+    <macrodef name="document">
+        <attribute name="subsystem"/>
+        <attribute name="package"/>
+        <sequential>
+            <ceylon-doc src="../JustCeyin-@{subsystem}/source" 
+                        encoding="UTF-8"
+            	        includesourcecode="true">
+                <module name="org.justceyin.@{package}"/>
+            </ceylon-doc>
+        </sequential>
+    </macrodef>
 
     <!-- Document JustCeyin-Expectations -->
     <target name="doc-expectations" 
             description="Document org.justceyin.expectations"
             depends="ceylon-ant-taskdefs">
-        <ceylon-doc src="../JustCeyin-Expectations/source" 
-                    encoding="UTF-8" 
-        	        includesourcecode="true">
-            <module name="org.justceyin.expectations"/>
-        </ceylon-doc>
+        <document subsystem="Expectations" 
+        	      package="expectations"/>
     </target>
 
     <!-- Document JustCeyin-Specifications -->
     <target name="doc-specifications" 
             description="Document org.justceyin.specifications"
             depends="compile-expectations">
-        <ceylon-doc src="../JustCeyin-Specifications/source" 
-                    encoding="UTF-8" 
-        	        includesourcecode="true">
-            <module name="org.justceyin.specifications"/>
-        </ceylon-doc>
+        <document subsystem="Specifications" 
+        	      package="specifications"/>
     </target>
 
 
+	<!-- TEST -->
+    <macrodef name="run">
+        <attribute name="package"/>
+        <sequential>
+            <ceylon-run run="org.justceyin.@{package}.run"
+                        module="org.justceyin.@{package}/0.1-2013.05.01">
+            </ceylon-run>
+        </sequential>
+    </macrodef>
+	
 	<!-- Test JustCeyin-Expectations -->
     <target name="test-expectations"
     	    description="Test org.justceyin.expectations"
-    	    depends="compile-expectations">
-        <ceylon-run run="org.justceyin.tests.expectations.run"
-                    module="org.justceyin.tests.expectations/0.1-2013.05.01">
-        </ceylon-run>
+    	    depends="compile-expectations-tests">
+        <run package="tests.expectations"/>
     </target>
 
     <!-- Test JustCeyin-Specifications -->
     <target name="test-specifications"
             description="Test org.justceyin.specifications"
-            depends="compile-specifications">
-        <ceylon-run run="org.justceyin.tests.specifications.run"
-                    module="org.justceyin.tests.specifications/0.1-2013.05.01">
-        </ceylon-run>
+            depends="compile-specifications-tests">
+        <run package="tests.specifications"/>
     </target>
 
 
