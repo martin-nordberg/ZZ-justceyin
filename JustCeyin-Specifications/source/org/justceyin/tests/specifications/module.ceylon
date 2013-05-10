@@ -23,5 +23,6 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 module org.justceyin.tests.specifications '0.1-2013.05.01' {
+    shared import ceylon.file '0.5';
     shared import org.justceyin.specifications '0.1-2013.05.01';
 }

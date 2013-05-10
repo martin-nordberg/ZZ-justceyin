@@ -52,6 +52,7 @@
 
     <!-- Clean -->
     <target name="clean">
+        <delete dir="./logs"></delete>
         <delete dir="./modules"></delete>
     </target>
 	
@@ -132,9 +133,10 @@
 
 
 	<!-- TEST -->
-    <macrodef name="run">
+    <macrodef name="test">
         <attribute name="package"/>
         <sequential>
+            <mkdir dir="logs"/>
             <ceylon-run run="org.justceyin.@{package}.run"
                         module="org.justceyin.@{package}/0.1-2013.05.01">
             </ceylon-run>
@@ -145,14 +147,14 @@
     <target name="test-expectations"
     	    description="Test org.justceyin.expectations"
     	    depends="compile-expectations-tests">
-        <run package="tests.expectations"/>
+        <test package="tests.expectations"/>
     </target>
 
     <!-- Test JustCeyin-Specifications -->
     <target name="test-specifications"
             description="Test org.justceyin.specifications"
             depends="compile-specifications-tests">
-        <run package="tests.specifications"/>
+        <test package="tests.specifications"/>
     </target>
 
 
