@@ -7,16 +7,6 @@
     </description>
 	
 	
-	<!-- Utilities -->
-	<scriptdef language="javascript" name="lower">
-	    <attribute name="string" /> 
-	    <attribute name="to" />
-
-	    project.setProperty( attributes.get( "to" ),
-	                         attributes.get( "string" ).toLowerCase() );
-	</scriptdef>	
-
-
     <!-- All -->
     <target name="all"  
             description="Compile, test, and document org.justceyin.*"
@@ -35,7 +25,7 @@
             depends="test-specifications,doc-specifications">
     </target>
 
-
+	
     <!-- Ceylon ANT Tasks -->
     <property name="ceylon.home" 
     	      value="/usr/lib/ceylon/0.5"/>
@@ -54,15 +44,32 @@
     <target name="clean">
         <delete dir="./logs"></delete>
         <delete dir="./modules"></delete>
+    	<propertyfile file="buildinfo.properties"
+    	              comment="Just Ceyin Build Info">
+    	    <entry  key="BUILD-NUMBER-FILLIN" type="int" default="0001" operation="+" pattern="0000"/>
+    	    <entry  key="BUILD-DATE-FILLIN" type="date" value="now" pattern="YYYY.MM.dd"/>
+    	</propertyfile>
+    	<touch>
+    		<fileset dir="..">
+    			<include name="**/*.template"/>
+            </fileset>
+    	</touch>
     </target>
 	
 	
 	<!-- COMPILE -->
 	<macrodef name="compile">
 		<attribute name="subsystem"/>
-		<attribute name="package"/>
+        <attribute name="package"/>
+        <attribute name="package-path" default="@{package}"/>
 		<sequential>
-	        <ceylon-compile src="../JustCeyin-@{subsystem}/source" 
+			<copy file="../JustCeyin-@{subsystem}/source/org/justceyin/@{package-path}/module.ceylon.template"
+			      tofile="../JustCeyin-@{subsystem}/source/org/justceyin/@{package-path}/module.ceylon"/>
+			<replace file="../JustCeyin-@{subsystem}/source/org/justceyin/@{package-path}/module.ceylon"
+			         replacefilterfile="buildinfo.properties"
+			         preserveLastModified="true"/>
+
+			<ceylon-compile src="../JustCeyin-@{subsystem}/source" 
 	                        encoding="UTF-8">
 	            <module name="org.justceyin.@{package}"/>
 	        </ceylon-compile>
@@ -82,7 +89,8 @@
             description="Compile org.justceyin.tests.expectations"
             depends="compile-expectations">
         <compile subsystem="Expectations" 
-                 package="tests.expectations"/>
+                 package="tests.expectations"
+                 package-path="tests/expectations"/>
     </target>
 
     <!-- Compile JustCeyin-Specifications -->
@@ -98,7 +106,8 @@
             description="Compile org.justceyin.tests.specifications"
             depends="compile-specifications">
         <compile subsystem="Specifications" 
-        	     package="tests.specifications"/>
+        	     package="tests.specifications"
+            package-path="tests/specifications"/>
     </target>
 
 
@@ -137,8 +146,9 @@
         <attribute name="package"/>
         <sequential>
             <mkdir dir="logs"/>
+        	<property file="buildinfo.properties"/>
             <ceylon-run run="org.justceyin.@{package}.run"
-                        module="org.justceyin.@{package}/0.1-2013.05.01">
+                        module="org.justceyin.@{package}/0.5.${BUILD-NUMBER-FILLIN}-${BUILD-DATE-FILLIN}">
             </ceylon-run>
         </sequential>
     </macrodef>
