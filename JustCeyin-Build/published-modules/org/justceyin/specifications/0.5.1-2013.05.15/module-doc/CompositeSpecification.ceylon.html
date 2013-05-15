@@ -1,0 +1,29 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>CompositeSpecification.ceylon</title><link href='.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='.resources/ceylondoc.js'></script><script src='.resources/shCore.js' type='text/javascript'></script><script src='.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations.constraints {
+    ConstraintCheckResult, 
+    ConstraintCheckComposite
+}
+
+&quot;Specification composed of multiple sub-specifications.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared class CompositeSpecification( {Specification*} specifications ) 
+    satisfies Specification
+{
+
+    &quot;The child specifications within this specification.&quot;
+    shared {Specification*} childSpecifications = specifications;
+    
+    &quot;The title of this specification.&quot;
+    shared String title = &quot;TBD: Composite Specification&quot;;
+        // TBD: Derive the title from the doc annotation (M6) of a derived class
+    
+    &quot;Executes all the child specifications and combines them into a composite result.&quot;
+    shared actual ConstraintCheckResult check() {
+        return ConstraintCheckComposite( title, this.childSpecifications.collect( checkSpecification ) );
+    }
+
+}
+</pre></body></html>

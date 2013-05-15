@@ -1,0 +1,105 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>Stack.ceylon</title><link href='../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../.resources/ceylondoc.js'></script><script src='../.resources/shCore.js' type='text/javascript'></script><script src='../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations.constraints { 
+    AdjectivalConstraint,
+    BasicConstraint, 
+    Constraint
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+&quot;Exception thrown when trying to pop from an empty stack.&quot;
+shared class EmptyStackException() extends Exception() {}
+    
+///////////////////////////////////////////////////////////////////////////////
+
+&quot;Class to be tested - classic immutable stack implementation.&quot;
+shared class Stack&lt;T&gt;( [T*] initialElements = [] ) {
+        
+    &quot;The elements in the stack (first element is last in).&quot;
+    [T*] elements = initialElements;
+        
+    &quot;Determines whether this stack is empty.&quot;
+    shared Boolean empty {
+        return elements.empty;
+    }
+    
+    &quot;Takes the top value off the stack and returns a new stack with the remainder. 
+     Throws an exception if the stack is empty.&quot;
+    shared Stack&lt;T&gt; pop() {
+        if ( elements.empty ) {
+            throw EmptyStackException();
+        }
+        return Stack( elements.rest );
+    }
+    
+    &quot;Pushes a new value on to the stack.&quot;
+    shared Stack&lt;T&gt; push( T element ) {
+        return Stack( [element, *elements] );
+    }
+    
+    &quot;Returns the top value from the stack. Throws an exception if the stack is empty.&quot;
+    shared T top { 
+        if ( exists t=elements.first ) {
+            return t;
+        }
+        throw EmptyStackException();
+    }
+
+    &quot;Returns the top value from the stack, if any.&quot;
+    shared T? topIfPresent { 
+        return elements.first;
+    }
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+// Top level helper functions for functional style programming with stacks
+ 
+shared Boolean emptyStack&lt;T&gt;( Stack&lt;T&gt; stack ) =&gt; stack.empty;
+shared Stack&lt;T&gt; popStack&lt;T&gt;( Stack&lt;T&gt; stack ) =&gt; stack.pop();
+shared Stack&lt;T&gt; pushOntoStack&lt;T&gt;( T element )( Stack&lt;T&gt; stack ) =&gt; stack.push( element );
+shared T topOfStack&lt;T&gt;( Stack&lt;T&gt; stack ) =&gt; stack.top;
+shared T? topOfStackIfPresent&lt;T&gt;( Stack&lt;T&gt; stack ) =&gt; stack.topIfPresent;
+
+///////////////////////////////////////////////////////////////////////////////
+
+&quot;Class defining common constraints on stacks for use in preconditions, postconditions, or specifications.&quot;
+shared class StackConstraints&lt;T&gt;()
+    given T satisfies Object
+{
+        
+    &quot;Returns a constraint that checks that a stack is empty.&quot;
+    shared Constraint&lt;Stack&lt;T&gt;&gt; thatIsEmpty =&gt;
+        AdjectivalConstraint&lt;Stack&lt;T&gt;&gt;( (Stack&lt;T&gt; stack) =&gt; stack.empty, &quot;empty&quot; );
+
+    &quot;Returns a constraint that checks that a stack is not empty.&quot;
+    shared Constraint&lt;Stack&lt;T&gt;&gt; thatIsNotEmpty =&gt;
+        AdjectivalConstraint&lt;Stack&lt;T&gt;&gt;( (Stack&lt;T&gt; stack) =&gt; !stack.empty, &quot;not empty&quot; );
+
+    &quot;Returns a constraint that checks that a stack is not empty.&quot;
+    shared Constraint&lt;Stack&lt;T&gt;&gt; withTop( T expectedValue ) =&gt;
+        BasicConstraint&lt;Stack&lt;T&gt;&gt;( 
+            (Stack&lt;T&gt; stack) {
+                if ( exists top=stack.topIfPresent ) { return top == expectedValue; } else { return false; }
+            },
+            (String valueName) { 
+                return &quot;Verified ``valueName`` has top ``expectedValue``.&quot;;
+            },
+            (Stack&lt;T&gt; stack, String valueName) {
+                if ( exists top=stack.topIfPresent ) {
+                    return &quot;Expected ``valueName`` to have top ``expectedValue``, but was ``top``.&quot;;
+                }
+                return &quot;Expected ``valueName`` to have top ``expectedValue``, but was empty.&quot;;
+            },
+            (Stack&lt;T&gt; stack, String valueName) { 
+                return &quot;An exception occurred while checking whether ``valueName`` has top ``expectedValue``.&quot;;
+            }
+        );
+
+}
+
+</pre></body></html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>aDate.ceylon</title><link href='../../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../../.resources/ceylondoc.js'></script><script src='../../.resources/shCore.js' type='text/javascript'></script><script src='../../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import ceylon.time {
+    Date, 
+    todaysDate = today
+}
+import org.justceyin.expectations.constraints { 
+    AdjectivalConstraint, 
+    Constraint 
+}
+
+&quot;Concrete object providing constraints on dates.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared object aDate
+    extends ComparableConstraints&lt;Date&gt;()
+{
+        
+    &quot;Returns a constraint that checks that a date is in the future.&quot;
+    shared Constraint&lt;Date&gt; afterToday =&gt;
+        AdjectivalConstraint&lt;Date&gt;( (Date actualValue) =&gt; actualValue &gt; todaysDate(), &quot;after today&quot; );
+
+    &quot;Returns a constraint that checks that a date is in the past.&quot;
+    shared Constraint&lt;Date&gt; beforeToday =&gt;
+        AdjectivalConstraint&lt;Date&gt;( (Date actualValue) =&gt; actualValue &lt; todaysDate(), &quot;before today&quot; );
+
+    &quot;Returns a constraint that checks that a date is today or in the future.&quot;
+    shared Constraint&lt;Date&gt; onOrAfterToday =&gt;
+        AdjectivalConstraint&lt;Date&gt;( (Date actualValue) =&gt; actualValue &gt;= todaysDate(), &quot;on or after today&quot; );
+
+    &quot;Returns a constraint that checks that a date is today or in the past.&quot;
+    shared Constraint&lt;Date&gt; onOrBeforeToday =&gt;
+        AdjectivalConstraint&lt;Date&gt;( (Date actualValue) =&gt; actualValue &lt;= todaysDate(), &quot;on or before today&quot; );
+
+    &quot;Returns a constraint that checks that a date is today.&quot;
+    shared Constraint&lt;Date&gt; today =&gt;
+        AdjectivalConstraint&lt;Date&gt;( (Date actualValue) =&gt; actualValue == todaysDate(), &quot;today&quot; );
+
+}
+</pre></body></html>

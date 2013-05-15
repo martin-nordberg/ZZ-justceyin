@@ -1,0 +1,76 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>IntegerStackMixedSpecification.ceylon</title><link href='../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../.resources/ceylondoc.js'></script><script src='../.resources/shCore.js' type='text/javascript'></script><script src='../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations { 
+    expect 
+}
+import org.justceyin.expectations.constraints { 
+    ConstraintCheckResult
+}
+import org.justceyin.expectations.constraints.providers { 
+    anInteger 
+}
+import org.justceyin.specifications { 
+    MixedSpecification
+}
+import org.justceyin.specifications.requirements { 
+    Requirement, 
+    StartingFrom 
+}
+
+&quot;An example of mixing imperative tests and declarative requirements in a single specification.&quot;
+shared class IntegerStackMixedSpecification()
+    satisfies MixedSpecification
+{
+    
+    shared actual String title = &quot;IntegerStackMixedSpecification&quot;; 
+    
+    // starting values
+    Stack&lt;Integer&gt; anEmptyStack() =&gt; Stack&lt;Integer&gt;();
+
+    // constraints
+    value anIntegerStack = StackConstraints&lt;Integer&gt;();
+    
+    // declarative requirements
+    shared actual {&lt;String-&gt;Requirement&gt;+} requirements = {
+        
+        &quot;A stack starts out empty.&quot;-&gt;
+        StartingFrom( anEmptyStack ).expect( anIntegerStack.thatIsEmpty ),
+        
+        &quot;Pushing then popping leaves the original stack.&quot;-&gt;
+        StartingFrom( anEmptyStack ).after( pushOntoStack(1) ).followedBy( popStack&lt;Integer&gt; ).expect( anIntegerStack.thatIsEmpty ),
+        
+        &quot;A pushed value becomes the new top of the stack.&quot;-&gt;
+        StartingFrom( anEmptyStack ).after( pushOntoStack(100) ).followedBy( topOfStack&lt;Integer&gt; ).expect( anInteger.withValue(100) )
+
+    };
+    
+    &quot;Pushing then popping leaves the original stack (intermediate steps checked).&quot;
+    void testPushThenPopSequence( void outcomes( ConstraintCheckResult* results ) ) {
+        value stack0 = Stack&lt;Integer&gt;();
+        
+        outcomes( expect( stack0 ).named( &quot;stack&quot; ).toBe( anIntegerStack.thatIsEmpty ),
+                  expect( stack0.topIfPresent ).named( &quot;top of stack&quot; ).toNotExist() );
+
+        value stack1 = stack0.push( 1 );
+        
+        outcomes( expect( stack1.top ).named( &quot;top of stack&quot; ).toBe( anInteger.withValue(1) ) );
+        
+        value stack2 = stack1.pop();
+        
+        outcomes( expect( stack2 ).named( &quot;stack&quot; ).toBe( anIntegerStack.thatIsEmpty ),
+                  expect( stack2.topIfPresent ).named( &quot;top of stack&quot; ).toNotExist() );
+    }
+    
+    // imperative tests
+    shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
+        testPushThenPopSequence
+    };
+    
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+</pre></body></html>

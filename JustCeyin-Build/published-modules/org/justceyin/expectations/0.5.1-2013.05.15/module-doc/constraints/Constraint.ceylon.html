@@ -1,0 +1,51 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>Constraint.ceylon</title><link href='../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../.resources/ceylondoc.js'></script><script src='../.resources/shCore.js' type='text/javascript'></script><script src='../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+&quot;Interface defining the behavior of a constraint. A constraint checks an actual value (of type T) 
+ and returns a result indicating success, failure, or unexpected exception.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared interface Constraint&lt;T&gt; {
+	
+	&quot;Checks this constraint against a given actual value with an optional name of that value 
+	 for use in message output.&quot;
+	shared formal ConstraintCheckResult check(
+	    &quot;An actual value to compare against the condition of the constraint.&quot; 
+	    T actualValue, 
+	    &quot;The name of the value for use in outcome result messages.&quot;
+	    String valueName = &quot;value&quot; 
+	);
+	
+	&quot;Builds a new constraint that is the conjunction of this constraint and another.&quot;
+	shared AndConstraint&lt;T&gt; and(
+	    &quot;The second constraint that must be satisfied.&quot;
+	    Constraint&lt;T&gt; otherConstraint
+	) {
+		return AndConstraint&lt;T&gt;( this , otherConstraint );
+	}
+
+    &quot;Builds a new constraint that is the disjunction of this constraint and another.&quot;
+    shared OrConstraint&lt;T&gt; or(
+        &quot;The second constraint that must be satisfied if this one is not.&quot;
+        Constraint&lt;T&gt; otherConstraint
+    ) {
+        return OrConstraint&lt;T&gt;( this , otherConstraint );
+    }
+
+}
+
+
+&quot;Top level helper function for checking a constraint against a given actual value with an 
+ optional name of that value for use in message output.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared ConstraintCheckResult checkConstraint&lt;T&gt;(
+    &quot;The constraint to check.&quot;
+    Constraint&lt;T&gt; constraint, 
+    &quot;An actual value to compare against the condition of the constraint.&quot; 
+    T actualValue, 
+    &quot;The name of the value for use in outcome result messages.&quot;
+    String valueName = &quot;value&quot; 
+) {
+    return constraint.check( actualValue, valueName );
+}
+</pre></body></html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>ComparableConstraints.ceylon</title><link href='../../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../../.resources/ceylondoc.js'></script><script src='../../.resources/shCore.js' type='text/javascript'></script><script src='../../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations.constraints { 
+    ComparisonConstraint, 
+    Constraint 
+}
+
+&quot;Concrete constraint class for checking comparable values - less than, greater than, etc.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared abstract class ComparableConstraints&lt;T&gt;()
+    extends EqualityConstraints&lt;T&gt;()
+    given T satisfies Comparable&lt;T&gt;
+{
+	 
+	&quot;Returns a constraint that checks that the actual value is greater than a comparable value.&quot;
+	shared Constraint&lt;T&gt; greaterThan(
+	    &quot;The value which a test value is expected to be greater than.&quot; 
+	    T comparableValue
+	) {
+		return ComparisonConstraint&lt;T&gt;( 
+		    (T actualValue) =&gt; actualValue &gt; comparableValue, &quot;greater than&quot;, comparableValue
+	 	);
+	}
+	
+	&quot;Returns a constraint that checks that the actual value is greater than or equal to a comparable value.&quot;
+	shared Constraint&lt;T&gt; greaterThanOrEqualTo( 
+        &quot;The value which a test value is expected to be greater than or equal to.&quot; 
+	    T comparableValue 
+	) {
+		return ComparisonConstraint&lt;T&gt;( 
+		    (T actualValue) =&gt; actualValue &gt;= comparableValue, &quot;greater than or equal to&quot;, comparableValue
+	 	);
+	}
+	
+	&quot;Returns a constraint that checks that the actual value is less than a comparable value.&quot;
+	shared Constraint&lt;T&gt; lessThan( 
+        &quot;The value which a test value is expected to be less than.&quot; 
+	    T comparableValue 
+	) {
+		return ComparisonConstraint&lt;T&gt;( 
+		    (T actualValue) =&gt; actualValue &lt; comparableValue, &quot;less than&quot;, comparableValue
+	 	);
+	}
+
+	&quot;Returns a constraint that checks that the actual value is less than or equal to a comparable value.&quot;
+	shared Constraint&lt;T&gt; lessThanOrEqualTo( 
+        &quot;The value which a test value is expected to be less than.&quot; 
+	    T comparableValue 
+	) {
+		return ComparisonConstraint&lt;T&gt;( 
+		    (T actualValue) =&gt; actualValue &lt;= comparableValue, &quot;less than or equal to&quot;, comparableValue
+	 	);
+	}
+	
+}
+</pre></body></html>

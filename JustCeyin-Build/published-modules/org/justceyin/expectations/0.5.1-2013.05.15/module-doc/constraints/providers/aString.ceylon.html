@@ -1,0 +1,73 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>aString.ceylon</title><link href='../../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../../.resources/ceylondoc.js'></script><script src='../../.resources/shCore.js' type='text/javascript'></script><script src='../../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations.constraints { 
+    AdjectivalConstraint, 
+    Constraint 
+}
+
+&quot;Concrete object providing constraints on strings.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared object aString
+    extends ComparableConstraints&lt;String&gt;()
+    satisfies CategoryConstraints&lt;String&gt; &amp; ListConstraints&lt;String,Character&gt;
+{
+    
+    &quot;Returns a constraint that checks that a string is longer than a given length.&quot;
+    shared Constraint&lt;String&gt; longerThan(
+        &quot;One less than the minimum length expected for strings tested by this constraint.&quot;
+        Integer belowMinimumLength 
+    ) {
+        return AdjectivalConstraint&lt;String&gt;( 
+            (String string) =&gt; string.longerThan( belowMinimumLength ),
+            &quot;longer than ``belowMinimumLength``&quot;
+        );
+    }            
+
+    &quot;Returns a constraint that checks that a string is shorter than a given length.&quot;
+    shared Constraint&lt;String&gt; shorterThan( 
+        &quot;One more than the maximum length expected for strings tested by this constraint.&quot;
+        Integer aboveMaximumLength 
+    ) {
+        return AdjectivalConstraint&lt;String&gt;( 
+            (String string) =&gt; string.shorterThan( aboveMaximumLength ),
+            &quot;shorter than ``aboveMaximumLength``&quot;
+        );
+    }
+
+    &quot;Returns a constraint that checks that a string is not empty and is shorter than or equal in length to a given value.&quot;
+    shared Constraint&lt;String&gt; thatIsNotEmptyWithMaximumLength(
+        &quot;The maximum length expected for strings tested by this constraint.&quot;
+        Integer maximumLength 
+    ) {
+        return AdjectivalConstraint&lt;String&gt;( 
+            (String string) =&gt; string.longerThan( 0 ) &amp;&amp; string.shorterThan( maximumLength+1 ),
+            &quot;at most ``maximumLength`` in length&quot;
+        );
+    }
+    
+    &quot;Returns a constraint that checks that a string is shorter than or equal in length to a given value.&quot;
+    shared Constraint&lt;String&gt; withMaximumLength( 
+        &quot;The maximum length expected for strings tested by this constraint.&quot;
+        Integer maximumLength 
+    ) {
+        return AdjectivalConstraint&lt;String&gt;( 
+            (String string) =&gt; string.shorterThan( maximumLength+1 ),
+            &quot;at most ``maximumLength`` in length&quot;
+        );
+    }
+    
+    &quot;Returns a constraint that checks that a string is longer than or equal in length to a given value.&quot;
+    shared Constraint&lt;String&gt; withMinimumLength( 
+        &quot;The minimum length expected for strings tested by this constraint.&quot;
+        Integer minimumLength 
+    ) {
+        return AdjectivalConstraint&lt;String&gt;( 
+            (String string) =&gt; string.longerThan( minimumLength-1 ),
+            &quot;at least ``minimumLength`` in length&quot;
+        );
+    }
+    
+}
+</pre></body></html>

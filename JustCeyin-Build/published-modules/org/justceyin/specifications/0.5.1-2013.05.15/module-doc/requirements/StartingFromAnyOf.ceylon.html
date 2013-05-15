@@ -1,0 +1,29 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>StartingFromAnyOf.ceylon</title><link href='../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../.resources/ceylondoc.js'></script><script src='../.resources/shCore.js' type='text/javascript'></script><script src='../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations.constraints { 
+    Constraint 
+}
+
+&quot;Starting point for a fluent interface declarative specification constraining multiple starting values.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared class StartingFromAnyOf&lt;Input&gt;(
+    &quot;Sequence of functions providing starting values for a requirement.&quot;
+    {Input()+} startingValues 
+) {
+    
+    &quot;Expands the specification with a set up (transform) operation to be applied to the starting value(s).&quot;
+    shared Behavior&lt;Input,Output&gt; after&lt;Output&gt;( Output setup( Input input ) ) =&gt;
+        Behavior&lt;Input,Output&gt;( startingValues, setup );
+    
+    &quot;Declares a specification via a constraint on the starting value itself.&quot;
+    shared Requirement expect( Constraint&lt;Input&gt; constraint ) =&gt;
+        InitializationRequirement&lt;Input&gt;( startingValues, constraint );
+
+    &quot;Augments the starting point with an additional starting value.&quot;
+    shared StartingFromAnyOf&lt;Input&gt; or( Input startingValue() ) =&gt;
+        StartingFromAnyOf&lt;Input&gt;( {startingValue, *startingValues} );
+
+}
+</pre></body></html>

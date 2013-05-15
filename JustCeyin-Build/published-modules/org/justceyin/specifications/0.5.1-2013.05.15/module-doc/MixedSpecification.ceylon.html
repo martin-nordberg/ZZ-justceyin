@@ -1,0 +1,51 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>MixedSpecification.ceylon</title><link href='.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='.resources/ceylondoc.js'></script><script src='.resources/shCore.js' type='text/javascript'></script><script src='.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations.constraints { 
+    ConstraintCheckComposite, 
+    ConstraintCheckResult
+}
+import org.justceyin.specifications.requirements { Requirement }
+
+&quot;Specification mixin defined in terms of a both declarative requirements and test functions.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared interface MixedSpecification 
+    satisfies DeclarativeSpecification &amp; ImperativeSpecification
+{
+    
+    &quot;Execute the tests defined in a derived class.&quot;
+    shared actual default ConstraintCheckResult check() {
+        
+        variable [ConstraintCheckResult*] testResults = [];
+
+        &quot;Accumulates the results of individual tests into a composite result.&quot;
+        void outcomes( ConstraintCheckResult* moreResults ) {
+            moreResults.collect( (ConstraintCheckResult r) =&gt; testResults = testResults.withLeading( r ) );
+        }
+        
+        &quot;Helper function for checking that a requirement is satisfied.&quot;
+        ConstraintCheckResult checkRequirementEntry( String-&gt;Requirement requirement ) =&gt;
+            requirement.item.check( requirement.key );
+
+        // start with the declarative requirements
+        variable [ConstraintCheckResult*] specResults = 
+            requirements.collect( checkRequirementEntry ).reversed;
+        
+        // iterate over the tests
+        for ( test in tests ) {
+            // compile the results of one test
+            testResults = [];
+            test( outcomes );
+            value testResult = ConstraintCheckComposite( &quot;Test Result (TBD)&quot;, testResults.reversed );
+
+            // add each test result to the spec result
+            specResults = specResults.withLeading( testResult );
+        }
+        
+        // bundle the overall results
+        return ConstraintCheckComposite( &quot;TBD: Mixed Title&quot;, specResults.reversed );
+    }
+
+}
+</pre></body></html>

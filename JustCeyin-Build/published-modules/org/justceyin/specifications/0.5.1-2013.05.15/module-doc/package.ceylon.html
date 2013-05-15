@@ -1,0 +1,28 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>package.ceylon</title><link href='.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='.resources/ceylondoc.js'></script><script src='.resources/shCore.js' type='text/javascript'></script><script src='.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>&quot;
+ Package contains classes for defining behavior-driven development style specifications.
+ 
+ Two styles of specification are supported by this package: imperative and declarative.
+ 
+ **Imperative Specifications**
+
+ * Inherit from `ImperativeSpecification`.
+ * Implement a number of test methods, each taking a callable outcomes parameter.
+ * Each test method should call outcomes with one or more expectations, generally started by `expect(..)...`
+ * Define an actual `tests` member that collects the test methods into a sequence. 
+   (Subject to change when Ceylon implements annotations.)
+ 
+ **Declarative Specifications**
+
+ * Inherit from `DeclarativeSpecification`.
+ * Implement the `requirements` attribute which maps from requirement summary strings to `Requirement`
+   instances.
+   (Subject to change when Ceylon implements annotations.)
+ 
+ It is also possible to combine the two approaches in a specification derived from `MixedSpecification`.
+&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared package org.justceyin.specifications;
+</pre></body></html>

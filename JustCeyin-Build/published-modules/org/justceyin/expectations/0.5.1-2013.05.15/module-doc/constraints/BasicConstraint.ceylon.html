@@ -1,0 +1,40 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>BasicConstraint.ceylon</title><link href='../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../.resources/ceylondoc.js'></script><script src='../.resources/shCore.js' type='text/javascript'></script><script src='../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+&quot;Common higher order constraint that computes a test result from a predicate and a function that 
+ computes the message when needed for a failure.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared class BasicConstraint&lt;T&gt;( 
+    &quot;A function that checks the constraint against an actual value.&quot;
+    Boolean checkCondition(T actualValue),
+    &quot;A function that computes the result message when the constraint check succeeds.&quot;
+    String makeSuccessMessage( String valueName ), 
+    &quot;A function that computes the result message when the constraint check fails.&quot;
+    String makeFailureMessage( T actualValue, String valueName ),
+    &quot;A function that computes the result message when the constraint check throws an exception.&quot;
+    String makeExceptionMessage( T actualValue, String valueName ) 
+)
+    satisfies Constraint&lt;T&gt;
+{
+	
+	&quot;Applies the constraint by calling the predicate and then computing the message according to the outcome.&quot;
+	shared actual ConstraintCheckResult check( 
+	    &quot;The actual value (or comparable value) to compare against.&quot;
+	    T actualValue, 
+	    &quot;The name of the value for use in the output message.&quot;
+	    String valueName 
+	) {
+		try {
+	        if ( checkCondition( actualValue ) ) {
+			    return ConstraintCheckSuccess( makeSuccessMessage( valueName ) );
+		    }
+			return ConstraintCheckFailure( makeFailureMessage( actualValue, valueName ) );
+		}
+		catch ( Exception e ) {
+			return ConstraintCheckUnexpectedException( makeExceptionMessage( actualValue, valueName ), e );
+		}
+	}
+
+}
+</pre></body></html>
