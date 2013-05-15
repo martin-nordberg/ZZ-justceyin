@@ -145,7 +145,6 @@
     <macrodef name="test">
         <attribute name="package"/>
         <sequential>
-            <mkdir dir="logs"/>
         	<property file="buildinfo.properties"/>
             <ceylon-run run="org.justceyin.@{package}.run"
                         module="org.justceyin.@{package}/${BUILDINFO-VERSION}.${BUILDINFO-NUMBER}-${BUILDINFO-DATE}">

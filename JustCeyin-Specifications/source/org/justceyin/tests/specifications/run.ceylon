@@ -1,13 +1,24 @@
 
 import ceylon.file { 
-    current 
+    current,
+    Nil
 }
 
 doc "Run the self tests of module `org.justceyin.specifications`."
 void run() {
 
-    // TBD: output log name should come from command argument (not available in ANT ceylon-run task as far as I can tell)
-    value log = TestResultLog( current.childPath("logs/specifications-test.log") );
+    // create the output folder if needed
+    value logPath = current.childPath( "logs" );
+    if ( is Nil logFolder=logPath.resource ) {
+        print( "Creating log folder" );
+        logFolder.createDirectory();
+    }
+    else {
+        print( "log folder exists" );
+    }
+    
+    // set up the output log
+    value log = TestResultLog( logPath.childPath("specifications-test.log") );
     
     try /*( log )*/ {
         log.open();
