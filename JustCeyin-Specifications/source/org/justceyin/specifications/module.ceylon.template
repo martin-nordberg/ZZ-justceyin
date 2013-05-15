@@ -5,10 +5,10 @@
  
  Module defining classes for behavior-driven design style specifications.
  
- LICENSE-FILLIN
+ BUILDINFO-LICENSE-TEXT
 "
-license "LICENSE-URL-FILLIN"
+license "BUILDINFO-LICENSE-URL"
 by "Martin E. Nordberg III"
-module org.justceyin.specifications '0.5.BUILD-NUMBER-FILLIN-BUILD-DATE-FILLIN' {
-    shared import org.justceyin.expectations '0.5.BUILD-NUMBER-FILLIN-BUILD-DATE-FILLIN';
+module org.justceyin.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    shared import org.justceyin.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
 }

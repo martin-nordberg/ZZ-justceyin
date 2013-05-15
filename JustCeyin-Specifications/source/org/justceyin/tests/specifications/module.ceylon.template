@@ -5,10 +5,10 @@
 
  Module of unit tests for org.justceyin.specifications.
 
- LICENSE-FILLIN
+ BUILDINFO-LICENSE-TEXT
 "
-license "LICENSE-URL-FILLIN"
-module org.justceyin.tests.specifications '0.5.BUILD-NUMBER-FILLIN-BUILD-DATE-FILLIN' {
+license "BUILDINFO-LICENSE-URL"
+module org.justceyin.tests.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
     shared import ceylon.file '0.5';
-    shared import org.justceyin.specifications '0.5.BUILD-NUMBER-FILLIN-BUILD-DATE-FILLIN';
+    shared import org.justceyin.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
 }

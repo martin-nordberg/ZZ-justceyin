@@ -46,8 +46,8 @@
         <delete dir="./modules"></delete>
     	<propertyfile file="buildinfo.properties"
     	              comment="Just Ceyin Build Info">
-    	    <entry  key="BUILD-NUMBER-FILLIN" type="int" default="0001" operation="+" pattern="0000"/>
-    	    <entry  key="BUILD-DATE-FILLIN" type="date" value="now" pattern="YYYY.MM.dd"/>
+    	    <entry  key="BUILDINFO-NUMBER" type="int" default="0001" operation="+" pattern="0000"/>
+    	    <entry  key="BUILDINFO-DATE" type="date" value="now" pattern="YYYY.MM.dd"/>
     	</propertyfile>
     	<touch>
     		<fileset dir="..">
@@ -148,7 +148,7 @@
             <mkdir dir="logs"/>
         	<property file="buildinfo.properties"/>
             <ceylon-run run="org.justceyin.@{package}.run"
-                        module="org.justceyin.@{package}/0.5.${BUILD-NUMBER-FILLIN}-${BUILD-DATE-FILLIN}">
+                        module="org.justceyin.@{package}/${BUILDINFO-VERSION}.${BUILDINFO-NUMBER}-${BUILDINFO-DATE}">
             </ceylon-run>
         </sequential>
     </macrodef>
