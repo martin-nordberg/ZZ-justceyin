@@ -1,0 +1,18 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>Reporter.ceylon</title><link href='../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../.resources/ceylondoc.js'></script><script src='../.resources/shCore.js' type='text/javascript'></script><script src='../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations.constraints { 
+    ConstraintCheckResult 
+}
+
+&quot;Interface to a reporter of constraint checking results.&quot;
+shared interface Reporter {
+    
+    &quot;Runs the reporter to produce its output text.&quot;
+    shared formal String report( ConstraintCheckResult constraintCheckResult );
+    
+}
+
+// TBD: report to output stream
+</pre></body></html>

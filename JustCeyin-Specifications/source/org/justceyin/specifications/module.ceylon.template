@@ -1,0 +1,14 @@
+
+"
+ JustCeyin-Specifications
+ ------------------------
+ 
+ Module defining classes for behavior-driven design style specifications.
+ 
+ BUILDINFO-LICENSE-TEXT
+"
+license "BUILDINFO-LICENSE-URL"
+by "Martin E. Nordberg III"
+module org.justceyin.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    shared import org.justceyin.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+}

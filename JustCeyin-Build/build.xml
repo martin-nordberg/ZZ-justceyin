@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Just Ceyin ANT Build -->
+<project name="JustCeyin"
+         default="all">
+    <description>
+        ANT Build for JustCeyin
+    </description>
+    
+    
+    <!-- All -->
+    <target name="all"
+            description="Compile, test, and document org.justceyin.*"
+            depends="all-expectations, all-specifications">
+    </target>
+
+    <!-- All JustCeyin-Expectations -->
+    <target name="all-expectations"
+            description="Compile, test, and document org.justceyin.expectations"
+            depends="test-expectations,doc-expectations">
+    </target>
+
+    <!-- All JustCeyin-Specifications -->
+    <target name="all-specifications"  
+            description="Compile, test, and document org.justceyin.specifications"
+            depends="test-specifications,doc-specifications">
+    </target>
+
+    
+    <!-- Ceylon ANT Tasks -->
+    <property name="ceylon.home" 
+              value="/usr/lib/ceylon/0.5"/>
+    <property name="ceylon.ant.lib" 
+              value="${ceylon.home}/lib/ceylon-ant.jar"/>
+    <target name="ceylon-ant-taskdefs">
+        <path id="ant-tasks">
+            <pathelement location="${ceylon.ant.lib}"/>
+        </path>
+        <typedef resource="com/redhat/ceylon/ant/antlib.xml" 
+                 classpathref="ant-tasks"/>
+    </target>
+
+
+    <!-- Clean -->
+    <target name="clean">
+        <delete dir="./logs"/>
+        <delete dir="./modules"/>
+        <propertyfile file="buildinfo.properties"
+                      comment="Just Ceyin Build Info">
+            <entry  key="BUILDINFO-NUMBER" type="int" default="0001" operation="+" pattern="0"/>
+            <entry  key="BUILDINFO-DATE" type="date" value="now" pattern="YYYY.MM.dd"/>
+        </propertyfile>
+        <touch>
+            <fileset dir="..">
+                <include name="**/*.template"/>
+            </fileset>
+        </touch>
+    </target>
+    
+    
+    <!-- COMPILE -->
+    <macrodef name="compile">
+        <attribute name="subsystem"/>
+        <attribute name="package"/>
+        <attribute name="package-path" default="@{package}"/>
+        <sequential>
+            <copy file="../JustCeyin-@{subsystem}/source/org/justceyin/@{package-path}/module.ceylon.template"
+                  tofile="../JustCeyin-@{subsystem}/source/org/justceyin/@{package-path}/module.ceylon"/>
+            <replace file="../JustCeyin-@{subsystem}/source/org/justceyin/@{package-path}/module.ceylon"
+                     replacefilterfile="buildinfo.properties"
+                     preserveLastModified="true"/>
+
+            <ceylon-compile src="../JustCeyin-@{subsystem}/source" 
+                            encoding="UTF-8">
+                <module name="org.justceyin.@{package}"/>
+            </ceylon-compile>
+        </sequential>
+    </macrodef>
+
+    <!-- Compile JustCeyin-Expectations -->
+    <target name="compile-expectations" 
+            description="Compile org.justceyin.expectations"
+            depends="ceylon-ant-taskdefs">
+        <compile subsystem="Expectations"
+                 package="expectations"/>
+    </target>
+
+    <!-- Compile JustCeyin-Expectations Tests -->
+    <target name="compile-expectations-tests" 
+            description="Compile org.justceyin.tests.expectations"
+            depends="compile-expectations">
+        <compile subsystem="Expectations" 
+                 package="tests.expectations"
+                 package-path="tests/expectations"/>
+    </target>
+
+    <!-- Compile JustCeyin-Specifications -->
+    <target name="compile-specifications" 
+            description="Compile org.justceyin.specifications"
+            depends="compile-expectations">
+        <compile subsystem="Specifications" 
+                 package="specifications"/>
+    </target>
+
+    <!-- Compile JustCeyin-Specifications Tests -->
+    <target name="compile-specifications-tests" 
+            description="Compile org.justceyin.tests.specifications"
+            depends="compile-specifications">
+        <compile subsystem="Specifications" 
+                 package="tests.specifications"
+            package-path="tests/specifications"/>
+    </target>
+
+
+    <!-- DOCUMENT -->
+    <macrodef name="document">
+        <attribute name="subsystem"/>
+        <attribute name="package"/>
+        <sequential>
+            <ceylon-doc src="../JustCeyin-@{subsystem}/source" 
+                        encoding="UTF-8"
+                        includesourcecode="true">
+                <module name="org.justceyin.@{package}"/>
+            </ceylon-doc>
+        </sequential>
+    </macrodef>
+
+    <!-- Document JustCeyin-Expectations -->
+    <target name="doc-expectations" 
+            description="Document org.justceyin.expectations"
+            depends="ceylon-ant-taskdefs">
+        <document subsystem="Expectations" 
+                  package="expectations"/>
+    </target>
+
+    <!-- Document JustCeyin-Specifications -->
+    <target name="doc-specifications" 
+            description="Document org.justceyin.specifications"
+            depends="compile-expectations">
+        <document subsystem="Specifications" 
+                  package="specifications"/>
+    </target>
+
+    
+    <!-- PUBLISH -->
+    <target name="publish"
+            description="Clean build and publish all modules and documentation"
+            depends="clean, all">
+        <copy todir="./published-modules">
+            <fileset dir="./modules"/>
+        </copy>
+    </target>
+
+    <!-- TEST -->
+    <macrodef name="test">
+        <attribute name="package"/>
+        <sequential>
+            <property file="buildinfo.properties"/>
+            <ceylon-run run="org.justceyin.@{package}.run"
+                        module="org.justceyin.@{package}/${BUILDINFO-VERSION}.${BUILDINFO-NUMBER}-${BUILDINFO-DATE}">
+            </ceylon-run>
+        </sequential>
+    </macrodef>
+    
+    <!-- Test JustCeyin-Expectations -->
+    <target name="test-expectations"
+            description="Test org.justceyin.expectations"
+            depends="compile-expectations-tests">
+        <test package="tests.expectations"/>
+    </target>
+
+    <!-- Test JustCeyin-Specifications -->
+    <target name="test-specifications"
+            description="Test org.justceyin.specifications"
+            depends="compile-specifications-tests">
+        <test package="tests.specifications"/>
+    </target>
+
+
+</project>

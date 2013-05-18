@@ -1,0 +1,15 @@
+
+"
+ JustCeyin-Expectations (Tests)
+ ------------------------------
+ 
+ Module of unit tests for org.justceyin.expectations.
+
+ BUILDINFO-LICENSE-TEXT
+"
+license "BUILDINFO-LICENSE-URL"
+by "Martin E. Nordberg III"
+module org.justceyin.tests.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    shared import ceylon.file '0.5';
+    shared import org.justceyin.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+}

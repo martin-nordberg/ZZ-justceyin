@@ -1,0 +1,57 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>CategoryConstraints.ceylon</title><link href='../../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../../.resources/ceylondoc.js'></script><script src='../../.resources/shCore.js' type='text/javascript'></script><script src='../../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+import org.justceyin.expectations.constraints { 
+    BasicConstraint,
+    Constraint 
+}
+
+&quot;Mixin class defines constraints on a category.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared interface CategoryConstraints&lt;T&gt;
+    given T satisfies Category
+{
+	
+    &quot;Returns a constraint that checks whether a category contains a given item.&quot;
+    shared Constraint&lt;T&gt; thatContains(
+        &quot;The object expected to be contained in a tested category.&quot;
+        Object element 
+    ) {
+        return BasicConstraint&lt;T&gt;( 
+            (T category) =&gt; category.contains( element ),
+            (String valueName) =&gt; &quot;Verified ``valueName`` contains &apos;``element``&apos;.&quot;,
+		    (T category, String valueName) =&gt; &quot;Expected ``valueName`` to contain \&quot;``element``\&quot;, but was \&quot;``category``\&quot;.&quot;, 
+		    (T category, String valueName) =&gt; &quot;An exception occurred while checking whether ``valueName`` (= \&quot;``category``\&quot;) contains ``element``.&quot; 
+        );            
+    }
+
+    &quot;Returns a constraint that checks whether a category contains any one of a given list of items.&quot;
+    shared Constraint&lt;T&gt; thatContainsAnyElementOf(
+        &quot;The objects, one of which is expected to be contained in a tested category.&quot;
+        {Object*} elements 
+    ) {
+        return BasicConstraint&lt;T&gt;( 
+            (T category) =&gt; category.containsAny( elements ),
+            (String valueName) =&gt; &quot;Verified ``valueName`` contains one of ``elements``.&quot;,
+		    (T category, String valueName) =&gt; &quot;Expected ``valueName`` to contain one of ``elements``, but was \&quot;``category``\&quot;.&quot;, 
+		    (T category, String valueName) =&gt; &quot;An exception occurred while checking whether ``valueName`` (= \&quot;``category``\&quot;) contains one of ``elements``.&quot; 
+        );            
+    }
+
+    &quot;Returns a constraint that checks whether a category contains every item in a given list of items.&quot;
+    shared Constraint&lt;T&gt; thatContainsEveryElementOf( 
+        &quot;The objects, all of which are expected to be contained in a tested category.&quot;
+        {Object*} elements 
+    ) {
+        return BasicConstraint&lt;T&gt;( 
+            (T category) =&gt; category.containsEvery( elements ),
+            (String valueName) =&gt; &quot;Verified ``valueName`` contains all of ``elements``.&quot;,
+		    (T category, String valueName) =&gt; &quot;Expected ``valueName`` to contain all of ``elements``, but was \&quot;``category``\&quot;.&quot;, 
+		    (T category, String valueName) =&gt; &quot;An exception occurred while checking whether ``valueName`` (= \&quot;``category``\&quot;) contains all of ``elements``.&quot; 
+        );            
+    }
+
+}
+
+</pre></body></html>

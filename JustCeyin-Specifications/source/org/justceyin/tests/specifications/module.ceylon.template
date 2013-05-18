@@ -1,0 +1,14 @@
+
+"
+ JustCeyin-Specifications
+ ------------------------
+
+ Module of unit tests for org.justceyin.specifications.
+
+ BUILDINFO-LICENSE-TEXT
+"
+license "BUILDINFO-LICENSE-URL"
+module org.justceyin.tests.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    shared import ceylon.file '0.5';
+    shared import org.justceyin.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html><html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8'/>
+<title>AndConstraint.ceylon</title><link href='../.resources/shCore.css' rel='stylesheet' type='text/css'/>
+<link href='../.resources/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script type='text/javascript' src='../.resources/jquery-1.8.2.min.js'></script><script type='text/javascript' src='../.resources/ceylondoc.js'></script><script src='../.resources/shCore.js' type='text/javascript'></script><script src='../.resources/shBrushCeylon.js' type='text/javascript'></script></head><body><pre class='brush: ceylon'>
+&quot;Constraint class represents a conjunction of two individual constraints.&quot;
+by &quot;Martin E. Nordberg III&quot;
+shared class AndConstraint&lt;T&gt;(
+    &quot;The first constraint to check.&quot;
+    Constraint&lt;T&gt; constraint1,
+    &quot;The second constraint to also check if the first succeeds.&quot;
+    Constraint&lt;T&gt; constraint2
+)
+    satisfies Constraint&lt;T&gt;
+{
+    
+    &quot;Checks this constraint against a given actual value with an optional name of that value 
+     for use in message output. Ensures that both the first constraint is satisfied and the second one is.&quot;
+    shared actual ConstraintCheckResult check(
+        &quot;An actual value to compare against the condition of the constraint.&quot; 
+        T actualValue, 
+        &quot;The name of the value for use in outcome result messages.&quot;
+        String valueName
+    ) {
+        value result1 = constraint1.check( actualValue, valueName );
+        if ( !result1.isSuccess ) {
+            return result1;
+        }
+        value result2 = constraint2.check( actualValue, valueName );
+        if ( !result2.isSuccess ) {
+            return result2;
+        }
+        return ConstraintCheckSuccess( result1.message + &quot; -AND- &quot; + result2.message );
+    }
+
+}
+    
+</pre></body></html>
