@@ -1,5 +1,5 @@
-Just Ceyin - Experimental Frameworks for Ceylon
-===============================================
+Just Ceyin - Frameworks for Ceylon
+==================================
 
 Martin E. Nordberg III
 
@@ -15,7 +15,7 @@ This module is meant to be used in two ways:
  
 **1. Design by Contract - Fluent Assertions**
  
-Use the `constrain` and `guarantee` functions to enforce preconditions or postconditions at run time
+Use the `constrain` and `guarantee` functions to enforce preconditions and postconditions at run time
 in an ordinary function or in traditional testing code. Fluent assertions defined this way will
 immediately throw a usual AssertionException if the expectation is not met. 
 
@@ -24,19 +24,19 @@ immediately throw a usual AssertionException if the expectation is not met.
 String elideLongText( Integer maxLength )( String text ) {
 
     // precondition
-    constrain( maxLength ).named( \"maxLength\" ).toBe( anInteger.greaterThan(5) );
+    constrain( maxLength ).named( "maxLength" ).toBe( anInteger.greaterThan(5) );
 
     String result;
     if ( text.size > maxLength ) {
         value halfLength = maxLength/2 - 1;
-        result = text.segment( 0, maxLength-halfLength-3 ) + \"...\" + text.segment(text.size-halfLength,halfLength);
+        result = text.segment( 0, maxLength-halfLength-3 ) + "..." + text.segment(text.size-halfLength,halfLength);
     }
     else {
         result = text;
     }
 
     // postcondition
-    guarantee( result ).named( \"result\" ).toBe( aString.withMaximumLength( maxLength ) );
+    guarantee( result ).named( "result" ).toBe( aString.withMaximumLength( maxLength ) );
 
     return result;
 }
@@ -52,14 +52,14 @@ by a specification runner and then output by a specification reporter.
 shared class ElideLongTextSpecification()
     satisfies ImperativeSpecification { 
     
-    shared actual String title = \"ElideLongTextSpecification\"; 
-    String fifteenChars = \"123456789012345\";
+    shared actual String title = "ElideLongTextSpecification"; 
+    String fifteenChars = "123456789012345";
     
     void testElision( void outcomes( ConstraintCheckResult* results ) ) {
         value tenChars = elideLongText( 10 )( fifteenChars );
         outcomes(
             // expected outcome of the test
-            expect( tenChars ).named( \"fifteen characters elided to ten\").toBe( aString.withValue( \"123...2345\" ) ) 
+            expect( tenChars ).named( "fifteen characters elided to ten").toBe( aString.withValue( "123...2345" ) ) 
         );
     }
     
@@ -67,7 +67,7 @@ shared class ElideLongTextSpecification()
         value alsoFifteenChars = elideLongText( 15 )( fifteenChars );
         outcomes( 
             // expected outcome of the test
-            expect( alsoFifteenChars ).named( \"fifteen characters elided to fifteen\").toBe( aString.withValue( \"123456789012345\" ) ) 
+            expect( alsoFifteenChars ).named( "fifteen characters elided to fifteen").toBe( aString.withValue( "123456789012345" ) ) 
         );
     }
     
