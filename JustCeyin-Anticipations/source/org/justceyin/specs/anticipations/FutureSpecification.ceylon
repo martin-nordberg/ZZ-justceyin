@@ -4,6 +4,11 @@ import ceylon.math.whole {
     Whole,
     wholeNumber
 }
+import java.lang {
+    Thread {
+        javaCurrentThread = currentThread
+    }
+}
 import org.justceyin.anticipations { 
     Future, 
     makeCachedThreadPool, 
@@ -15,14 +20,13 @@ import org.justceyin.expectations {
 import org.justceyin.expectations.constraints { 
     ConstraintCheckResult 
 }
-import org.justceyin.expectations.constraints.providers { 
-    ComparableConstraints, 
-    IntegralConstraints, 
-    NumberConstraints 
+import org.justceyin.expectations_extras.providers { 
+    aWholeNumber 
 }
 import org.justceyin.specifications {
     ImperativeSpecification
 }
+import org.justceyin.expectations.constraints.providers { aString }
 
 
 "Test function for asynchronous execution"
@@ -36,40 +40,69 @@ Whole factorial( Whole n )() {
 Whole oneHundred = wholeNumber(100);
 Whole oneHundredFactorial = factorial(oneHundred)();
 
-shared object aWholeNumber
-    extends ComparableConstraints<Whole>()
-    satisfies NumberConstraints<Whole> & IntegralConstraints<Whole> 
-{
+"Test function for ensuring background thread"
+String getThreadName() {
+    return javaCurrentThread().name;
 }
 
+
+"Specification ensures that a future is computed as expected."
 shared class FutureSpecification() 
     satisfies ImperativeSpecification {
     
     shared actual String title = "FutureSpecification"; 
     
-    "Simple do-nothing specification."
-    void testSynchronous( void outcomes( ConstraintCheckResult* results ) ) {
+    "A normal single-threaded equivalent to the future test computes the right value."
+    void testSingleThreaded( void outcomes( ConstraintCheckResult* results ) ) {
         value result = factorial( oneHundred )();
         
         outcomes( expect( result ).named( "100!" ).toBe( aWholeNumber.withValue( oneHundredFactorial ) ) );
     }
     
-    "Simple test of a future"
-    void testFuture( void outcomes( ConstraintCheckResult* results ) ) {
+    "The value of a future is computed as expected."
+    void testFutureComputation( void outcomes( ConstraintCheckResult* results ) ) {
         
         ThreadPool pool = makeCachedThreadPool();
         
-        Future<Whole> future = pool.computeAsynchronously( factorial(oneHundred) );
+        try /*( pool )*/ {
+            pool.open();
+            
+            Future<Whole> future = pool.computeAsynchronously( factorial(oneHundred) );
         
-        Whole result = future.get();
+            Whole result = future.get();
         
-        outcomes( expect( result ).named( "100!" ).toBe( aWholeNumber.withValue( oneHundredFactorial ) ) );
+            outcomes( expect( result ).named( "100!" ).toBe( aWholeNumber.withValue( oneHundredFactorial ) ) );
+        }
+        finally {
+            pool.close( null );
+        }
     }
     
-    "The tests within this specification. (TBD: to be replaced by annotations (M6)."
+    "A future is omputed in a background thread"
+    void testFutureInBackgroundThread( void outcomes( ConstraintCheckResult* results ) ) {
+        
+        ThreadPool pool = makeCachedThreadPool();
+        
+        try /*( pool )*/ {
+            pool.open();
+            
+            Future<String> future = pool.computeAsynchronously( getThreadName );
+
+            String mainThreadName = getThreadName();
+            String backgroundThreadName = future.get();
+        
+            outcomes( expect( backgroundThreadName ).named( "background thread name" ).toBe( aString.notEqualTo( mainThreadName ) ) );
+        }
+        finally {
+            pool.close( null );
+        }
+    }
+    
+    "The tests within this specification."
     shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
-        testSynchronous,
-        testFuture
+        testSingleThreaded,
+        testFutureComputation,
+        testFutureInBackgroundThread
     };
 
 }
