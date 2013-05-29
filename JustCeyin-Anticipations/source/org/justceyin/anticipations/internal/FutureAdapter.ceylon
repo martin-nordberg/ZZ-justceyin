@@ -13,7 +13,23 @@ import org.justceyin.anticipations {
 class FutureAdapter<T>( JavaFuture<T> future )
     satisfies Future<T>{
     
-    shared actual T get( Integer? maxWaitTimeMs ) {
+    "Cancels the computation of this future"
+    shared actual void cancel( 
+        "Whether the task computing this future may be interrupted if currently running."
+        Boolean mayInterruptIfRunning 
+    ) {
+        future.cancel( mayInterruptIfRunning );
+    }
+    
+    "Whether this future was canceled"
+    shared actual Boolean canceled => this.future.cancelled;
+    
+    "Returns the underlying value of this future."
+    shared actual T get( 
+        "The maximum length of time to wait for the result in milliseconds. 
+         Wait indefinitely if not provided."
+        Integer? maxWaitTimeMs 
+    ) {
         T? result;
         if ( exists maxWaitTimeMs ) {
             result = future.get( maxWaitTimeMs, ms );

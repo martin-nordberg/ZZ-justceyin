@@ -26,7 +26,7 @@ import org.justceyin.expectations_extras.providers {
 import org.justceyin.specifications {
     ImperativeSpecification
 }
-import org.justceyin.expectations.constraints.providers { aString }
+import org.justceyin.expectations.constraints.providers { aString, aBoolean }
 
 
 "Test function for asynchronous execution"
@@ -78,6 +78,25 @@ shared class FutureSpecification()
         }
     }
     
+    "Test that a future can be canceled."
+    void testFutureCancelation( void outcomes( ConstraintCheckResult* results ) ) {
+        
+        ThreadPool pool = makeCachedThreadPool();
+        
+        try /*( pool )*/ {
+            pool.open();
+            
+            Future<Whole> future = pool.computeAsynchronously( factorial(oneHundred) );
+        
+            future.cancel();
+        
+            outcomes( expect( future.canceled ).named( "future.canceled" ).toBe( aBoolean.thatIsTrue ) );
+        }
+        finally {
+            pool.close( null );
+        }
+    }
+    
     "A future is omputed in a background thread"
     void testFutureInBackgroundThread( void outcomes( ConstraintCheckResult* results ) ) {
         
@@ -102,6 +121,7 @@ shared class FutureSpecification()
     shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
         testSingleThreaded,
         testFutureComputation,
+        testFutureCancelation,
         testFutureInBackgroundThread
     };
 
