@@ -1,0 +1,20 @@
+
+"
+ JustCeyin-Anticipations (Specs)
+ -------------------------------
+ 
+ Module of unit tests for org.justceyin.anticipations.
+
+ BUILDINFO-LICENSE-TEXT
+"
+license "BUILDINFO-LICENSE-URL"
+by "Martin E. Nordberg III"
+module org.justceyin.specs.anticipations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    shared import ceylon.math '0.5';
+    import java.base '7';
+
+    shared import org.justceyin.anticipations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+    shared import org.justceyin.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+    shared import org.justceyin.expectations_extras 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+    shared import org.justceyin.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+}

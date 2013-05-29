@@ -10,7 +10,13 @@
     <!-- All -->
     <target name="all"
             description="Compile, test, and document org.justceyin.*"
-            depends="all-expectations, all-specifications">
+            depends="all-expectations, all-specifications, all-anticipations">
+    </target>
+
+    <!-- All JustCeyin-Anticipations -->
+    <target name="all-anticipations"
+            description="Compile, test, and document org.justceyin.anticipations"
+            depends="test-anticipations,doc-anticipations">
     </target>
 
     <!-- All JustCeyin-Expectations -->
@@ -76,12 +82,37 @@
         </sequential>
     </macrodef>
 
+    <!-- Compile JustCeyin-Anticipations -->
+    <target name="compile-anticipations" 
+            description="Compile org.justceyin.anticipations"
+            depends="ceylon-ant-taskdefs">
+        <compile subsystem="Anticipations"
+                 package="anticipations"/>
+    </target>
+
+    <!-- Compile JustCeyin-Anticipations Specs -->
+    <target name="compile-anticipations-specs" 
+            description="Compile org.justceyin.specs.anticipations"
+            depends="compile-anticipations, compile-expectations-extras, compile-specifications">
+        <compile subsystem="Anticipations" 
+                 package="specs.anticipations"
+                 package-path="specs/anticipations"/>
+    </target>
+
     <!-- Compile JustCeyin-Expectations -->
     <target name="compile-expectations" 
             description="Compile org.justceyin.expectations"
             depends="ceylon-ant-taskdefs">
         <compile subsystem="Expectations"
                  package="expectations"/>
+    </target>
+
+    <!-- Compile JustCeyin-Expectations Extras -->
+    <target name="compile-expectations-extras" 
+            description="Compile org.justceyin.expectations_extras"
+            depends="ceylon-ant-taskdefs">
+        <compile subsystem="Expectations"
+                 package="expectations_extras"/>
     </target>
 
     <!-- Compile JustCeyin-Expectations Tests -->
@@ -124,6 +155,14 @@
         </sequential>
     </macrodef>
 
+    <!-- Document JustCeyin-Anticipations -->
+    <target name="doc-anticipations" 
+            description="Document org.justceyin.anticipations"
+            depends="ceylon-ant-taskdefs">
+        <document subsystem="Anticipations" 
+                  package="anticipations"/>
+    </target>
+
     <!-- Document JustCeyin-Expectations -->
     <target name="doc-expectations" 
             description="Document org.justceyin.expectations"
@@ -150,6 +189,7 @@
         </copy>
     </target>
 
+
     <!-- TEST -->
     <macrodef name="test">
         <attribute name="package"/>
@@ -161,6 +201,13 @@
         </sequential>
     </macrodef>
     
+    <!-- Test JustCeyin-Anticipations -->
+    <target name="test-anticipations"
+            description="Test org.justceyin.anticipations"
+            depends="compile-anticipations-specs">
+        <test package="specs.anticipations"/>
+    </target>
+
     <!-- Test JustCeyin-Expectations -->
     <target name="test-expectations"
             description="Test org.justceyin.expectations"

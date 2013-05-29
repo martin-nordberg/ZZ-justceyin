@@ -1,0 +1,17 @@
+
+"
+ JustCeyin-Expectations-Extras
+ -----------------------------
+ 
+ Module defining additional capabilities building upon the basics of org.justceyin.expectations.
+ These extras require dependencies beyond ceylon.lang and are therefore isolated for use only 
+ when needed.
+
+ BUILDINFO-LICENSE-TEXT
+"
+license "BUILDINFO-LICENSE-URL"
+by "Martin E. Nordberg III"
+module org.justceyin.expectations_extras 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    shared import ceylon.math '0.5';
+    shared import org.justceyin.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+}

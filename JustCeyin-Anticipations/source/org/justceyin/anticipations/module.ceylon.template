@@ -1,0 +1,15 @@
+
+"
+ JustCeyin-Anticipations
+ ----------------------
+ 
+ Module defining a very narrow wrapper around java.util.concurrent for working with background
+ tasks executed by a thread pool. Tasks results are retrieved via futures or via callbacks.
+
+ BUILDINFO-LICENSE-TEXT
+"
+license "BUILDINFO-LICENSE-URL"
+by "Martin E. Nordberg III"
+module org.justceyin.anticipations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    import java.base '7';
+}
