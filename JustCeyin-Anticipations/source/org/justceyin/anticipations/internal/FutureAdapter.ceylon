@@ -10,6 +10,7 @@ import org.justceyin.anticipations {
 }
 
 "Adapter wraps a Java Future in a Ceylon interface."
+by "Martin E. Nordberg III"
 class FutureAdapter<T>( JavaFuture<T> future )
     satisfies Future<T>{
     
@@ -23,6 +24,9 @@ class FutureAdapter<T>( JavaFuture<T> future )
     
     "Whether this future was canceled"
     shared actual Boolean canceled => this.future.cancelled;
+    
+    "Whether the task producing this future value is done."
+    shared actual Boolean done => this.future.done;
     
     "Returns the underlying value of this future."
     shared actual T get( 

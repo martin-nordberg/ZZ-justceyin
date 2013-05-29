@@ -8,16 +8,19 @@ import java.util.concurrent {
     JavaExecutorService = ExecutorService
 }
 import org.justceyin.anticipations { 
+    CachedThreadPoolType, 
     Future,
-    ThreadPool 
+    ThreadPool, 
+    ThreadPoolType, FixedThreadPoolType
 }
 
 
 "Thread pool implementation wrapping java.util.concurrent classes."
-class ThreadPoolImpl( Integer threadCount = 0 )
+by "Martin E. Nordberg III"
+class ThreadPoolImpl( ThreadPoolType threadPoolType )
     satisfies ThreadPool {
     
-    late variable JavaExecutorService executor;
+    late JavaExecutorService executor;
     
     "Computes a value asynchronously in a background thread."
     shared actual Future<T> computeAsynchronously<T>( T task() ) {
@@ -31,19 +34,16 @@ class ThreadPoolImpl( Integer threadCount = 0 )
     
     "Opens the thread pool."
     shared actual void open() {
-        if ( threadCount < 1 ) {
+        if ( is CachedThreadPoolType threadPoolType ) {
             this.executor = newCachedThreadPool();
         }
-        else {
-            this.executor = newFixedThreadPool( threadCount );
+        else if ( is FixedThreadPoolType threadPoolType ) {
+            this.executor = newFixedThreadPool( threadPoolType.threadCount );
         }
     }
 }
 
-shared ThreadPool makeCachedThreadPoolImpl() {
-    return ThreadPoolImpl();
+shared ThreadPool makeThreadPoolImpl( ThreadPoolType threadPoolType ) {
+    return ThreadPoolImpl( threadPoolType );
 }
 
-shared ThreadPool makeFixedThreadPool( Integer threadCount ) {
-    return ThreadPoolImpl( threadCount );
-}

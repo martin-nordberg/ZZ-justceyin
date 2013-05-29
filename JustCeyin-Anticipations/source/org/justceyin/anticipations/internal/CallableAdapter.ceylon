@@ -4,6 +4,7 @@ import java.util.concurrent {
 }
 
 "Adapter converts a Ceylon function to a Java callable."
+by "Martin E. Nordberg III"
 class CallableAdapter<T>( T task() )
     satisfies JavaCallable<T> {
     

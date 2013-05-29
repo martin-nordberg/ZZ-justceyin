@@ -1,5 +1,6 @@
 
 "Class providing a mechanism for retrieving values computed asynchronously by a background thread."
+by "Martin E. Nordberg III"
 shared interface Future<T> {
     
     "Cancels the computation of this future"
@@ -8,8 +9,11 @@ shared interface Future<T> {
         Boolean mayInterruptIfRunning = false
     );
     
-    "Whether this future was canceled"
+    "Whether this future was canceled."
     shared formal Boolean canceled;
+    
+    "Whether the task producing this future value is done."
+    shared formal Boolean done;
 
     "Returns the underlying value of this future."
     shared formal T get(
