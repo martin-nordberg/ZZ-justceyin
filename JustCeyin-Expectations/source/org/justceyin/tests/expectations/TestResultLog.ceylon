@@ -1,12 +1,13 @@
 
 import ceylon.file { 
-    File, 
-    Nil , 
     Path, 
     Writer
 }
 import org.justceyin.expectations.constraints { 
     ConstraintCheckResult 
+}
+import org.justceyin.foundations.files {
+    createFileWriter
 }
 
 "Utility class for writing out test results."
@@ -14,14 +15,7 @@ shared class TestResultLog( Path outputPath )
     satisfies Closeable {
 
     "The writer for the output of this log."    
-    Writer writer;
-    if ( is Nil resource = outputPath.resource ) {
-        writer = resource.createFile().writer( "UTF-8" );
-    }
-    else {
-      assert ( is File file = outputPath.resource );
-      writer = file.writer( "UTF-8" );
-    }
+    Writer writer = createFileWriter( outputPath );
     
     "Closes the log."
     shared actual void close( Exception? e ) {

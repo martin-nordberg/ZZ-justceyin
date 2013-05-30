@@ -10,4 +10,7 @@
 license "BUILDINFO-LICENSE-URL"
 by "Martin E. Nordberg III"
 module org.justceyin.foundations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+
+    shared import ceylon.file '0.5';
+
 }

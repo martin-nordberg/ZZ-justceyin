@@ -1,7 +1,9 @@
 
 import ceylon.file { 
-    current,
-    Nil
+    current
+}
+import org.justceyin.foundations.files { 
+    createDirectoryIfNeeded 
 }
 
 doc "Run the self tests of module `org.justceyin.specifications`."
@@ -9,13 +11,7 @@ void run() {
 
     // create the output folder if needed
     value logPath = current.childPath( "logs" );
-    if ( is Nil logFolder=logPath.resource ) {
-        print( "Creating log folder" );
-        logFolder.createDirectory();
-    }
-    else {
-        print( "log folder exists" );
-    }
+    createDirectoryIfNeeded( logPath );
     
     // set up the output log
     value log = TestResultLog( logPath.childPath("specifications-test.log") );
