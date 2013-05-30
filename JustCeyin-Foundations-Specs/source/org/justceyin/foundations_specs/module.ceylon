@@ -1,10 +1,9 @@
 
 "
- JustCeyin-Expectations
- ----------------------
+ JustCeyin-Foundations (Specs)
+ -----------------------------
  
- Module defining 'expectations' - English-like fluent interface style constructs that provide readable
- declarative assertions via the functional programming capabilities of Ceylon.
+ Module of unit tests for org.justceyin.foundations.
 
  **License**
  
@@ -24,6 +23,7 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 by "Martin E. Nordberg III"
-module org.justceyin.expectations '0.5.5-2013.05.29' {
-    shared import ceylon.time '0.5';
+module org.justceyin.foundations_specs '0.5.5-2013.05.29' {
+    shared import org.justceyin.expectations '0.5.5-2013.05.29';
+    shared import org.justceyin.specifications '0.5.5-2013.05.29';
 }

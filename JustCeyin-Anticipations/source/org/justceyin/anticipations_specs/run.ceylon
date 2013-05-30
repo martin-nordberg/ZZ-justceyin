@@ -17,7 +17,7 @@ void runSpecification( Specification specification ) {
     assert( runResult1.isSuccess );
 }
 
-doc "Run the module `org.justceyin.specs.anticipations`."
+doc "Run the module `org.justceyin.anticipations_specs`."
 void run() {
 
     runSpecification( FutureSpecification() );

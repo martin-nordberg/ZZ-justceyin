@@ -20,13 +20,16 @@ import org.justceyin.expectations {
 import org.justceyin.expectations.constraints { 
     ConstraintCheckResult 
 }
+import org.justceyin.expectations.constraints.providers { 
+    aString, 
+    aBoolean 
+}
 import org.justceyin.expectations_extras.providers { 
     aWholeNumber 
 }
 import org.justceyin.specifications {
     ImperativeSpecification
 }
-import org.justceyin.expectations.constraints.providers { aString, aBoolean }
 
 
 "Test function for asynchronous execution"
@@ -100,7 +103,7 @@ shared class FutureSpecification()
         }
     }
     
-    "A future is omputed in a background thread"
+    "A future is computed in a background thread, not the main thread."
     void testFutureInBackgroundThread( void outcomes( ConstraintCheckResult* results ) ) {
         
         ThreadPool pool = makeThreadPool();

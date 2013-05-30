@@ -9,7 +9,7 @@
 "
 license "BUILDINFO-LICENSE-URL"
 by "Martin E. Nordberg III"
-module org.justceyin.specs.anticipations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+module org.justceyin.anticipations_specs 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
     shared import ceylon.math '0.5';
     import java.base '7';
 

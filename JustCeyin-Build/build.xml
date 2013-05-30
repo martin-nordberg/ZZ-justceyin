@@ -10,7 +10,7 @@
     <!-- All -->
     <target name="all"
             description="Compile, test, and document org.justceyin.*"
-            depends="all-expectations, all-specifications, all-anticipations">
+            depends="all-foundations, all-expectations, all-specifications, all-anticipations">
     </target>
 
     <!-- All JustCeyin-Anticipations -->
@@ -23,6 +23,12 @@
     <target name="all-expectations"
             description="Compile, test, and document org.justceyin.expectations"
             depends="test-expectations,doc-expectations">
+    </target>
+
+    <!-- All JustCeyin-Foundations -->
+    <target name="all-foundations"
+            description="Compile, test, and document org.justceyin.foundations"
+            depends="test-foundations,doc-foundations">
     </target>
 
     <!-- All JustCeyin-Specifications -->
@@ -92,11 +98,10 @@
 
     <!-- Compile JustCeyin-Anticipations Specs -->
     <target name="compile-anticipations-specs" 
-            description="Compile org.justceyin.specs.anticipations"
+            description="Compile org.justceyin.anticipations_specs"
             depends="compile-anticipations, compile-expectations-extras, compile-specifications">
         <compile subsystem="Anticipations" 
-                 package="specs.anticipations"
-                 package-path="specs/anticipations"/>
+                 package="anticipations_specs"/>
     </target>
 
     <!-- Compile JustCeyin-Expectations -->
@@ -105,6 +110,22 @@
             depends="ceylon-ant-taskdefs">
         <compile subsystem="Expectations"
                  package="expectations"/>
+    </target>
+
+    <!-- Compile JustCeyin-Foundations -->
+    <target name="compile-foundations" 
+            description="Compile org.justceyin.foundations"
+            depends="ceylon-ant-taskdefs">
+        <compile subsystem="Foundations"
+                 package="foundations"/>
+    </target>
+
+    <!-- Compile JustCeyin-Foundations Specs -->
+    <target name="compile-foundations-specs" 
+            description="Compile org.justceyin.foundations_specs"
+            depends="compile-foundations, compile-specifications">
+        <compile subsystem="Foundations-Specs" 
+                 package="foundations_specs"/>
     </target>
 
     <!-- Compile JustCeyin-Expectations Extras -->
@@ -171,6 +192,14 @@
                   package="expectations"/>
     </target>
 
+    <!-- Document JustCeyin-Foundations -->
+    <target name="doc-foundations" 
+            description="Document org.justceyin.foundations"
+            depends="ceylon-ant-taskdefs">
+        <document subsystem="Foundations" 
+                  package="foundations"/>
+    </target>
+
     <!-- Document JustCeyin-Specifications -->
     <target name="doc-specifications" 
             description="Document org.justceyin.specifications"
@@ -205,7 +234,7 @@
     <target name="test-anticipations"
             description="Test org.justceyin.anticipations"
             depends="compile-anticipations-specs">
-        <test package="specs.anticipations"/>
+        <test package="anticipations_specs"/>
     </target>
 
     <!-- Test JustCeyin-Expectations -->
@@ -213,6 +242,13 @@
             description="Test org.justceyin.expectations"
             depends="compile-expectations-tests">
         <test package="tests.expectations"/>
+    </target>
+
+    <!-- Test JustCeyin-Foundations -->
+    <target name="test-foundations"
+            description="Test org.justceyin.foundations"
+            depends="compile-foundations-specs">
+        <test package="foundations_specs"/>
     </target>
 
     <!-- Test JustCeyin-Specifications -->
