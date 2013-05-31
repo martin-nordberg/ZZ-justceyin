@@ -10,11 +10,13 @@
 license "BUILDINFO-LICENSE-URL"
 by "Martin E. Nordberg III"
 module org.justceyin.anticipations_specs 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    shared import ceylon.file '0.5';
     shared import ceylon.math '0.5';
     import java.base '7';
 
     shared import org.justceyin.anticipations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
     shared import org.justceyin.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
     shared import org.justceyin.expectations_extras 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+    shared import org.justceyin.foundations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
     shared import org.justceyin.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
 }

@@ -1,13 +1,13 @@
 
 import ceylon.file { 
-    Path, 
-    Writer
+    Path
 }
 import org.justceyin.expectations.constraints { 
     ConstraintCheckResult 
 }
-import org.justceyin.foundations.files {
-    createFileWriter
+import org.justceyin.foundations.logging {
+    createFileLogWriter,
+    LogWriter
 }
 
 "Utility class for writing out test results."
@@ -15,7 +15,7 @@ shared class TestResultLog( Path outputPath )
     satisfies Closeable {
 
     "The writer for the output of this log."    
-    Writer writer = createFileWriter( outputPath );
+    LogWriter writer = createFileLogWriter( outputPath );
     
     "Closes the log."
     shared actual void close( Exception? e ) {
@@ -43,10 +43,10 @@ shared class TestResultLog( Path outputPath )
                 assert ( expectedMessage == result.message );
             }
     
-            this.print( correct( result.message ) );
+            this.writeLine( correct( result.message ) );
         }
         catch ( AssertionException e ) {
-            this.print( incorrect( result.message, expectedMessage else "" ) );
+            this.writeLine( incorrect( result.message, expectedMessage else "" ) );
             throw e;
         }
     
@@ -62,10 +62,10 @@ shared class TestResultLog( Path outputPath )
                 assert ( expectedMessage == result.message );
             }
     
-            this.print( correct( result.message ) );
+            this.writeLine( correct( result.message ) );
         }
         catch ( AssertionException e ) {
-            this.print( incorrect( result.message, expectedMessage else "" ) );
+            this.writeLine( incorrect( result.message, expectedMessage else "" ) );
             throw e;
         }
     
@@ -76,9 +76,14 @@ shared class TestResultLog( Path outputPath )
         this.writer.open();
     }
 
-    "Prints a line of output."
-    shared void print( String output ) {
-        writer.writeLine( output );
+    "Writes output."
+    shared void write( String output ) {
+        this.writer.write( output );
+    }
+    
+    "Writes a line of output."
+    shared void writeLine( String output ) {
+        this.writer.writeLine( output );
     }
     
     "Modifies the message from a constraint check result to indent and prepend 'Correct: '."

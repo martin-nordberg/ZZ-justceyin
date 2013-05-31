@@ -24,6 +24,6 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 by "Martin E. Nordberg III"
-module org.justceyin.expectations '0.5.5-2013.05.29' {
+module org.justceyin.expectations '0.5.6-2013.05.30' {
     shared import ceylon.time '0.5';
 }

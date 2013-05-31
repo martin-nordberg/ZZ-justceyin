@@ -6,23 +6,23 @@ import org.justceyin.tests.expectations {
 "Exercises all constraints."
 shared void runConstraintProviderTests( TestResultLog log ) {
 
-    log.print( "" );
-    log.print( "Constraint Tests:" );
-    log.print( "-----------------" );
+    log.writeLine( "" );
+    log.writeLine( "Constraint Tests:" );
+    log.writeLine( "-----------------" );
 
-    log.print( " Boolean Constraints:" );
+    log.writeLine( " Boolean Constraints:" );
     runBooleanConstraintTests( log );
 
-    log.print( " Date Constraints:" );
+    log.writeLine( " Date Constraints:" );
     runDateConstraintTests( log );
 
-    log.print( " Integer Constraints:" );
+    log.writeLine( " Integer Constraints:" );
     runIntegerConstraintTests( log );
 
-    log.print( " Float Constraints:" );
+    log.writeLine( " Float Constraints:" );
     runFloatConstraintTests( log );
 
-    log.print( " String Constraints:" );
+    log.writeLine( " String Constraints:" );
     runStringConstraintTests( log );
 
 }

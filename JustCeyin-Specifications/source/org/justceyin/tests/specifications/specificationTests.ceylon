@@ -8,6 +8,9 @@ import org.justceyin.specifications.examples {
     IntegerStackImperativeSpecification, 
     IntegerStackMixedSpecification
 }
+import org.justceyin.foundations.logging { 
+    LogWriter 
+}
 import org.justceyin.specifications.reporters { 
     SimpleTextReporter 
 }
@@ -16,32 +19,32 @@ import org.justceyin.specifications.runners {
 }
 
 "Runs a specification; prints the report; ensures a successful outcome."
-void runSpecificationTest( TestResultLog log, Specification specification ) {
-    value runResult1 = SimpleSpecificationRunner( specification ).run();
-    log.print( SimpleTextReporter().report( runResult1 ) );
-    assert( runResult1.isSuccess );
+void runSpecificationTest( LogWriter log, Specification specification ) {
+    value runResult = SimpleSpecificationRunner( specification ).run();
+    log.writeLine( SimpleTextReporter().report( runResult ) );
+    assert( runResult.isSuccess );
 }
 
 "Exercises typical specifications."
-shared void runSpecificationTests( TestResultLog log ) {
-    log.print( "" );
-    log.print( "Integer Stack Declarative Specification:" );
-    log.print( "----------------------------------------" );
+shared void runSpecificationTests( LogWriter log ) {
+    log.writeLine( "" );
+    log.writeLine( "Integer Stack Declarative Specification:" );
+    log.writeLine( "----------------------------------------" );
     runSpecificationTest( log, IntegerStackDeclarativeSpecification() );
 
-    log.print( "" );
-    log.print( "Integer Stack Imperative Specification:" );
-    log.print( "---------------------------------------" );
+    log.writeLine( "" );
+    log.writeLine( "Integer Stack Imperative Specification:" );
+    log.writeLine( "---------------------------------------" );
     runSpecificationTest( log, IntegerStackImperativeSpecification() );
 
-    log.print( "" );
-    log.print( "Integer Stack Mixed Specification:" );
-    log.print( "----------------------------------" );
+    log.writeLine( "" );
+    log.writeLine( "Integer Stack Mixed Specification:" );
+    log.writeLine( "----------------------------------" );
     runSpecificationTest( log, IntegerStackMixedSpecification() );
 
-    log.print( "" );
-    log.print( "Integer Stack Composite Specification:" );
-    log.print( "--------------------------------------" );
+    log.writeLine( "" );
+    log.writeLine( "Integer Stack Composite Specification:" );
+    log.writeLine( "--------------------------------------" );
     value suite = CompositeSpecification( {IntegerStackDeclarativeSpecification(),IntegerStackImperativeSpecification()} );
     runSpecificationTest( log, suite );
 }

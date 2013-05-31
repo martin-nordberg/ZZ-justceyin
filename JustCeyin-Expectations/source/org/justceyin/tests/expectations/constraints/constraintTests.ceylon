@@ -6,16 +6,16 @@ import org.justceyin.tests.expectations {
 "Exercises all constraints."
 shared void runConstraintTests( TestResultLog log ) {
 
-    log.print( "" );
-    log.print( "Constraint Tests:" );
-    log.print( "-----------------" );
+    log.writeLine( "" );
+    log.writeLine( "Constraint Tests:" );
+    log.writeLine( "-----------------" );
 
-    log.print( " And/Or Constraints:" );
+    log.writeLine( " And/Or Constraints:" );
     runAndOrConstraintTests( log );
     
-    log.print( " Asserted Expectation Tests:" );
+    log.writeLine( " Asserted Expectation Tests:" );
     runAssertedExpectationTests( log );
-    log.print( "  (Assertion exceptions thrown as expected.)" );
+    log.writeLine( "  (Assertion exceptions thrown as expected.)" );
 
 }
 

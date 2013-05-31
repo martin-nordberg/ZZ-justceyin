@@ -27,12 +27,12 @@ void run() {
     try /*( log )*/ {
         log.open();
 
-        log.print( "Cey what you mean ..." );
+        log.writeLine( "Cey what you mean ..." );
     
         runConstraintProviderTests( log );
         runConstraintTests( log );
     
-        log.print( "All tests completed successfully." );
+        log.writeLine( "All tests completed successfully." );
         print( "All tests completed successfully." );
     }
     finally {

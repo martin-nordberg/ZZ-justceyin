@@ -5,5 +5,6 @@
 	<classpathentry kind="con" path="com.redhat.ceylon.eclipse.ui.cpcontainer.CEYLON_CONTAINER/default"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JustCeyin-Expectations"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/JustCeyin-Specifications"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/JustCeyin-Foundations"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

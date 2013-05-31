@@ -5,6 +5,9 @@ import ceylon.file {
 import org.justceyin.foundations.files { 
     createDirectoryIfNeeded 
 }
+import org.justceyin.foundations.logging { 
+    createFileLogWriter
+}
 
 doc "Run the self tests of module `org.justceyin.specifications`."
 void run() {
@@ -14,16 +17,16 @@ void run() {
     createDirectoryIfNeeded( logPath );
     
     // set up the output log
-    value log = TestResultLog( logPath.childPath("specifications-test.log") );
+    value log = createFileLogWriter( logPath.childPath("specifications-test.log"), false );
     
     try /*( log )*/ {
         log.open();
         
-        log.print( "Cey what you mean ..." );
+        log.writeLine( "Cey what you mean ..." );
     
         runSpecificationTests( log );
     
-        log.print( "All tests completed successfully." );
+        log.writeLine( "All tests completed successfully." );
         print( "All tests completed successfully." );
     }
     finally {
