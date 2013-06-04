@@ -112,6 +112,23 @@
                  package="expectations"/>
     </target>
 
+    <!-- Compile JustCeyin-Expectations Extras -->
+    <target name="compile-expectations-extras" 
+            description="Compile org.justceyin.expectations_extras"
+            depends="ceylon-ant-taskdefs">
+        <compile subsystem="Expectations"
+                 package="expectations_extras"/>
+    </target>
+
+    <!-- Compile JustCeyin-Expectations Tests -->
+    <target name="compile-expectations-tests" 
+            description="Compile org.justceyin.tests.expectations"
+            depends="compile-expectations, compile-foundations">
+        <compile subsystem="Expectations" 
+                 package="tests.expectations"
+                 package-path="tests/expectations"/>
+    </target>
+
     <!-- Compile JustCeyin-Foundations -->
     <target name="compile-foundations" 
             description="Compile org.justceyin.foundations"
@@ -128,23 +145,6 @@
                  package="foundations_specs"/>
     </target>
 
-    <!-- Compile JustCeyin-Expectations Extras -->
-    <target name="compile-expectations-extras" 
-            description="Compile org.justceyin.expectations_extras"
-            depends="ceylon-ant-taskdefs">
-        <compile subsystem="Expectations"
-                 package="expectations_extras"/>
-    </target>
-
-    <!-- Compile JustCeyin-Expectations Tests -->
-    <target name="compile-expectations-tests" 
-            description="Compile org.justceyin.tests.expectations"
-            depends="compile-expectations">
-        <compile subsystem="Expectations" 
-                 package="tests.expectations"
-                 package-path="tests/expectations"/>
-    </target>
-
     <!-- Compile JustCeyin-Specifications -->
     <target name="compile-specifications" 
             description="Compile org.justceyin.specifications"
@@ -156,7 +156,7 @@
     <!-- Compile JustCeyin-Specifications Tests -->
     <target name="compile-specifications-tests" 
             description="Compile org.justceyin.tests.specifications"
-            depends="compile-specifications">
+            depends="compile-specifications, compile-foundations">
         <compile subsystem="Specifications" 
                  package="tests.specifications"
             package-path="tests/specifications"/>
@@ -213,9 +213,16 @@
     <target name="publish"
             description="Clean build and publish all modules and documentation"
             depends="clean, all">
-        <copy todir="./published-modules">
-            <fileset dir="./modules"/>
-        </copy>
+        <zip destfile="./published-modules/org.justceyin.expectations.${BUILDINFO-VERSION}.${BUILDINFO-NUMBER}-${BUILDINFO-DATE}.zip"
+             basedir="./modules"
+             includes="**/expectations/**/*.car, **/expectations/**/*.sha1, **/expectations/**/*.js, **/expectations/**/*.src, **/expectations/**/module-doc/**/*.*"
+             excludes="**/tests/**/*.*">
+        </zip>
+        <zip destfile="./published-modules/org.justceyin.specifications.${BUILDINFO-VERSION}.${BUILDINFO-NUMBER}-${BUILDINFO-DATE}.zip"
+             basedir="./modules"
+             includes="**/specifications/**/*.car, **/specifications/**/*.sha1, **/specifications/**/*.js, **/specifications/**/*.src, **/specifications/**/module-doc/**/*.*"
+             excludes="**/tests/**/*.*">
+        </zip>
     </target>
 
 

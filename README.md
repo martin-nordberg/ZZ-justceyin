@@ -3,7 +3,7 @@ Just Ceyin - Frameworks for Ceylon
 
 Martin E. Nordberg III
 
-May 20, 2013
+June 4, 2013
 
 Just Ceyin - Expectations
 -------------------------
@@ -80,6 +80,8 @@ shared class ElideLongTextSpecification()
 
 NOTE: The classes in this module are all intermediate results produced by constrain, guarantee, or expect. 
 None are meant to be used directly.
+
+This module is available from [Ceylon Herd](https://modules.ceylon-lang.org/usage). Full API documentation is available [here](https://modules.ceylon-lang.org/test/org/justceyin/expectations/0.5.22-2013.06.04/module-doc/index.html).
 
 Just Ceyin - Specifications
 ---------------------------
@@ -222,10 +224,12 @@ shared class IntegerStackDeclarativeSpecification()
 
 It is also possible to combine the two approaches in a specification derived from `MixedSpecification`.
 
+This module is available from [Ceylon Herd](https://modules.ceylon-lang.org/usage). Full API documentation is available [here](https://modules.ceylon-lang.org/test/org/justceyin/specifications/0.5.22-2013.06.04/module-doc/index.html).
+
 Navigating the Code
 -------------------
 
-* The published Ceylon modules are in JustCeyin-Build/published-modules. These include API documentation that goes beyond this readme file.
+* The published Ceylon modules are in [Ceylon Herd](https://modules.ceylon-lang.org/usage).
 * The JustCeyin-Build folder contains an ANT build file for all the JustCeyin modules.
 * Self-test code in this first draft release is implemented in ordinary run() methods in separate modules prefixed by tests in the package name.
 * Package org.justceyin.specifications.examples includes the above examples plus a bit more.

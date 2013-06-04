@@ -71,6 +71,8 @@
 
  NOTE: The classes in this package are all intermediate results produced by constrain, guarantee, or expect. 
  None are meant to be used directly.
+ 
+ The source code for org.justceyin.expectations is maintained in GitHub at [https://github.com/martin-nordberg/justceyin](https://github.com/martin-nordberg/justceyin).
 "
 by "Martin E. Nordberg III"
 shared package org.justceyin.expectations;

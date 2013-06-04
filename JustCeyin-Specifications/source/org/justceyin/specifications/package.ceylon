@@ -19,6 +19,8 @@
    (Subject to change when Ceylon implements annotations.)
  
  It is also possible to combine the two approaches in a specification derived from `MixedSpecification`.
+
+ The source code for org.justceyin.specifications is maintained in GitHub at [https://github.com/martin-nordberg/justceyin](https://github.com/martin-nordberg/justceyin).
 "
 by "Martin E. Nordberg III"
 shared package org.justceyin.specifications;
