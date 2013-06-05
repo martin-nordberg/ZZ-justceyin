@@ -23,7 +23,7 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 by "Martin E. Nordberg III"
-module org.justceyin.foundations_specs '0.5.22-2013.06.04' {
-    shared import org.justceyin.expectations '0.5.22-2013.06.04';
-    shared import org.justceyin.specifications '0.5.22-2013.06.04';
+module org.justceyin.foundations_specs '0.5.23-2013.06.04' {
+    shared import org.justceyin.expectations '0.5.23-2013.06.04';
+    shared import org.justceyin.specifications '0.5.23-2013.06.04';
 }

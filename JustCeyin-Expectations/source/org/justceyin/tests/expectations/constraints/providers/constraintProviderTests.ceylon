@@ -16,6 +16,9 @@ shared void runConstraintProviderTests( TestResultLog log ) {
     log.writeLine( " Date Constraints:" );
     runDateConstraintTests( log );
 
+    log.writeLine( " Date Time Constraints:" );
+    runDateTimeConstraintTests( log );
+
     log.writeLine( " Integer Constraints:" );
     runIntegerConstraintTests( log );
 
