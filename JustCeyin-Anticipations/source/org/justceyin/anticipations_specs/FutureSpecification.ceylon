@@ -11,8 +11,8 @@ import java.lang {
 }
 import org.justceyin.anticipations { 
     Future, 
-    makeThreadPool, 
-    ThreadPool 
+    makeFutureThreadPool, 
+    FutureThreadPool 
 }
 import org.justceyin.expectations { 
     expect 
@@ -50,6 +50,7 @@ String getThreadName() {
 
 
 "Specification ensures that a future is computed as expected."
+by "Martin E. Nordberg III"
 shared class FutureSpecification() 
     satisfies ImperativeSpecification {
     
@@ -65,7 +66,7 @@ shared class FutureSpecification()
     "The value of a future is computed as expected."
     void testFutureComputation( void outcomes( ConstraintCheckResult* results ) ) {
         
-        ThreadPool pool = makeThreadPool();
+        FutureThreadPool pool = makeFutureThreadPool();
         
         try /*( pool )*/ {
             pool.open();
@@ -87,7 +88,7 @@ shared class FutureSpecification()
     "Test that a future can be canceled."
     void testFutureCancelation( void outcomes( ConstraintCheckResult* results ) ) {
         
-        ThreadPool pool = makeThreadPool();
+        FutureThreadPool pool = makeFutureThreadPool();
         
         try /*( pool )*/ {
             pool.open();
@@ -106,7 +107,7 @@ shared class FutureSpecification()
     "A future is computed in a background thread, not the main thread."
     void testFutureInBackgroundThread( void outcomes( ConstraintCheckResult* results ) ) {
         
-        ThreadPool pool = makeThreadPool();
+        FutureThreadPool pool = makeFutureThreadPool();
         
         try /*( pool )*/ {
             pool.open();

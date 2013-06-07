@@ -9,7 +9,7 @@ import org.justceyin.foundations.logging {
     createFileLogWriter, LogWriter
 }
 import org.justceyin.specifications { 
-    Specification 
+    Specification, CompositeSpecification 
 }
 import org.justceyin.specifications.reporters { 
     SimpleTextReporter 
@@ -43,7 +43,11 @@ void run() {
         log.writeLine( "Cey what you mean ..." );
         log.writeLine( "" );
     
-        runSpecification( log, FutureSpecification() );
+        value suite = CompositeSpecification( {
+                          FutureSpecification(),
+                          ContinuationSpecification()
+                      } );
+        runSpecification( log, suite );
     
         log.writeLine( "All tests completed successfully." );
         print( "All tests completed successfully." );
