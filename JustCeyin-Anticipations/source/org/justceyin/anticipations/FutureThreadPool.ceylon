@@ -3,7 +3,6 @@ import org.justceyin.anticipations.internal {
     makeFutureThreadPoolImpl 
 }
 
-
 "Interface to a facility for background multi-threaded execution of submitted tasks."
 by "Martin E. Nordberg III"
 shared interface FutureThreadPool

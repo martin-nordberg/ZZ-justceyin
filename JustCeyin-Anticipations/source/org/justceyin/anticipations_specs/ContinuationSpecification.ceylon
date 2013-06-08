@@ -1,7 +1,7 @@
 
 import org.justceyin.anticipations { 
     makeContinuationThreadPool, 
-    ContinuationThreadPool 
+    ContinuationThreadPool, computeAndContinue 
 }
 import org.justceyin.expectations { 
     expect 
@@ -29,7 +29,8 @@ shared class ContinuationSpecification()
         
         variable String outcome = "unfinished";
         
-        String task() => "succeeded";
+        String baseTask() => "succeeded";
+        value task = computeAndContinue( baseTask );
         void success( String result ) => outcome = result;
         void failure( Exception e ) => outcome = e.message;
         
@@ -38,7 +39,7 @@ shared class ContinuationSpecification()
         try /*( pool )*/ {
             pool.open();
             
-            pool.executeAndContinue( task, success, failure );
+            pool.executeAndContinue<String>( task, success, failure );
             
             pool.receiveContinuations();
         
@@ -56,7 +57,8 @@ shared class ContinuationSpecification()
         
         variable Integer completionCount = 0;
         
-        String task() => "succeeded";
+        String baseTask() => "succeeded";
+        value task = computeAndContinue( baseTask );
         void success( String result ) => completionCount += 1;
         void failure( Exception e ) => completionCount += 0;
         
@@ -65,9 +67,9 @@ shared class ContinuationSpecification()
         try /*( pool )*/ {
             pool.open();
             
-            pool.executeAndContinue( task, success, failure );
-            pool.executeAndContinue( task, success, failure );
-            pool.executeAndContinue( task, success, failure );
+            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndContinue<String>( task, success, failure );
             
             pool.receiveContinuations();
         
@@ -80,10 +82,51 @@ shared class ContinuationSpecification()
         }
     }
     
+    "Tasks begotten by tasks complete before the receipt of continuations ends."
+    void testTaskCreatingContinuations( void outcomes( ConstraintCheckResult* results ) ) {
+        
+        variable Integer taskCount = 0;
+        variable Integer completionCount = 0;
+        
+        ContinuationThreadPool pool = makeContinuationThreadPool();
+        
+        String baseTask() => "succeeded";
+        value task = computeAndContinue( baseTask );
+
+        void failure( Exception e ) => completionCount += 0;
+        void success( String result ) {
+            completionCount += 1;
+            if ( taskCount < 16 ) {
+                taskCount += 2;
+                pool.executeAndContinue<String>( task, success, failure );
+                pool.executeAndContinue<String>( task, success, failure );
+            }
+        }
+        
+        try /*( pool )*/ {
+            pool.open();
+            
+            taskCount += 2;
+            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndContinue<String>( task, success, failure );
+            
+            pool.receiveContinuations();
+        
+            outcomes( 
+                expect( taskCount ).named( "task count" ).toBe( anInteger.withValue( 16 ) ),
+                expect( completionCount ).named( "completion count" ).toBe( anInteger.withValue( 16 ) )
+            );
+        }
+        finally {
+            pool.close( null );
+        }
+    }
+    
     "The tests within this specification."
     shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
         testContinuationComputation,
-        testRepeatedContinuations
+        testRepeatedContinuations,
+        testTaskCreatingContinuations
     };
 
 }

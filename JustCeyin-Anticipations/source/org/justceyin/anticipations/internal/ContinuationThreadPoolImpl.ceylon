@@ -10,7 +10,10 @@ import java.util.concurrent {
         javaNewFixedThreadPool = newFixedThreadPool
     },
     JavaExecutorService = ExecutorService,
-    JavaLinkedBlockingQueue = LinkedBlockingQueue
+    JavaLinkedBlockingQueue = LinkedBlockingQueue,
+    TimeUnit {
+        ms = \iMILLISECONDS
+    }
 }
 import java.util.concurrent.atomic {
     JavaAtomicInteger = AtomicInteger
@@ -54,33 +57,8 @@ class ContinuationThreadPoolImpl( ThreadPoolType threadPoolType )
         executor.shutdown();
     }
     
-    "Computes a value in a background thread then calls a callback in the original thread when done."
-    shared actual void executeAndContinue<T>(
-        "The task to execute in a background thread and then call back into the foreground thread."
-        T() task,
-        "Function to be called in the event of successful execution of the task."
-        Anything(T) succeed,
-        "Function to be called in the event of an exception in the execution of the task."
-        Anything(Exception) fail
-    ) {
-        "Wraps the task so that its result is sent back in a continuation."
-        void taskWrapper() {
-            try {
-                T result = task();
-                continuationQueue.put( successfulContinuation( result, succeed ) );
-            }
-            catch ( Exception e ) {
-                continuationQueue.put( failedContinuation( e, fail ) );
-            }
-        }
-        
-        // submit the task for background thread execution
-        todoCount.incrementAndGet();
-        executor.submit( CallableAdapter(taskWrapper) );
-    }
-    
     "Repeatedly computes values in a background thread; calls a callback in the original thread for each result."
-    shared actual void executeWithContinuations<T>(
+    shared actual void executeAndContinue<T>(
         "The task to execute in a background thread and then call back into the foreground thread."
         Anything( Anything(T), Anything(Exception) ) task,
         "Function to be called in the event of successful execution of the task."
@@ -128,14 +106,24 @@ class ContinuationThreadPoolImpl( ThreadPoolType threadPoolType )
     }
 
     "Allows continuations to call back into this thread. Returns only after there are no more tasks in progress."
-    shared actual void receiveContinuations() {
+    shared actual void receiveContinuations(
+        "The maximum length of time to wait for a task to complete in milliseconds. 
+         Wait indefinitely if not provided. Note that if multiple continuations are received,
+         this is the wait time for any one of them and has no effect on the total time spent."
+        Integer? maxWaitTimeMs    
+    ) {
         "Waiting must be done by the thread that opened the pool"
         assert ( this.foregroundThreadId == javaCurrentThread().id );
         
         // loop while there are executing tasks or unfinished continuations
         while ( todoCount.get() > 0 ) {
             // execute the next continuation, waiting for it if needed
-            this.continuationQueue.take()();
+            if ( exists maxWaitTimeMs ) {
+                this.continuationQueue.poll( maxWaitTimeMs, ms )();
+            }
+            else {
+                this.continuationQueue.take()();
+            }
 
             todoCount.decrementAndGet();
         }
