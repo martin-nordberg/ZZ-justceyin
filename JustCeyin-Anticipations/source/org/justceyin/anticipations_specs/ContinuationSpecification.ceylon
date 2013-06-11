@@ -1,7 +1,12 @@
 
+import java.lang {
+    Thread {
+        javaCurrentThread = currentThread
+    }
+}
 import org.justceyin.anticipations { 
     makeContinuationThreadPool, 
-    ContinuationThreadPool, computeAndContinue 
+    ContinuationThreadPool, computeAndContinue, doInSequence, composeSequence 
 }
 import org.justceyin.expectations { 
     expect 
@@ -82,6 +87,40 @@ shared class ContinuationSpecification()
         }
     }
     
+    "A continued task executes in a background thread then continues in the foreground thread."
+    void testContinuationThreading( void outcomes( ConstraintCheckResult* results ) ) {
+        
+        value foregroundThreadName = javaCurrentThread().name;
+        variable String taskThreadName = "unfinished";
+        variable String continuationThreadName = "unknown";
+        
+        String baseTask() => javaCurrentThread().name;
+        value task = computeAndContinue( baseTask );
+        void success( String result ) {
+            taskThreadName = result;
+            continuationThreadName = javaCurrentThread().name;
+        }
+        void failure( Exception e ) => taskThreadName = e.message;
+        
+        ContinuationThreadPool pool = makeContinuationThreadPool();
+        
+        try /*( pool )*/ {
+            pool.open();
+            
+            pool.executeAndContinue<String>( task, success, failure );
+            
+            pool.receiveContinuations();
+        
+            outcomes( 
+                expect( continuationThreadName ).named( "continuation thread name" ).toBe( aString.withValue( foregroundThreadName ) ),
+                expect( taskThreadName ).named( "task thread name" ).toBe( aString.notEqualTo( foregroundThreadName ) )
+            );
+        }
+        finally {
+            pool.close( null );
+        }
+    }
+    
     "Tasks begotten by tasks complete before the receipt of continuations ends."
     void testTaskCreatingContinuations( void outcomes( ConstraintCheckResult* results ) ) {
         
@@ -122,11 +161,78 @@ shared class ContinuationSpecification()
         }
     }
     
+    "Individually continuing tasks can be executed in sequence."
+    void testTasksInSequence( void outcomes( ConstraintCheckResult* results ) ) {
+        
+        variable [String,String] outcome = ["unfinished","unfinished"];
+        
+        String baseTask( String result )() => result;
+        value task1 = computeAndContinue( baseTask("task 1 succeeded") );
+        value task2 = computeAndContinue( baseTask("task 2 succeeded") );
+        value task = doInSequence( task1, task2 );
+        void success( [String,String] result ) => outcome = result;
+        void failure( Exception e ) => outcome = ["failed",e.message];
+        
+        ContinuationThreadPool pool = makeContinuationThreadPool();
+        
+        try /*( pool )*/ {
+            pool.open();
+            
+            pool.executeAndContinue<[String,String]>( task, success, failure );
+            
+            pool.receiveContinuations();
+        
+            outcomes( 
+                expect( outcome[0] ).named( "outcome 1" ).toBe( aString.withValue( "task 1 succeeded" ) ),
+                expect( outcome[1] ).named( "outcome 2" ).toBe( aString.withValue( "task 2 succeeded" ) )
+            );
+        }
+        finally {
+            pool.close( null );
+        }
+    }
+    
+    "Individually continuing tasks can be composed in sequence."
+    void testComposedTasks( void outcomes( ConstraintCheckResult* results ) ) {
+        
+        variable String outcome = "unfinished";
+        
+        void task1( Anything(Integer) succeed, Anything(Exception) fail ) {
+            succeed( 1 );
+        }
+        void task2( Integer input, Anything(String) succeed, Anything(Exception) fail ) {
+            succeed( "Task ``input`` then task 2" );
+        }
+        value task = composeSequence<Integer,String>( task1, task2 );
+        void success( String result ) => outcome = result;
+        void failure( Exception e ) => outcome = e.message;
+        
+        ContinuationThreadPool pool = makeContinuationThreadPool();
+        
+        try /*( pool )*/ {
+            pool.open();
+            
+            pool.executeAndContinue<String>( task, success, failure );
+            
+            pool.receiveContinuations();
+        
+            outcomes( 
+                expect( outcome ).named( "outcome" ).toBe( aString.withValue( "Task 1 then task 2" ) )
+            );
+        }
+        finally {
+            pool.close( null );
+        }
+    }
+    
     "The tests within this specification."
     shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
         testContinuationComputation,
         testRepeatedContinuations,
-        testTaskCreatingContinuations
+        testContinuationThreading,
+        testTaskCreatingContinuations,
+        testTasksInSequence,
+        testComposedTasks
     };
 
 }

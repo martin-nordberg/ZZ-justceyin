@@ -24,7 +24,7 @@ shared void computeAndContinue<T>(
 
 "Higher order function performs two tasks in sequence, calling an outer continuation with their tupled results."
 by "Martin E. Nordberg III"
-shared void doInSequence<T1,T2>(
+shared void doInSequence<in T1, in T2>(
     "First task to be executed."
     Anything( Anything(T1), Anything(Exception) ) task1,
     "Second task to be executed after the first is complete."
@@ -45,21 +45,11 @@ shared void doInSequence<T1,T2>(
         }
     
         // perform the second task
-        try {
-            task2( succeed2, fail );
-        }
-        catch ( Exception e ) {
-            fail( e );
-        }
+        task2( succeed2, fail );
     }
     
     // perform the first task with a callback that continues the sequence
-    try {
-        task1( succeed1, fail );
-    }
-    catch ( Exception e ) {
-        fail( e );
-    }
+    task1( succeed1, fail );
     
 }
 
@@ -78,29 +68,12 @@ shared void composeSequence<T1,T2>(
     Anything(Exception) fail 
 ) {
 
-    "First callback launches the second task passing it the first result."
+    "Intermediate callback launches the second task, passing it the first result."
     void succeed1( T1 result1 ) {
-    
-        "Second callback calls the outer callback with the final result."
-        void succeed2( T2 result2 ) {
-            succeed( result2 );
-        }
-    
-        // perform the second task
-        try {
-            task2( result1, succeed2, fail );
-        }
-        catch ( Exception e ) {
-            fail( e );
-        }
+        task2( result1, succeed, fail );
     }
     
     // perform the first task with a callback that continues the sequence
-    try {
-        task1( succeed1, fail );
-    }
-    catch ( Exception e ) {
-        fail( e );
-    }
+    task1( succeed1, fail );
 
 }

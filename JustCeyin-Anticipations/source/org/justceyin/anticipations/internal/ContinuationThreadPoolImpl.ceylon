@@ -83,6 +83,9 @@ class ContinuationThreadPoolImpl( ThreadPoolType threadPoolType )
             try {
                 task( succeedLater, failLater );
             }
+            catch ( Exception e ) {
+                failLater( e );
+            }
             finally {
                 todoCount.decrementAndGet();
             }
