@@ -20,15 +20,16 @@ import java.util.concurrent.atomic {
 }
 import org.justceyin.anticipations { 
     cachedThreadPoolType, 
-    ContinuationThreadPool, 
     FixedThreadPoolType, 
+    Future,
+    ThreadPool, 
     ThreadPoolType
 }
 
 "Thread pool implementation wrapping java.util.concurrent classes for the execution of continuations."
 by "Martin E. Nordberg III"
-class ContinuationThreadPoolImpl( ThreadPoolType threadPoolType )
-    satisfies ContinuationThreadPool {
+class ThreadPoolImpl( ThreadPoolType threadPoolType )
+    satisfies ThreadPool {
     
     "Queue of continuations to be called back in the foreground thread."
     JavaLinkedBlockingQueue< Anything() > continuationQueue = JavaLinkedBlockingQueue< Anything() >();
@@ -42,19 +43,14 @@ class ContinuationThreadPoolImpl( ThreadPoolType threadPoolType )
     "The current count of tasks executing plus continuations queued."
     variable JavaAtomicInteger todoCount = JavaAtomicInteger(0); 
     
-    "Higher order function completes a successful continuation."
-    void successfulContinuation<T>( T result, Anything(T) succeed )() {
-        succeed( result );
-    }
-    
-    "Higher order function completes a failed continuation."
-    void failedContinuation( Exception exception, Anything(Exception) fail )() {
-        fail( exception );
-    }
-
     "Closes the thread pool."
     shared actual void close( Exception? e ) {
         executor.shutdown();
+    }
+    
+    "Computes a value asynchronously in a background thread."
+    shared actual Future<T> computeAsynchronously<T>( T task() ) {
+        return FutureAdapter( executor.submit( CallableAdapter(task) ) );
     }
     
     "Repeatedly computes values in a background thread; calls a callback in the original thread for each result."
@@ -66,16 +62,26 @@ class ContinuationThreadPoolImpl( ThreadPoolType threadPoolType )
         "Function to be called in the event of an exception in the execution of the task."
         Anything(Exception) fail
     ) {
-        "Queues a successful continuation."
-        void succeedLater( T result ) {
-            todoCount.incrementAndGet();
-            continuationQueue.put( successfulContinuation( result, succeed ) );
+        "Higher order function completes a failed continuation."
+        void failedContinuation( Exception exception, Anything(Exception) fail )() {
+            fail( exception );
         }
-        
+
         "Queues a failed continuation."
         void failLater( Exception e ) {
             todoCount.incrementAndGet();
             continuationQueue.put( failedContinuation( e, fail ) );
+        }
+        
+        "Higher order function completes a successful continuation."
+        void successfulContinuation<T>( T result, Anything(T) succeed )() {
+            succeed( result );
+        }
+        
+        "Queues a successful continuation."
+        void succeedLater( T result ) {
+            todoCount.incrementAndGet();
+            continuationQueue.put( successfulContinuation( result, succeed ) );
         }
         
         "Wraps the task so that callbacks become queued continuations."
@@ -115,7 +121,7 @@ class ContinuationThreadPoolImpl( ThreadPoolType threadPoolType )
          this is the wait time for any one of them and has no effect on the total time spent."
         Integer? maxWaitTimeMs    
     ) {
-        "Waiting must be done by the thread that opened the pool"
+        "Continuations can only be received by the thread that opened the pool"
         assert ( this.foregroundThreadId == javaCurrentThread().id );
         
         // loop while there are executing tasks or unfinished continuations
@@ -135,7 +141,7 @@ class ContinuationThreadPoolImpl( ThreadPoolType threadPoolType )
 
 "Creates a continuation thread pool."
 by "Martin E. Nordberg III"
-shared ContinuationThreadPool makeContinuationThreadPoolImpl( ThreadPoolType threadPoolType ) {
-    return ContinuationThreadPoolImpl( threadPoolType );
+shared ThreadPool makeThreadPoolImpl( ThreadPoolType threadPoolType ) {
+    return ThreadPoolImpl( threadPoolType );
 }
 

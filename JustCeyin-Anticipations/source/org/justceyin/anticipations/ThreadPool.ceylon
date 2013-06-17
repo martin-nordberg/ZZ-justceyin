@@ -1,13 +1,19 @@
 
 import org.justceyin.anticipations.internal { 
-    makeContinuationThreadPoolImpl 
+    makeThreadPoolImpl 
 }
 
 "Interface to a facility for background multi-threaded execution of continuation-based tasks."
 by "Martin E. Nordberg III"
-shared interface ContinuationThreadPool
+shared interface ThreadPool
     satisfies Closeable
 {
+    
+    "Computes a value in a background thread for future retrieval."
+    shared formal Future<T> computeAsynchronously<T>(
+        "The task to execute asynchronously returning the future value"
+        T task() 
+    );
     
     "Repeatedly computes values in a background thread; calls a callback in the original thread for each result."
     shared formal void executeAndContinue<T>(
@@ -31,9 +37,9 @@ shared interface ContinuationThreadPool
 
 "Creates a new continuation thread pool of given type."
 by "Martin E. Nordberg III"
-shared ContinuationThreadPool makeContinuationThreadPool(
+shared ThreadPool makeThreadPool(
     "The type of thread pool to create."
     ThreadPoolType threadPoolType = cachedThreadPoolType 
 ) {
-    return makeContinuationThreadPoolImpl( threadPoolType );
+    return makeThreadPoolImpl( threadPoolType );
 }

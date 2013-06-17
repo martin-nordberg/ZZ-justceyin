@@ -5,8 +5,11 @@ import java.lang {
     }
 }
 import org.justceyin.anticipations { 
-    makeContinuationThreadPool, 
-    ContinuationThreadPool, computeAndContinue, doInSequence, composeSequence 
+    makeThreadPool, 
+    ThreadPool, 
+    computeAndContinue, 
+    doInSequence, 
+    composeSequence 
 }
 import org.justceyin.expectations { 
     expect 
@@ -39,7 +42,7 @@ shared class ContinuationSpecification()
         void success( String result ) => outcome = result;
         void failure( Exception e ) => outcome = e.message;
         
-        ContinuationThreadPool pool = makeContinuationThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         try /*( pool )*/ {
             pool.open();
@@ -67,7 +70,7 @@ shared class ContinuationSpecification()
         void success( String result ) => completionCount += 1;
         void failure( Exception e ) => completionCount += 0;
         
-        ContinuationThreadPool pool = makeContinuationThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         try /*( pool )*/ {
             pool.open();
@@ -102,7 +105,7 @@ shared class ContinuationSpecification()
         }
         void failure( Exception e ) => taskThreadName = e.message;
         
-        ContinuationThreadPool pool = makeContinuationThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         try /*( pool )*/ {
             pool.open();
@@ -127,7 +130,7 @@ shared class ContinuationSpecification()
         variable Integer taskCount = 0;
         variable Integer completionCount = 0;
         
-        ContinuationThreadPool pool = makeContinuationThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         String baseTask() => "succeeded";
         value task = computeAndContinue( baseTask );
@@ -173,7 +176,7 @@ shared class ContinuationSpecification()
         void success( [String,String] result ) => outcome = result;
         void failure( Exception e ) => outcome = ["failed",e.message];
         
-        ContinuationThreadPool pool = makeContinuationThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         try /*( pool )*/ {
             pool.open();
@@ -207,7 +210,7 @@ shared class ContinuationSpecification()
         void success( String result ) => outcome = result;
         void failure( Exception e ) => outcome = e.message;
         
-        ContinuationThreadPool pool = makeContinuationThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         try /*( pool )*/ {
             pool.open();

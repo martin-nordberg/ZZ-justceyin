@@ -11,8 +11,8 @@ import java.lang {
 }
 import org.justceyin.anticipations { 
     Future, 
-    makeFutureThreadPool, 
-    FutureThreadPool 
+    makeThreadPool, 
+    ThreadPool 
 }
 import org.justceyin.expectations { 
     expect 
@@ -66,7 +66,7 @@ shared class FutureSpecification()
     "The value of a future is computed as expected."
     void testFutureComputation( void outcomes( ConstraintCheckResult* results ) ) {
         
-        FutureThreadPool pool = makeFutureThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         try /*( pool )*/ {
             pool.open();
@@ -88,7 +88,7 @@ shared class FutureSpecification()
     "Test that a future can be canceled."
     void testFutureCancelation( void outcomes( ConstraintCheckResult* results ) ) {
         
-        FutureThreadPool pool = makeFutureThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         try /*( pool )*/ {
             pool.open();
@@ -107,7 +107,7 @@ shared class FutureSpecification()
     "A future is computed in a background thread, not the main thread."
     void testFutureInBackgroundThread( void outcomes( ConstraintCheckResult* results ) ) {
         
-        FutureThreadPool pool = makeFutureThreadPool();
+        ThreadPool pool = makeThreadPool();
         
         try /*( pool )*/ {
             pool.open();
