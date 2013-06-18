@@ -11,5 +11,6 @@ license "BUILDINFO-LICENSE-URL"
 by "Martin E. Nordberg III"
 module org.justceyin.foundations_specs 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
     shared import org.justceyin.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
+    shared import org.justceyin.foundations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
     shared import org.justceyin.specifications 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE';
 }

@@ -44,6 +44,17 @@ shared object aString
         );
     }
     
+    "Returns a constraint that checks that a string is equal in length to a given value."
+    shared Constraint<String> withLength( 
+        "The exact length expected for strings tested by this constraint."
+        Integer length 
+    ) {
+        return AdjectivalConstraint<String>( 
+            (String string) => string.size == length,
+            "exactly ``length`` in length"
+        );
+    }
+    
     "Returns a constraint that checks that a string is shorter than or equal in length to a given value."
     shared Constraint<String> withMaximumLength( 
         "The maximum length expected for strings tested by this constraint."
