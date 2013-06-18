@@ -1,31 +1,22 @@
 
 import java.util {
     JavaUUID = UUID {
-        javaRandomUUID = randomUUID
+        javaRandomUuid = randomUUID,
+        javaUuidFromString = fromString
     }
 }
 import org.justceyin.foundations.util {
     Uuid
 }
 
-"Implementation of interface Uuid based upon Java UUIDs."
-class UuidImpl( JavaUUID uuid )
-    satisfies Uuid 
-{
-    shared actual Boolean equals( Object other ) {
-        if ( is UuidImpl other ) {
-            return other.uuid.equals( this.uuid );
-        }
-        
-        return false;
-    }
-    
-    shared actual String string {
-        return uuid.string;
-    }
+"Creates a new Uuid using the random UUID capability of Java."
+shared Uuid makeRandomUuidImpl() {
+    value result = javaRandomUuid();
+    return Uuid( result.mostSignificantBits, result.leastSignificantBits );
 }
 
-"Creates a new Uuid."
-shared Uuid makeUuidImpl() {
-    return UuidImpl( javaRandomUUID() ); 
+"Creates a new Uuid from its string representation."
+shared Uuid makeUuidFromStringImpl( String uuidString ) {
+    value result = javaUuidFromString( uuidString );
+    return Uuid( result.mostSignificantBits, result.leastSignificantBits );
 }
