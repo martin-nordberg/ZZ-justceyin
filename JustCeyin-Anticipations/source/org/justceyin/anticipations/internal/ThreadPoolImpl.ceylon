@@ -139,7 +139,7 @@ class ThreadPoolImpl( ThreadPoolType threadPoolType )
     }
 }
 
-"Creates a continuation thread pool."
+"Creates a thread pool."
 by "Martin E. Nordberg III"
 shared ThreadPool makeThreadPoolImpl( ThreadPoolType threadPoolType ) {
     return ThreadPoolImpl( threadPoolType );

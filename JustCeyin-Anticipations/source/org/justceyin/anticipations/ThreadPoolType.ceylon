@@ -1,5 +1,5 @@
 
-"Enumeration of kinds of thread pool"
+"Enumeration of kinds of thread pool."
 by "Martin E. Nordberg III"
 shared interface ThreadPoolType
     of cachedThreadPoolType | FixedThreadPoolType 

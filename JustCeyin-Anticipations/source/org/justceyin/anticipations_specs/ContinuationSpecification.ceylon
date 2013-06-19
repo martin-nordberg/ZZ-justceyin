@@ -228,6 +228,38 @@ shared class ContinuationSpecification()
         }
     }
     
+    "Tasks with repeated continuations are handled until complete."
+    void testRepeatingTask( void outcomes( ConstraintCheckResult* results ) ) {
+        
+        variable String outcome = "";
+        
+        void task( Anything(String) succeed, Anything(Exception) fail ) {
+            succeed( "a" );
+            succeed( "b" );
+            succeed( "c" );
+            succeed( "d" );
+        }
+        void success( String result ) => outcome += result;
+        void failure( Exception e ) => outcome += e.message;
+        
+        ThreadPool pool = makeThreadPool();
+        
+        try /*( pool )*/ {
+            pool.open();
+            
+            pool.executeAndContinue<String>( task, success, failure );
+            
+            pool.receiveContinuations();
+        
+            outcomes( 
+                expect( outcome ).named( "outcome" ).toBe( aString.withLength( 4 ) )
+            );
+        }
+        finally {
+            pool.close( null );
+        }
+    }
+    
     "The tests within this specification."
     shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
         testContinuationComputation,
@@ -235,7 +267,8 @@ shared class ContinuationSpecification()
         testContinuationThreading,
         testTaskCreatingContinuations,
         testTasksInSequence,
-        testComposedTasks
+        testComposedTasks,
+        testRepeatingTask
     };
 
 }

@@ -3,16 +3,16 @@
 by "Martin E. Nordberg III"
 shared void computeAndContinue<T>(
     "A function that returns a result."
-    T() task 
+    T() baseFunction 
 )( 
-    "Callback for whent the result is computed successfully."
+    "Callback for when the result is computed successfully."
     Anything(T) succeed, 
     "Callback for when the computation fails."
     Anything(Exception) fail 
 ) {
     
     try {
-        T result = task();
+        T result = baseFunction();
         succeed( result );
     }
     catch ( Exception e ) {
@@ -52,6 +52,7 @@ shared void doInSequence<in T1, in T2>(
     task1( succeed1, fail );
     
 }
+
 
 "Higher order function performs two tasks in sequence where the second tasks needs the output of 
  the first as its input. The output of the second task goes to the outer continuation."
