@@ -1,0 +1,17 @@
+
+"
+ JustCeyin-Generations-Fundamentals
+ ----------------------------------
+ 
+ Module defining utility level capabilities for code generation.
+
+ BUILDINFO-LICENSE-TEXT
+"
+license "BUILDINFO-LICENSE-URL"
+by "Martin E. Nordberg III"
+module org.justceyin.generations.fundamentals 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+
+    shared import ceylon.file '0.5';
+    import java.base '7';
+
+}

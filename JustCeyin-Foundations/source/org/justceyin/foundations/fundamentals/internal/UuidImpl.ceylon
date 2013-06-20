@@ -5,7 +5,7 @@ import java.util {
         javaUuidFromString = fromString
     }
 }
-import org.justceyin.foundations.util {
+import org.justceyin.foundations.fundamentals {
     Uuid
 }
 

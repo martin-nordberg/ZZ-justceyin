@@ -1,5 +1,5 @@
 
-import org.justceyin.foundations.util {
+import org.justceyin.foundations.fundamentals {
     makeRandomUuid,
     makeUuidFromString
 }

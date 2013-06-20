@@ -10,31 +10,37 @@
     <!-- All -->
     <target name="all"
             description="Compile, test, and document org.justceyin.*"
-            depends="all-foundations, all-expectations, all-specifications, all-anticipations">
+            depends="all-foundations, all-expectations, all-generations-fundamentals, all-specifications, all-anticipations">
     </target>
 
     <!-- All JustCeyin-Anticipations -->
     <target name="all-anticipations"
             description="Compile, test, and document org.justceyin.anticipations"
-            depends="test-anticipations,doc-anticipations">
+            depends="test-anticipations, doc-anticipations">
     </target>
 
     <!-- All JustCeyin-Expectations -->
     <target name="all-expectations"
             description="Compile, test, and document org.justceyin.expectations"
-            depends="test-expectations,doc-expectations">
+            depends="test-expectations, doc-expectations">
     </target>
 
     <!-- All JustCeyin-Foundations -->
     <target name="all-foundations"
             description="Compile, test, and document org.justceyin.foundations"
-            depends="test-foundations,doc-foundations">
+            depends="test-foundations, doc-foundations">
+    </target>
+
+    <!-- All JustCeyin-Generations-Fundamentals -->
+    <target name="all-generations-fundamentals"
+            description="Compile, test, and document org.justceyin.generations.fundmentals"
+            depends="test-generations-fundamentals, doc-generations-fundamentals">
     </target>
 
     <!-- All JustCeyin-Specifications -->
     <target name="all-specifications"  
             description="Compile, test, and document org.justceyin.specifications"
-            depends="test-specifications,doc-specifications">
+            depends="test-specifications, doc-specifications">
     </target>
 
     
@@ -145,6 +151,24 @@
                  package="foundations_specs"/>
     </target>
 
+    <!-- Compile JustCeyin-Generations-Fundamentals -->
+    <target name="compile-generations-fundamentals" 
+            description="Compile org.justceyin.generations.fundamentals"
+            depends="compile-foundations">
+        <compile subsystem="Generations"
+                 package="generations.fundamentals"
+                 package-path="generations/fundamentals"/>
+    </target>
+
+    <!-- Compile JustCeyin-Generations-Fundamentals Specs -->
+    <target name="compile-generations-fundamentals-specs" 
+            description="Compile org.justceyin.generations.fundamentals_specs"
+            depends="compile-generations-fundamentals, compile-specifications">
+        <compile subsystem="Generations" 
+                 package="generations.fundamentals_specs"
+                 package-path="generations/fundamentals_specs"/>
+    </target>
+
     <!-- Compile JustCeyin-Specifications -->
     <target name="compile-specifications" 
             description="Compile org.justceyin.specifications"
@@ -198,6 +222,14 @@
             depends="ceylon-ant-taskdefs">
         <document subsystem="Foundations" 
                   package="foundations"/>
+    </target>
+
+    <!-- Document JustCeyin-Generations-Fundamentals -->
+    <target name="doc-generations-fundamentals" 
+            description="Document org.justceyin.generations.fundamentals"
+            depends="ceylon-ant-taskdefs">
+        <document subsystem="Generations" 
+                  package="generations.fundamentals"/>
     </target>
 
     <!-- Document JustCeyin-Specifications -->
@@ -256,6 +288,13 @@
             description="Test org.justceyin.foundations"
             depends="compile-foundations-specs">
         <test package="foundations_specs"/>
+    </target>
+
+    <!-- Test JustCeyin-Generations-Fundamentals -->
+    <target name="test-generations-fundamentals"
+            description="Test org.justceyin.generations-fundamentals"
+            depends="compile-generations-fundamentals-specs">
+        <test package="generations.fundamentals_specs"/>
     </target>
 
     <!-- Test JustCeyin-Specifications -->
