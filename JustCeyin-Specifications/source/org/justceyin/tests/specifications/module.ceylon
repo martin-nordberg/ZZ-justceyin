@@ -22,9 +22,9 @@
  limitations under the License.
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
-module org.justceyin.tests.specifications '0.5.30-2013.06.20' {
+module org.justceyin.tests.specifications '0.5.31-2013.06.25' {
     shared import ceylon.file '0.5';
 
-    shared import org.justceyin.foundations '0.5.30-2013.06.20';
-    shared import org.justceyin.specifications '0.5.30-2013.06.20';
+    shared import org.justceyin.foundations '0.5.31-2013.06.25';
+    shared import org.justceyin.specifications '0.5.31-2013.06.25';
 }

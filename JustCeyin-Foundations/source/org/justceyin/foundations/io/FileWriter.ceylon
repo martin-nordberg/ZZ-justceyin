@@ -1,25 +1,25 @@
 
 import ceylon.file { 
     Path, 
-    Writer
+    CeylonFileWriter = Writer
 }
 import org.justceyin.foundations.files { 
     createFileWriter 
 }
 
-"Log writer with output to a file."
-class FileLogWriter( 
+"Writer with output to a file."
+shared class FileWriter( 
     "The path to the log file to be written"
     Path logFilePath, 
     "Whether to append to an existing file"
-    Boolean append, 
+    Boolean append = false, 
     "The encoding for the output"
-    String encoding
+    String encoding = "UTF-8"
 )
-    satisfies LogWriter 
+    satisfies LineWriter 
 {
     "The writer for the output of this log."    
-    Writer writer = createFileWriter( logFilePath );
+    CeylonFileWriter writer = createFileWriter( logFilePath );
     
     "Closes the log file."
     shared actual void close( Exception? exception) {
@@ -41,5 +41,5 @@ class FileLogWriter(
         writer.writeLine( output );
     }
     
-    
 }
+

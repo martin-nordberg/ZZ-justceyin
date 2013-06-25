@@ -8,8 +8,8 @@ import org.justceyin.specifications.examples {
     IntegerStackImperativeSpecification, 
     IntegerStackMixedSpecification
 }
-import org.justceyin.foundations.logging { 
-    LogWriter 
+import org.justceyin.foundations.io { 
+    LineWriter 
 }
 import org.justceyin.specifications.reporters { 
     SimpleTextReporter 
@@ -19,14 +19,14 @@ import org.justceyin.specifications.runners {
 }
 
 "Runs a specification; prints the report; ensures a successful outcome."
-void runSpecificationTest( LogWriter log, Specification specification ) {
+void runSpecificationTest( LineWriter log, Specification specification ) {
     value runResult = SimpleSpecificationRunner( specification ).run();
     log.writeLine( SimpleTextReporter().report( runResult ) );
     assert( runResult.isSuccess );
 }
 
 "Exercises typical specifications."
-shared void runSpecificationTests( LogWriter log ) {
+shared void runSpecificationTests( LineWriter log ) {
     log.writeLine( "" );
     log.writeLine( "Integer Stack Declarative Specification:" );
     log.writeLine( "----------------------------------------" );

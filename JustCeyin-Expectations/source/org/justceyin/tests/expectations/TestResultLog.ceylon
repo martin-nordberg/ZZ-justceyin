@@ -5,9 +5,8 @@ import ceylon.file {
 import org.justceyin.expectations.constraints { 
     ConstraintCheckResult 
 }
-import org.justceyin.foundations.logging {
-    createFileLogWriter,
-    LogWriter
+import org.justceyin.foundations.io {
+    FileWriter
 }
 
 "Utility class for writing out test results."
@@ -15,7 +14,7 @@ shared class TestResultLog( Path outputPath )
     satisfies Closeable {
 
     "The writer for the output of this log."    
-    LogWriter writer = createFileLogWriter( outputPath );
+    value writer = FileWriter( outputPath );
     
     "Closes the log."
     shared actual void close( Exception? e ) {

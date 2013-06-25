@@ -5,8 +5,8 @@ import ceylon.file {
 import org.justceyin.foundations.files { 
     createDirectoryIfNeeded 
 }
-import org.justceyin.foundations.logging { 
-    createFileLogWriter
+import org.justceyin.foundations.io { 
+    FileWriter
 }
 
 doc "Run the self tests of module `org.justceyin.specifications`."
@@ -17,7 +17,7 @@ void run() {
     createDirectoryIfNeeded( logPath );
     
     // set up the output log
-    value log = createFileLogWriter( logPath.childPath("specifications-test.log"), false );
+    value log = FileWriter( logPath.childPath("specifications-test.log"), false );
     
     try /*( log )*/ {
         log.open();

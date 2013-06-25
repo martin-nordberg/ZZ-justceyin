@@ -5,9 +5,9 @@ import ceylon.file {
 import org.justceyin.foundations.files { 
     createDirectoryIfNeeded 
 }
-import org.justceyin.foundations.logging { 
-    createFileLogWriter, 
-    LogWriter
+import org.justceyin.foundations.io { 
+    FileWriter,
+    LineWriter
 }
 import org.justceyin.specifications { 
     CompositeSpecification, 
@@ -19,13 +19,16 @@ import org.justceyin.specifications.reporters {
 import org.justceyin.specifications.runners { 
     SimpleSpecificationRunner 
 }
-import org.justceyin.foundations_specs.util { 
+import org.justceyin.foundations_specs.io { 
+    StringWriterSpecification 
+}
+import org.justceyin.foundations_specs.fundamentals { 
     UuidSpecification 
 }
 
 
 "Runs a specification; prints the report; ensures a successful outcome."
-void runSpecification( LogWriter log, Specification specification ) {
+void runSpecification( LineWriter log, Specification specification ) {
     value runResult = SimpleSpecificationRunner( specification ).run();
     value report = SimpleTextReporter().report( runResult );
     log.writeLine( report );
@@ -40,7 +43,7 @@ void run() {
     createDirectoryIfNeeded( logPath );
     
     // set up the output log
-    value log = createFileLogWriter( logPath.childPath("foundations-test.log"), false );
+    value log = FileWriter( logPath.childPath("foundations-test.log"), false );
     
     try /*( log )*/ {
         log.open();
@@ -49,7 +52,8 @@ void run() {
         log.writeLine( "" );
     
         value suite = CompositeSpecification( {
-                          UuidSpecification()
+                          UuidSpecification(),
+                          StringWriterSpecification()
                       } );
         runSpecification( log, suite );
     
