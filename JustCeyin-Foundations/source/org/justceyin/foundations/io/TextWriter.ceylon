@@ -2,6 +2,7 @@
 
 "Interface to a line-oriented text output writer."
 shared interface TextWriter
+    satisfies Closeable
 {
 
     "Writes a string to the output."

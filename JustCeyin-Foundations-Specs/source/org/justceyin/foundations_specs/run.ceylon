@@ -7,7 +7,7 @@ import org.justceyin.foundations.files {
 }
 import org.justceyin.foundations.io { 
     FileWriter,
-    LineWriter
+    TextWriter
 }
 import org.justceyin.specifications { 
     CompositeSpecification, 
@@ -28,7 +28,7 @@ import org.justceyin.foundations_specs.fundamentals {
 
 
 "Runs a specification; prints the report; ensures a successful outcome."
-void runSpecification( LineWriter log, Specification specification ) {
+void runSpecification( TextWriter log, Specification specification ) {
     value runResult = SimpleSpecificationRunner( specification ).run();
     value report = SimpleTextReporter().report( runResult );
     log.writeLine( report );

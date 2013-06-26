@@ -26,12 +26,19 @@ shared class StringWriterSpecification()
     
     "A random UUID converts to a string with the expected format."
     void testSimpleOutput( void outcomes( ConstraintCheckResult* results ) ) {
-        TextWriter writer = StringWriter().open();
-        writer.write( "ABC" );
-        writer.writeLine();
-        value result = writer.string;
-        
-        outcomes( expect( result.string ).named( "string writer output" ).toBe( aString.withValue( "ABC\n" ) ) );
+        TextWriter writer = StringWriter();
+        try {
+            writer.open();
+            writer.write( "ABC" );
+            writer.writeLine();
+            writer.close( null );
+            value result = writer.string;
+            
+            outcomes( expect( result.string ).named( "string writer output" ).toBe( aString.withValue( "ABC\n" ) ) );
+        }
+        finally {
+            writer.close( null );
+        }
     }
     
     "The tests within this specification."

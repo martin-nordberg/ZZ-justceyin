@@ -9,7 +9,7 @@ import org.justceyin.specifications.examples {
     IntegerStackMixedSpecification
 }
 import org.justceyin.foundations.io { 
-    LineWriter 
+    TextWriter 
 }
 import org.justceyin.specifications.reporters { 
     SimpleTextReporter 
@@ -19,14 +19,14 @@ import org.justceyin.specifications.runners {
 }
 
 "Runs a specification; prints the report; ensures a successful outcome."
-void runSpecificationTest( LineWriter log, Specification specification ) {
+void runSpecificationTest( TextWriter log, Specification specification ) {
     value runResult = SimpleSpecificationRunner( specification ).run();
     log.writeLine( SimpleTextReporter().report( runResult ) );
     assert( runResult.isSuccess );
 }
 
 "Exercises typical specifications."
-shared void runSpecificationTests( LineWriter log ) {
+shared void runSpecificationTests( TextWriter log ) {
     log.writeLine( "" );
     log.writeLine( "Integer Stack Declarative Specification:" );
     log.writeLine( "----------------------------------------" );
