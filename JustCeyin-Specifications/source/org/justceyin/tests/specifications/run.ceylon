@@ -6,7 +6,9 @@ import org.justceyin.foundations.files {
     createDirectoryIfNeeded 
 }
 import org.justceyin.foundations.io { 
-    FileWriter
+    FileAppender,
+    TextWriter,
+    TextWriterAppender
 }
 
 doc "Run the self tests of module `org.justceyin.specifications`."
@@ -17,7 +19,7 @@ void run() {
     createDirectoryIfNeeded( logPath );
     
     // set up the output log
-    value log = FileWriter( logPath.childPath("specifications-test.log"), false );
+    TextWriter log = TextWriterAppender( FileAppender( logPath.childPath("specifications-test.log"), false ) );
     
     try /*( log )*/ {
         log.open();

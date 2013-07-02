@@ -8,7 +8,7 @@ import org.justceyin.foundations.files {
 }
 
 "Writer with output to a file."
-shared class FileWriter( 
+shared class FileAppender( 
     "The path to the log file to be written"
     Path logFilePath, 
     "Whether to append to an existing file"
@@ -16,7 +16,7 @@ shared class FileWriter(
     "The encoding for the output"
     String encoding = "UTF-8"
 )
-    extends AbstractTextWriter() 
+    satisfies TextAppender 
 {
     "The writer for the output of this log."    
     CeylonFileWriter fileWriter = createFileWriter( logFilePath, appendExisting, encoding );

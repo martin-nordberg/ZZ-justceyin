@@ -6,8 +6,9 @@ import org.justceyin.foundations.files {
     createDirectoryIfNeeded 
 }
 import org.justceyin.foundations.io { 
-    FileWriter,
-    TextWriter
+    FileAppender,
+    TextWriter,
+    TextWriterAppender
 }
 import org.justceyin.specifications { 
     CompositeSpecification, 
@@ -37,7 +38,7 @@ void run() {
     createDirectoryIfNeeded( logPath );
     
     // set up the output log
-    value log = FileWriter( logPath.childPath("anticipations-test.log"), false );
+    TextWriter log = TextWriterAppender( FileAppender( logPath.childPath("anticipations-test.log"), false ) );
     
     try /*( log )*/ {
         log.open();

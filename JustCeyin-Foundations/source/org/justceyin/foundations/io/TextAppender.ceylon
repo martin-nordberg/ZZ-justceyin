@@ -1,6 +1,7 @@
 
 "Service provider interface for output writers."
 shared interface TextAppender
+    satisfies Closeable
 {
     "Write a string known to contain no line breaks to the output."
     shared formal void append(

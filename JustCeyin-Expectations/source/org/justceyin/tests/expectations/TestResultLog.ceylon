@@ -6,7 +6,9 @@ import org.justceyin.expectations.constraints {
     ConstraintCheckResult 
 }
 import org.justceyin.foundations.io {
-    FileWriter
+    FileAppender,
+    TextWriter,
+    TextWriterAppender
 }
 
 "Utility class for writing out test results."
@@ -14,7 +16,7 @@ shared class TestResultLog( Path outputPath )
     satisfies Closeable {
 
     "The writer for the output of this log."    
-    value writer = FileWriter( outputPath );
+    TextWriter writer = TextWriterAppender( FileAppender( outputPath ) );
     
     "Closes the log."
     shared actual void close( Exception? e ) {

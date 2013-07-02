@@ -1,6 +1,7 @@
 
 import org.justceyin.foundations.io { 
-    TextAppender, AbstractTextWriter
+    TextAppender, 
+    TextWriterAppender
 }
 
 String spaces = "                                                                                ";
@@ -10,7 +11,7 @@ shared class IndentingWriter(
     TextAppender appender, 
     IndentationStrategy indentationStrategy = FixedIndentationStrategy()
 )
-    extends AbstractTextWriter()
+    extends TextWriterAppender( appender )
 {
     
     "The current column in the output line."
@@ -32,18 +33,18 @@ shared class IndentingWriter(
     }
     
     "Writes a string to the output, taking into account the indent level."
-    shared actual void append( String output ) {
+    shared default actual void append( String output ) {
         if ( !output.empty ) {
             if ( currentColumn == 0 ) {
-                this.appender.append( spaces.initial( this.indentationStrategy.currentIndentationLevel ) );
+                super.append( spaces.initial( this.indentationStrategy.currentIndentationLevel ) );
             }
-            this.appender.append( output );
+            super.append( output );
         }
     }
     
     "Writes a line terminator to the output."
     shared actual void appendNewLine() {
-        appender.appendNewLine();
+        super.appendNewLine();
         
         currentColumn = 0;
     }

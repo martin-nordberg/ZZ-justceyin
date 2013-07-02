@@ -1,7 +1,7 @@
 
 "Writer with output to a string builder."
-shared class StringWriter()
-    extends AbstractTextWriter()
+shared class StringAppender()
+    satisfies TextAppender
 {
     "The string builder for the output of this writer."    
     StringBuilder stringBuilder = StringBuilder();
@@ -19,10 +19,17 @@ shared class StringWriter()
         this.stringBuilder.appendNewline();
     }
 
+    "Closes this appender."
+    shared actual void close( Exception? exception ) {
+    }
+
     "Extracts the result of the string output"
     shared actual String string {
         return this.stringBuilder.string;
     }
+    
+    "Opens this appender."
+    shared actual void open() {
+    }
    
 }
-

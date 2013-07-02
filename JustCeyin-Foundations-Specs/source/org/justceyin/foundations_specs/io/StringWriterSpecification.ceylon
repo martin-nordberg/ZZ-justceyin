@@ -1,7 +1,8 @@
 
 import org.justceyin.foundations.io {
-    StringWriter,
-    TextWriter
+    StringAppender,
+    TextWriter,
+    TextWriterAppender
 }
 import org.justceyin.specifications {
     ImperativeSpecification
@@ -24,15 +25,16 @@ shared class StringWriterSpecification()
     
     shared actual String title = "String Writer Specification";
     
-    "A random UUID converts to a string with the expected format."
+    "Very simple output has the right line terminations."
     void testSimpleOutput( void outcomes( ConstraintCheckResult* results ) ) {
-        TextWriter writer = StringWriter();
+        StringAppender appender = StringAppender();
+        TextWriter writer = TextWriterAppender( appender );
         try {
             writer.open();
             writer.write( "ABC" );
             writer.writeLine();
             writer.close( null );
-            value result = writer.string;
+            value result = appender.string;
             
             outcomes( expect( result.string ).named( "string writer output" ).toBe( aString.withValue( "ABC\n" ) ) );
         }
@@ -41,9 +43,45 @@ shared class StringWriterSpecification()
         }
     }
     
+    "Multi-line strings are split into multiple output lines."
+    void testMultilineOutput( void outcomes( ConstraintCheckResult* results ) ) {
+        StringAppender appender = StringAppender();
+        TextWriter writer = TextWriterAppender( appender );
+        try {
+            writer.open();
+            writer.writeLine( "ABC\r\nDEF\r\nGHI" );
+            writer.close( null );
+            value result = appender.string;
+            
+            outcomes( expect( result.string ).named( "string writer output" ).toBe( aString.withValue( "ABC\nDEF\nGHI\n" ) ) );
+        }
+        finally {
+            writer.close( null );
+        }
+    }
+    
+    "Blank lines are handled properly."
+    void testBlankLineOutput( void outcomes( ConstraintCheckResult* results ) ) {
+        StringAppender appender = StringAppender();
+        TextWriter writer = TextWriterAppender( appender );
+        try {
+            writer.open();
+            writer.writeLine( "ABC\r\n\r\nDEF\r\n" );
+            writer.close( null );
+            value result = appender.string;
+            
+            outcomes( expect( result.string ).named( "string writer output" ).toBe( aString.withValue( "ABC\n\nDEF\n\n" ) ) );
+        }
+        finally {
+            writer.close( null );
+        }
+    }
+    
     "The tests within this specification."
     shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
-        testSimpleOutput
+        testSimpleOutput,
+        testMultilineOutput,
+        testBlankLineOutput
     };
 
 }

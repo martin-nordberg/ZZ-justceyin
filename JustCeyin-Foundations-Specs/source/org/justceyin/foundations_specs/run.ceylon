@@ -6,8 +6,9 @@ import org.justceyin.foundations.files {
     createDirectoryIfNeeded 
 }
 import org.justceyin.foundations.io { 
-    FileWriter,
-    TextWriter
+    FileAppender,
+    TextWriter,
+    TextWriterAppender
 }
 import org.justceyin.specifications { 
     CompositeSpecification, 
@@ -32,7 +33,10 @@ void runSpecification( TextWriter log, Specification specification ) {
     value runResult = SimpleSpecificationRunner( specification ).run();
     value report = SimpleTextReporter().report( runResult );
     log.writeLine( report );
-    assert( runResult.isSuccess );
+    if ( !runResult.isSuccess ) {
+        print( report );
+        assert ( false );
+    }
 }
 
 "Run the module `org.justceyin.foundations_specs`."
@@ -43,7 +47,7 @@ void run() {
     createDirectoryIfNeeded( logPath );
     
     // set up the output log
-    value log = FileWriter( logPath.childPath("foundations-test.log"), false );
+    TextWriter log = TextWriterAppender( FileAppender( logPath.childPath("foundations-test.log"), false ) );
     
     try /*( log )*/ {
         log.open();

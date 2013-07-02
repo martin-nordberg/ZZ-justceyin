@@ -11,7 +11,7 @@ shared interface TextWriter
         String output
     );
 
-    "Writes a string and line terminator to the output."
+    "Writes an optional string and a line terminator to the output."
     shared formal void writeLine(
         "The text to be written on a full line."
         String? output = null
