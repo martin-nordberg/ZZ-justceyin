@@ -21,7 +21,8 @@ import org.justceyin.specifications.runners {
     SimpleSpecificationRunner 
 }
 import org.justceyin.foundations_specs.io { 
-    StringWriterSpecification 
+    StringWriterSpecification, 
+    TrailingSpaceTrimmingAppenderSpecification 
 }
 import org.justceyin.foundations_specs.fundamentals { 
     UuidSpecification 
@@ -57,7 +58,8 @@ void run() {
     
         value suite = CompositeSpecification( {
                           UuidSpecification(),
-                          StringWriterSpecification()
+                          StringWriterSpecification(),
+                          TrailingSpaceTrimmingAppenderSpecification()
                       } );
         runSpecification( log, suite );
     
