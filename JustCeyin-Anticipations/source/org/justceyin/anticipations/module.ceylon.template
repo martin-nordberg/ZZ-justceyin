@@ -4,7 +4,8 @@
  ----------------------
  
  Module defining a very narrow wrapper around java.util.concurrent for working with background
- tasks executed by a thread pool. Tasks results are retrieved via futures or via callbacks.
+ tasks executed by a thread pool. Task results are retrieved via futures or via continuations 
+ (thread-safe callbacks).
 
  BUILDINFO-LICENSE-TEXT
 "

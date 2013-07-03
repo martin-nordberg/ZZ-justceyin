@@ -4,7 +4,8 @@
  ----------------------
  
  Module defining a very narrow wrapper around java.util.concurrent for working with background
- tasks executed by a thread pool. Tasks results are retrieved via futures or via callbacks.
+ tasks executed by a thread pool. Task results are retrieved via futures or via continuations 
+ (thread-safe callbacks).
 
  **License**
  
@@ -24,6 +25,6 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 by "Martin E. Nordberg III"
-module org.justceyin.anticipations '0.5.32-2013.06.26' {
+module org.justceyin.anticipations '0.5.37-2013.07.03' {
     import java.base '7';
 }

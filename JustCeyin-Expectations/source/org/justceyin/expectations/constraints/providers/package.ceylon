@@ -4,10 +4,12 @@
  Concrete Constraint Providers
 
  * `aBoolean` - Constraints on Boolean values.
- * `aDate` - Constraints on Date values.
+ * `aDate` - Constraints on Date values (from ceylon.time).
+ * `aDateTime` - Constraints on DateTime values (from ceylon.time).
  * `aFloat` - Constraints specific to floating point numbers.
  * `anInteger` - Constraints for integers.
  * `aString` - Constraints on strings.
+ * `aWhole` - Constraints on whole numbers (from ceylon.math).
 
  Abstract Constraint Providers
 

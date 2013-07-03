@@ -5,11 +5,11 @@ import java.lang {
     }
 }
 import org.justceyin.anticipations { 
-    makeThreadPool, 
-    ThreadPool, 
+    composeSequence, 
     computeAndContinue, 
     doInSequence, 
-    composeSequence 
+    makeThreadPool, 
+    ThreadPool
 }
 import org.justceyin.expectations { 
     expect 
@@ -18,7 +18,8 @@ import org.justceyin.expectations.constraints {
     ConstraintCheckResult 
 }
 import org.justceyin.expectations.constraints.providers { 
-    aString, anInteger 
+    anInteger, 
+    aString
 }
 import org.justceyin.specifications {
     ImperativeSpecification

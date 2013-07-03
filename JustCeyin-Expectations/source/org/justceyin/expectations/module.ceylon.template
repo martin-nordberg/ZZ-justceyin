@@ -11,5 +11,6 @@
 license "BUILDINFO-LICENSE-URL"
 by "Martin E. Nordberg III"
 module org.justceyin.expectations 'BUILDINFO-VERSION.BUILDINFO-NUMBER-BUILDINFO-DATE' {
+    shared import ceylon.math '0.5';
     shared import ceylon.time '0.5';
 }

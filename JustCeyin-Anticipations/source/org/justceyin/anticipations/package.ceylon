@@ -22,7 +22,7 @@
      try /*( pool )*/ {
          pool.open();
          
-         // launch a time-consuimng task in a thread from the pool
+         // launch a time-consuming task in a thread from the pool
          Future<Whole> future = pool.computeAsynchronously( myTimeConsumingFunction );
  
          // do something else for a while ...
@@ -61,8 +61,8 @@
                  MyThing result = ...;
                  succeed( result )
              }
-             catch ( exception e ) {
-                 faile(e);
+             catch ( Exception e ) {
+                 fail(e);
              }
          }
      }

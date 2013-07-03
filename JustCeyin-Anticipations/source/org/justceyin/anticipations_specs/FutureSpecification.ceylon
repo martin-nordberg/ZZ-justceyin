@@ -21,10 +21,8 @@ import org.justceyin.expectations.constraints {
     ConstraintCheckResult 
 }
 import org.justceyin.expectations.constraints.providers { 
+    aBoolean, 
     aString, 
-    aBoolean 
-}
-import org.justceyin.expectations_extras.providers { 
     aWholeNumber 
 }
 import org.justceyin.specifications {

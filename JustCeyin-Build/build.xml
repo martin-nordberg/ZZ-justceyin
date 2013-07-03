@@ -105,7 +105,7 @@
     <!-- Compile JustCeyin-Anticipations Specs -->
     <target name="compile-anticipations-specs" 
             description="Compile org.justceyin.anticipations_specs"
-            depends="compile-anticipations, compile-expectations-extras, compile-specifications">
+            depends="compile-anticipations, compile-specifications">
         <compile subsystem="Anticipations" 
                  package="anticipations_specs"/>
     </target>
@@ -116,14 +116,6 @@
             depends="ceylon-ant-taskdefs">
         <compile subsystem="Expectations"
                  package="expectations"/>
-    </target>
-
-    <!-- Compile JustCeyin-Expectations Extras -->
-    <target name="compile-expectations-extras" 
-            description="Compile org.justceyin.expectations_extras"
-            depends="ceylon-ant-taskdefs">
-        <compile subsystem="Expectations"
-                 package="expectations_extras"/>
     </target>
 
     <!-- Compile JustCeyin-Expectations Tests -->
@@ -245,6 +237,8 @@
     <target name="publish"
             description="Clean build and publish all modules and documentation"
             depends="clean, all">
+        <delete dir="./published-modules"/>
+        <mkdir dir="./published-modules"/>
         <zip destfile="./published-modules/org.justceyin.expectations.${BUILDINFO-VERSION}.${BUILDINFO-NUMBER}-${BUILDINFO-DATE}.zip"
              basedir="./modules"
              includes="**/expectations/**/*.car, **/expectations/**/*.sha1, **/expectations/**/*.js, **/expectations/**/*.src, **/expectations/**/module-doc/**/*.*"
@@ -254,6 +248,10 @@
              basedir="./modules"
              includes="**/specifications/**/*.car, **/specifications/**/*.sha1, **/specifications/**/*.js, **/specifications/**/*.src, **/specifications/**/module-doc/**/*.*"
              excludes="**/tests/**/*.*">
+        </zip>
+        <zip destfile="./published-modules/org.justceyin.anticipations.${BUILDINFO-VERSION}.${BUILDINFO-NUMBER}-${BUILDINFO-DATE}.zip"
+             basedir="./modules"
+             includes="**/anticipations/**/*.car, **/anticipations/**/*.sha1, **/anticipations/**/*.js, **/anticipations/**/*.src, **/anticipations/**/module-doc/**/*.*">
         </zip>
     </target>
 
