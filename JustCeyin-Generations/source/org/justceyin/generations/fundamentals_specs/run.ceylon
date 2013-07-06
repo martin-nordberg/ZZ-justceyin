@@ -23,6 +23,9 @@ import org.justceyin.specifications.runners {
 import org.justceyin.generations.fundamentals_specs.indentation { 
     IndentingWriterSpecification 
 }
+import org.justceyin.generations.fundamentals_specs.lexing { 
+    LexerSpecification 
+}
 
 
 "Runs a specification; prints the report; ensures a successful outcome."
@@ -50,7 +53,8 @@ void run() {
         log.writeLine( "" );
     
         value suite = CompositeSpecification( {
-                          IndentingWriterSpecification()
+                          IndentingWriterSpecification(),
+                          LexerSpecification()
                       } );
         runSpecification( log, suite );
     

@@ -7,7 +7,10 @@ shared interface Recognizer<Language>
     shared formal String name;
 
     "Recognizes a token if possible."
-    shared formal [Language,{Character*}]? recognize( {Character*} input );
+    shared formal [Language,{Character*}]? recognize(
+        "The input containing text known to start with one of startingCharacters."
+        {Character*} input
+    );
 
     "The characters that could potentially start tokens recognized by this recognizer."
     shared formal [Character] startingCharacters;

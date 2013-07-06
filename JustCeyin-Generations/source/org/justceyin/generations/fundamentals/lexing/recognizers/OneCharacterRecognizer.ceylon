@@ -10,7 +10,7 @@ import org.justceyin.generations.fundamentals.lexing {
     Token
 }
 
-"Recognizer for a one-character fixed token."
+"Recognizer for a one-character fixed text token."
 shared class OneCharacterRecognizer<Language,T>(
     "The single token recognized by this recognizer."
     T token
@@ -28,14 +28,11 @@ shared class OneCharacterRecognizer<Language,T>(
     "The displayable name of the recognized token for lexer messages."
     shared actual String name => "'``token.text``'";
 
-    "Recognizes a token if possible."
-    shared actual [T,{Character*}]? recognize( {Character*} input ) {
-        if ( exists ch = input.first ) {
-            if ( ch == character ) {
-                return [this.token,input.rest];
-            }
-        }
-        return null;
+    "Recognizes a token with known starting character."
+    shared actual [Language,{Character*}]? recognize( {Character*} input ) {
+        assert ( exists ch = input.first );
+        assert ( ch == character );
+        return [this.token,input.rest];
     }
 
     "The characters that could potentially start tokens recognized by this recognizer."
