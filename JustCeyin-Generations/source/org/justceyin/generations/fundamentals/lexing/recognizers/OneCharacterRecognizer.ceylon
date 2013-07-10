@@ -1,41 +1,38 @@
 
-import org.justceyin.expectations { 
-    constrain 
-}
-import org.justceyin.expectations.constraints.providers { 
-    aString 
-}
 import org.justceyin.generations.fundamentals.lexing {
     Recognizer,
-    Token
+    BaseToken = Token
 }
 
 "Recognizer for a one-character fixed text token."
-shared class OneCharacterRecognizer<Language,T>(
-    "The single token recognized by this recognizer."
-    T token
+shared abstract class OneCharacterRecognizer(
+    "The single charcater of the token recognized by this recognizer."
+    Character character
 )
-    satisfies Recognizer<Language>
-    given Language satisfies Token
-    given T satisfies Language
+    satisfies Recognizer
 {
-    constrain( token.text ).named( "token" ).toBe( aString.withLength(1) );
+    "Member class representing the token recognized by this recognizer."
+    shared formal class Token()
+        satisfies BaseToken
+    {
+        "The text of the token (exactly as recognized by the lexer)."
+        shared actual String text => outer.character.string;
+    }
     
-    Character character;
-    assert ( exists ch = token.text[0] );
-    character = ch;
-    
+    "The immutable token recognized by this recognizer."
+    Token token = Token();
+
     "The displayable name of the recognized token for lexer messages."
-    shared actual String name => "'``token.text``'";
+    shared actual String name => "'``this.character``'";
 
     "Recognizes a token with known starting character."
-    shared actual [Language,{Character*}]? recognize( {Character*} input ) {
+    shared actual [Token,{Character*}]? recognize( {Character*} input ) {
         assert ( exists ch = input.first );
-        assert ( ch == character );
-        return [this.token,input.rest];
+        assert ( ch == this.character );
+        return [ this.token, input.rest ];
     }
 
     "The characters that could potentially start tokens recognized by this recognizer."
-    shared actual [Character] startingCharacters => [character];
-    
+    shared actual [Character] startingCharacters = [this.character];
+
 }

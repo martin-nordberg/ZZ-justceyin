@@ -23,14 +23,14 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 by "Martin E. Nordberg III"
-module org.justceyin.generations.fundamentals_specs '0.5.39-2013.07.06' {
+module org.justceyin.generations.fundamentals_specs '0.5.40-2013.07.10' {
 
     shared import ceylon.file '0.5';
     import java.base '7';
 
-    shared import org.justceyin.expectations '0.5.39-2013.07.06';
-    shared import org.justceyin.foundations '0.5.39-2013.07.06';
-    shared import org.justceyin.generations.fundamentals '0.5.39-2013.07.06';
-    shared import org.justceyin.specifications '0.5.39-2013.07.06';
+    shared import org.justceyin.expectations '0.5.40-2013.07.10';
+    shared import org.justceyin.foundations '0.5.40-2013.07.10';
+    shared import org.justceyin.generations.fundamentals '0.5.40-2013.07.10';
+    shared import org.justceyin.specifications '0.5.40-2013.07.10';
 
 }

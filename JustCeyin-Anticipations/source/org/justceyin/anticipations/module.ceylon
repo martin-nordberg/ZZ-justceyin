@@ -25,6 +25,6 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 by "Martin E. Nordberg III"
-module org.justceyin.anticipations '0.5.39-2013.07.06' {
+module org.justceyin.anticipations '0.5.40-2013.07.10' {
     import java.base '7';
 }

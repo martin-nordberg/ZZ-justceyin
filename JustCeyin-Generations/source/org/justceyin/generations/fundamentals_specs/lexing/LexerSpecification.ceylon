@@ -15,54 +15,18 @@ import org.justceyin.generations.fundamentals.lexing {
     Lexer, 
     Token
 }
-import org.justceyin.generations.fundamentals.lexing.tokens { 
-    LeftBraceToken, 
-    RightBraceToken, 
-    UnrecognizedCharacterToken 
-}
-import org.justceyin.generations.fundamentals.lexing.recognizers { 
-    OneCharacterRecognizer 
+import org.justceyin.generations.fundamentals.lexing.recognizers {
+    LeftBrace, 
+    RightBrace
 }
     
-
-shared interface BracyLanguage
-    of BracyLeftBraceToken | BracyRightBraceToken | BracyUnrecognizedCharacterToken
-    satisfies Token
-{
-}
-    
-shared class BracyLeftBraceToken()
-    satisfies BracyLanguage & LeftBraceToken
-{
-}
-
-shared class BracyRightBraceToken()
-    satisfies BracyLanguage & RightBraceToken
-{
-}
-
-shared class BracyUnrecognizedCharacterToken( Character character )
-    extends UnrecognizedCharacterToken( character )
-    satisfies BracyLanguage 
-{
-}
-
-shared class BracyLeftBraceRecognizer( )
-    extends OneCharacterRecognizer<BracyLanguage,BracyLeftBraceToken>( BracyLeftBraceToken() )
-{
-}
-
-shared class BracyRightBraceRecognizer( )
-    extends OneCharacterRecognizer<BracyLanguage,BracyRightBraceToken>( BracyRightBraceToken() )
-{
-}
 
 shared object bracyLexer
-    extends Lexer<BracyLanguage>( { BracyLeftBraceRecognizer(), BracyRightBraceRecognizer() } ) {
-    
-    shared actual BracyLanguage unrecognizedCharacterToken( Character character ) {
-        return BracyUnrecognizedCharacterToken( character );
-    }
+    extends Lexer( { 
+        LeftBrace(), 
+        RightBrace() 
+    } ) 
+{
 }
    
 shared object aToken {
@@ -70,17 +34,17 @@ shared object aToken {
     shared class TokenTextConstraint(
         String expectedTokenText
     )
-        satisfies Constraint<BracyLanguage|Finished>
+        satisfies Constraint<Token|Finished>
     {
         
         "Applies the constraint by calling the predicate and then computing the message according to the outcome."
         shared actual ConstraintCheckResult check( 
             "The actual value (or comparable value) to compare against."
-            BracyLanguage|Finished actualValue, 
+            Token|Finished actualValue, 
             "The name of the value for use in the output message."
             String valueName 
         ) {
-            if ( is BracyLanguage actualValue ) {
+            if ( is Token actualValue ) {
                 if ( actualValue.text == expectedTokenText ) {
                     return ConstraintCheckSuccess( "Verified ``valueName`` to be a token with text ``expectedTokenText``." );
                 }
@@ -92,7 +56,7 @@ shared object aToken {
     }         
 
     "Returns a constraint that checks that an actual value equals an expected value."
-    shared Constraint<BracyLanguage|Finished> withText(
+    shared Constraint<Token|Finished> withText(
         "The value that test values are expected to be equal to." 
         String expectedValue 
     ) {
@@ -124,9 +88,26 @@ shared class LexerSpecification()
         );
     }
     
+    "A lexer ignores whitespace."
+    void testWhitespaceRemoval( void outcomes( ConstraintCheckResult* results ) ) {
+        String input = " { }\n{\r\n}\t{\f}\r\n";
+        
+        value tokens = bracyLexer.lex( input.sequence );
+            
+        outcomes( 
+            expect( tokens.next() ).named( "first token" ).toBe( aToken.withText( "{" ) ),
+            expect( tokens.next() ).named( "second token" ).toBe( aToken.withText( "}" ) ),
+            expect( tokens.next() ).named( "third token" ).toBe( aToken.withText( "{" ) ),
+            expect( tokens.next() ).named( "fourth token" ).toBe( aToken.withText( "}" ) ),
+            expect( tokens.next() ).named( "fifth token" ).toBe( aToken.withText( "{" ) ),
+            expect( tokens.next() ).named( "sixth token" ).toBe( aToken.withText( "}" ) )
+        );
+    }
+    
     "The tests within this specification."
     shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
-        testOneCharacterLexer
+        testOneCharacterLexer,
+        testWhitespaceRemoval
     };
 
 }
