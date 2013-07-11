@@ -1,12 +1,12 @@
 
 "Interface to an abstract facility for recognizing tokens of a given type."
-shared interface Recognizer 
+shared interface Recognizer<Language>
 {
     "The displayable name of the recognized token for lexer messages."
     shared formal String name;
 
     "Recognizes a token if possible."
-    shared formal [Token,{Character*}]? recognize(
+    shared formal [Token<Language>,{Character*}]? recognize(
         "The input containing text known to start with one of startingCharacters."
         {Character*} input
     );

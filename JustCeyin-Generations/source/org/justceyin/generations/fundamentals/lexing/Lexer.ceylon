@@ -5,27 +5,27 @@ import ceylon.collection {
 
 
 "General purpose lexer."
-shared abstract class Lexer( 
-    {Recognizer+} recognizers 
+shared abstract class Lexer<Language>( 
+    {Recognizer<Language>+} recognizers 
 )
 {
-    Map<Character,{Recognizer+}> recognizersByStartingChar = assembleRecognizers( recognizers );
+    Map<Character,{Recognizer<Language>+}> recognizersByStartingChar = assembleRecognizers( recognizers );
     
-    shared Iterator<Token> lex( {Character*} input ) {
+    shared Iterator<Token<Language>> lex( {Character*} input ) {
         return LexResult( this, this.recognizersByStartingChar, input );
     }
 
 }
 
 "Helper function maps recognizers by their strating character."
-Map<Character,{Recognizer+}> assembleRecognizers( {Recognizer+} recognizers ) {
+Map<Character,{Recognizer<Language>+}> assembleRecognizers<Language>( {Recognizer<Language>+} recognizers ) {
 
-    HashMap<Character,{Recognizer+}> result = HashMap<Character,{Recognizer+}>();
+    HashMap<Character,{Recognizer<Language>+}> result = HashMap<Character,{Recognizer<Language>+}>();
 
     for ( recognizer in recognizers ) {
         for ( ch in recognizer.startingCharacters ) {
             if ( exists r = result.get(ch) ) {
-                result.put( ch, {recognizer,*result.get(ch)} );
+                result.put( ch, {recognizer,*r} );
             }
             else {
                 result.put( ch, {recognizer} );
@@ -37,21 +37,21 @@ Map<Character,{Recognizer+}> assembleRecognizers( {Recognizer+} recognizers ) {
 }
 
 "Class representing the iterable result of lexing a given input."
-class LexResult(
+class LexResult<Language>(
     "The associated lexer (used to build an unreognized characater token if needed."
-    Lexer lexer,
+    Lexer<Language> lexer,
     "The recognizers defining the lexer."
-    Map<Character,{Recognizer+}> recognizersByStartingChar,
+    Map<Character,{Recognizer<Language>+}> recognizersByStartingChar,
     "The input to be lexed."
     {Character*} input
 )
-    satisfies Iterator<Token>
+    satisfies Iterator<Token<Language>>
 {
     "The input that reamins to be read."
     variable {Character*} remainingInput = input;
     
     "Return the next token from the lexer."
-    shared actual Token|Finished next() {
+    shared actual Token<Language>|Finished next() {
         
         // skip whitespace
         while ( exists nextChar = remainingInput.first /*&& nextChar.whitespace*/ ) {
@@ -74,7 +74,7 @@ class LexResult(
             }
             
             // unrecognized character in the input
-            return UnrecognizedCharacterToken( nextChar );
+            return UnrecognizedCharacterToken<Language>( nextChar );
         }
 
         // input exhausted

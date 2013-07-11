@@ -23,7 +23,7 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 by "Martin E. Nordberg III"
-module org.justceyin.foundations '0.5.40-2013.07.10' {
+module org.justceyin.foundations '0.5.42-2013.07.11' {
 
     shared import ceylon.file '0.5';
     import java.base '7';

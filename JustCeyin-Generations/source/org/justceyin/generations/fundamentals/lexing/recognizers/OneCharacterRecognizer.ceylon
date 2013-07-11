@@ -5,18 +5,18 @@ import org.justceyin.generations.fundamentals.lexing {
 }
 
 "Recognizer for a one-character fixed text token."
-shared abstract class OneCharacterRecognizer(
-    "The single charcater of the token recognized by this recognizer."
+shared abstract class OneCharacterRecognizer<Language>(
+    "The single character of the token recognized by this recognizer."
     Character character
 )
-    satisfies Recognizer
+    satisfies Recognizer<Language>
 {
     "Member class representing the token recognized by this recognizer."
     shared formal class Token()
-        satisfies BaseToken
+        satisfies BaseToken<Language>
     {
         "The text of the token (exactly as recognized by the lexer)."
-        shared actual String text => outer.character.string;
+        shared actual String text = outer.character.string;
     }
     
     "The immutable token recognized by this recognizer."
