@@ -26,13 +26,13 @@ import org.justceyin.anticipations {
     ThreadPoolType
 }
 
-"Thread pool implementation wrapping java.util.concurrent classes for the execution of continuations."
+"Thread pool implementation wrapping java.util.concurrent classes for the execution of completion callbacks."
 by "Martin E. Nordberg III"
 class ThreadPoolImpl( ThreadPoolType threadPoolType )
     satisfies ThreadPool {
     
-    "Queue of continuations to be called back in the foreground thread."
-    JavaLinkedBlockingQueue< Anything() > continuationQueue = JavaLinkedBlockingQueue< Anything() >();
+    "Queue of callbacks to be called back in the foreground thread."
+    JavaLinkedBlockingQueue< Anything() > callbackQueue = JavaLinkedBlockingQueue< Anything() >();
     
     "The executor service (thread pool) encasulated by this class."
     late JavaExecutorService executor;
@@ -40,7 +40,7 @@ class ThreadPoolImpl( ThreadPoolType threadPoolType )
     "The ID of the thread that opens this thread pool"
     late Integer foregroundThreadId;
     
-    "The current count of tasks executing plus continuations queued."
+    "The current count of tasks executing plus completion callbacks queued."
     variable JavaAtomicInteger todoCount = JavaAtomicInteger(0); 
     
     "Closes the thread pool."
@@ -62,29 +62,29 @@ class ThreadPoolImpl( ThreadPoolType threadPoolType )
         "Function to be called in the event of an exception in the execution of the task."
         Anything(Exception) fail
     ) {
-        "Higher order function completes a failed continuation."
-        void failedContinuation( Exception exception, Anything(Exception) fail )() {
+        "Higher order function completes a failed completion callback."
+        void failedCallback( Exception exception, Anything(Exception) fail )() {
             fail( exception );
         }
 
-        "Queues a failed continuation."
+        "Queues a failed completion callback."
         void failLater( Exception e ) {
             todoCount.incrementAndGet();
-            continuationQueue.put( failedContinuation( e, fail ) );
+            callbackQueue.put( failedCallback( e, fail ) );
         }
         
-        "Higher order function completes a successful continuation."
-        void successfulContinuation<T>( T result, Anything(T) succeed )() {
+        "Higher order function completes a successful completion callback."
+        void successfulCallback<T>( T result, Anything(T) succeed )() {
             succeed( result );
         }
         
-        "Queues a successful continuation."
+        "Queues a successful completion callback."
         void succeedLater( T result ) {
             todoCount.incrementAndGet();
-            continuationQueue.put( successfulContinuation( result, succeed ) );
+            callbackQueue.put( successfulCallback( result, succeed ) );
         }
         
-        "Wraps the task so that callbacks become queued continuations."
+        "Wraps the task so that completion callbacks are queued."
         void taskWrapper() {
             try {
                 task( succeedLater, failLater );
@@ -114,24 +114,24 @@ class ThreadPoolImpl( ThreadPoolType threadPoolType )
         foregroundThreadId = javaCurrentThread().id;
     }
 
-    "Allows continuations to call back into this thread. Returns only after there are no more tasks in progress."
-    shared actual void receiveContinuations(
+    "Allows completions to call back into this thread. Returns only after there are no more tasks in progress."
+    shared actual void receiveCompletionCallbacks(
         "The maximum length of time to wait for a task to complete in milliseconds. 
-         Wait indefinitely if not provided. Note that if multiple continuations are received,
+         Wait indefinitely if not provided. Note that if multiple callbacks are received,
          this is the wait time for any one of them and has no effect on the total time spent."
         Integer? maxWaitTimeMs    
     ) {
-        "Continuations can only be received by the thread that opened the pool"
+        "Completion callbacks can only be received by the thread that opened the pool"
         assert ( this.foregroundThreadId == javaCurrentThread().id );
         
-        // loop while there are executing tasks or unfinished continuations
+        // loop while there are executing tasks or unfinished callbacks
         while ( todoCount.get() > 0 ) {
-            // execute the next continuation, waiting for it if needed
+            // execute the next callback, waiting for it if needed
             if ( exists maxWaitTimeMs ) {
-                this.continuationQueue.poll( maxWaitTimeMs, ms )();
+                this.callbackQueue.poll( maxWaitTimeMs, ms )();
             }
             else {
-                this.continuationQueue.take()();
+                this.callbackQueue.take()();
             }
 
             todoCount.decrementAndGet();

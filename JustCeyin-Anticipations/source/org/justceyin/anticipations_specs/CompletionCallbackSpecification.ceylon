@@ -26,15 +26,15 @@ import org.justceyin.specifications {
 }
 
 
-"Specification ensures that continuations operate as expected."
+"Specification ensures that completion callbacks operate as expected."
 by "Martin E. Nordberg III"
-shared class ContinuationSpecification() 
+shared class CompletionCallbackSpecification() 
     satisfies ImperativeSpecification {
     
-    shared actual String title = "ContinuationSpecification"; 
+    shared actual String title = "CompletionCallbackSpecification"; 
     
-    "A continuation passes back a successful result."
-    void testContinuationComputation( void outcomes( ConstraintCheckResult* results ) ) {
+    "A completion callback passes back a successful result."
+    void testCompletionCallbackComputation( void outcomes( ConstraintCheckResult* results ) ) {
         
         variable String outcome = "unfinished";
         
@@ -50,7 +50,7 @@ shared class ContinuationSpecification()
             
             pool.executeAndContinue<String>( task, success, failure );
             
-            pool.receiveContinuations();
+            pool.receiveCompletionCallbacks();
         
             outcomes( 
                 expect( outcome ).named( "outcome" ).toBe( aString.withValue( "succeeded" ) )
@@ -61,8 +61,8 @@ shared class ContinuationSpecification()
         }
     }
     
-    "Multiple tasks complete before the receipt of continuations ends."
-    void testRepeatedContinuations( void outcomes( ConstraintCheckResult* results ) ) {
+    "Multiple tasks complete before the receipt of callbacks ends."
+    void testRepeatedCallbacks( void outcomes( ConstraintCheckResult* results ) ) {
         
         variable Integer completionCount = 0;
         
@@ -80,7 +80,7 @@ shared class ContinuationSpecification()
             pool.executeAndContinue<String>( task, success, failure );
             pool.executeAndContinue<String>( task, success, failure );
             
-            pool.receiveContinuations();
+            pool.receiveCompletionCallbacks();
         
             outcomes( 
                 expect( completionCount ).named( "completion count" ).toBe( anInteger.withValue( 3 ) )
@@ -92,17 +92,17 @@ shared class ContinuationSpecification()
     }
     
     "A continued task executes in a background thread then continues in the foreground thread."
-    void testContinuationThreading( void outcomes( ConstraintCheckResult* results ) ) {
+    void testCompletionCallbackThreading( void outcomes( ConstraintCheckResult* results ) ) {
         
         value foregroundThreadName = javaCurrentThread().name;
         variable String taskThreadName = "unfinished";
-        variable String continuationThreadName = "unknown";
+        variable String callbackThreadName = "unknown";
         
         String baseTask() => javaCurrentThread().name;
         value task = computeAndContinue( baseTask );
         void success( String result ) {
             taskThreadName = result;
-            continuationThreadName = javaCurrentThread().name;
+            callbackThreadName = javaCurrentThread().name;
         }
         void failure( Exception e ) => taskThreadName = e.message;
         
@@ -113,10 +113,10 @@ shared class ContinuationSpecification()
             
             pool.executeAndContinue<String>( task, success, failure );
             
-            pool.receiveContinuations();
+            pool.receiveCompletionCallbacks();
         
             outcomes( 
-                expect( continuationThreadName ).named( "continuation thread name" ).toBe( aString.withValue( foregroundThreadName ) ),
+                expect( callbackThreadName ).named( "callback thread name" ).toBe( aString.withValue( foregroundThreadName ) ),
                 expect( taskThreadName ).named( "task thread name" ).toBe( aString.notEqualTo( foregroundThreadName ) )
             );
         }
@@ -125,8 +125,8 @@ shared class ContinuationSpecification()
         }
     }
     
-    "Tasks begotten by tasks complete before the receipt of continuations ends."
-    void testTaskCreatingContinuations( void outcomes( ConstraintCheckResult* results ) ) {
+    "Tasks begotten by tasks complete before the receipt of callbacks ends."
+    void testTaskCreatingMoreTasks( void outcomes( ConstraintCheckResult* results ) ) {
         
         variable Integer taskCount = 0;
         variable Integer completionCount = 0;
@@ -153,7 +153,7 @@ shared class ContinuationSpecification()
             pool.executeAndContinue<String>( task, success, failure );
             pool.executeAndContinue<String>( task, success, failure );
             
-            pool.receiveContinuations();
+            pool.receiveCompletionCallbacks();
         
             outcomes( 
                 expect( taskCount ).named( "task count" ).toBe( anInteger.withValue( 16 ) ),
@@ -184,7 +184,7 @@ shared class ContinuationSpecification()
             
             pool.executeAndContinue<[String,String]>( task, success, failure );
             
-            pool.receiveContinuations();
+            pool.receiveCompletionCallbacks();
         
             outcomes( 
                 expect( outcome[0] ).named( "outcome 1" ).toBe( aString.withValue( "task 1 succeeded" ) ),
@@ -218,7 +218,7 @@ shared class ContinuationSpecification()
             
             pool.executeAndContinue<String>( task, success, failure );
             
-            pool.receiveContinuations();
+            pool.receiveCompletionCallbacks();
         
             outcomes( 
                 expect( outcome ).named( "outcome" ).toBe( aString.withValue( "Task 1 then task 2" ) )
@@ -229,7 +229,7 @@ shared class ContinuationSpecification()
         }
     }
     
-    "Tasks with repeated continuations are handled until complete."
+    "Tasks with repeated callbacks are handled until complete."
     void testRepeatingTask( void outcomes( ConstraintCheckResult* results ) ) {
         
         variable String outcome = "";
@@ -250,7 +250,7 @@ shared class ContinuationSpecification()
             
             pool.executeAndContinue<String>( task, success, failure );
             
-            pool.receiveContinuations();
+            pool.receiveCompletionCallbacks();
         
             outcomes( 
                 expect( outcome ).named( "outcome" ).toBe( aString.withLength( 4 ) )
@@ -263,10 +263,10 @@ shared class ContinuationSpecification()
     
     "The tests within this specification."
     shared actual {Anything(Anything(ConstraintCheckResult*))+} tests = {
-        testContinuationComputation,
-        testRepeatedContinuations,
-        testContinuationThreading,
-        testTaskCreatingContinuations,
+        testCompletionCallbackComputation,
+        testRepeatedCallbacks,
+        testCompletionCallbackThreading,
+        testTaskCreatingMoreTasks,
         testTasksInSequence,
         testComposedTasks,
         testRepeatingTask

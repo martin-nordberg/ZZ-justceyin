@@ -37,7 +37,7 @@ void runSpecification( TextWriter log, Specification specification ) {
 }
 
 "Run the module `org.justceyin.foundations_specs`."
-void run() {
+void xrun() {
 
     // create the output folder if needed
     value logPath = current.childPath( "logs" );
@@ -63,5 +63,34 @@ void run() {
     }
     finally {
         log.close( null );
+    }
+}
+
+"Run the module `org.justceyin.foundations_specs`."
+void run() {
+    {Character*} input = "Some text";
+
+    [Character,Integer] (Character) makeIndexer() {
+        variable Integer index = 0;
+        
+        [Character,Integer] result( Character ch ) => [ch,index++];
+        
+        return result;
+    }
+    
+    {[Character,Integer]*} indexedInput = input.map( makeIndexer() );
+    
+    for ( inp in indexedInput ) {
+        print( "``inp[1]``: ``inp[0]``" ); 
+    }
+
+    for ( inp in indexedInput ) {
+        print( "``inp[1]``: ``inp[0]``" ); 
+    }
+
+    variable {[Character,Integer]*} indexedInp = indexedInput;
+    while ( exists inp = indexedInp.first ) {
+        print( "``inp[1]``: ``inp[0]``" );
+        indexedInp = indexedInp.rest;
     }
 }

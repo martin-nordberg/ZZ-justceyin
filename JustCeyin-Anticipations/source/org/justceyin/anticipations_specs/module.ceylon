@@ -23,13 +23,13 @@
 "
 license "http://www.apache.org/licenses/LICENSE-2.0.html"
 by "Martin E. Nordberg III"
-module org.justceyin.anticipations_specs '0.5.42-2013.07.11' {
+module org.justceyin.anticipations_specs '0.5.43-2013.07.15' {
     shared import ceylon.file '0.5';
     shared import ceylon.math '0.5';
     import java.base '7';
 
-    shared import org.justceyin.anticipations '0.5.42-2013.07.11';
-    shared import org.justceyin.expectations '0.5.42-2013.07.11';
-    shared import org.justceyin.foundations '0.5.42-2013.07.11';
-    shared import org.justceyin.specifications '0.5.42-2013.07.11';
+    shared import org.justceyin.anticipations '0.5.43-2013.07.15';
+    shared import org.justceyin.expectations '0.5.43-2013.07.15';
+    shared import org.justceyin.foundations '0.5.43-2013.07.15';
+    shared import org.justceyin.specifications '0.5.43-2013.07.15';
 }

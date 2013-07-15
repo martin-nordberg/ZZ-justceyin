@@ -2,7 +2,7 @@
  Package of facilities for concurrent task execution. A thin and narrow wrapper around java.util.concurrent.
  
  The central facility of this package is the concept of a `ThreadPool`. Once created, a thread pool offers two
- ways to compute results in its background threads: futures and continuations.
+ ways to compute results in its background threads: futures and completion callbacks.
  
  **Futures**
  
@@ -37,11 +37,11 @@
      }
  \`\`\`
  
- **Continuations**
+ **Completion Callbacks**
  
- Continuations are cross-thread callbacks whereby the result of a background thread computation is passed
- to a callback function executing in the foreground thread once the foreground thread is ready to receive
- such callbacks.
+ Completion callbacks are cross-thread callbacks whereby the result of a background thread computation is
+ passed to a callback function executing in the foreground thread once the foreground thread is ready to 
+ receive such callbacks.
  
  \`\`\`
  
@@ -51,10 +51,10 @@
          return MyThing(...);
      }
  
-     // ... converted to continuation-passing style
+     // ... converted to callback completion style
      value task1 = computeAndContinue( myTimeConsumingSingleResultFunction );
  
-     // Second task - a longer-running background task with multiple continuations
+     // Second task - a longer-running background task with multiple callbacks
      void task2( Anything(MyThing) succeed, Anything(Exception) fail ) {
          while ( /* more to do ... */ ) {
              try {
@@ -85,7 +85,7 @@
          pool.executeAndContinue<String>( task2, success, failure );
          
          // handle callbacks until both tasks are done
-         pool.receiveContinuations();
+         pool.receiveCompletionCallbacks();
      }
      finally {
          pool.close( null );
@@ -94,7 +94,7 @@
  \`\`\`
  
  The module also provides a handful of higher-order utility functions for converting ordinary functions
- into continuation-passing tasks, composing functions in sequence, etc.
+ into callback-style tasks, composing functions in sequence, etc.
  
  The source code for org.justceyin.anticipations is maintained in GitHub at [https://github.com/martin-nordberg/justceyin](https://github.com/martin-nordberg/justceyin).
 "

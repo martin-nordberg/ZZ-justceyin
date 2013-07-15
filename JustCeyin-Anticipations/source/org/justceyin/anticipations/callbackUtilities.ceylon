@@ -1,5 +1,5 @@
 
-"Higher order function converts an ordinary value-returning function into a continuing function."
+"Higher order function converts an ordinary value-returning function into a completion callback."
 by "Martin E. Nordberg III"
 shared void computeAndContinue<T>(
     "A function that returns a result."
@@ -22,7 +22,7 @@ shared void computeAndContinue<T>(
 }
 
 
-"Higher order function performs two tasks in sequence, calling an outer continuation with their tupled results."
+"Higher order function performs two tasks in sequence, calling an outer callback with their tupled results."
 by "Martin E. Nordberg III"
 shared void doInSequence<in T1, in T2>(
     "First task to be executed."
@@ -55,7 +55,7 @@ shared void doInSequence<in T1, in T2>(
 
 
 "Higher order function performs two tasks in sequence where the second tasks needs the output of 
- the first as its input. The output of the second task goes to the outer continuation."
+ the first as its input. The output of the second task goes to the outer callback."
 by "Martin E. Nordberg III"
 shared void composeSequence<T1,T2>(
     "First task to be executed"

@@ -3,7 +3,7 @@ import org.justceyin.anticipations.internal {
     makeThreadPoolImpl 
 }
 
-"Interface to a facility for background multi-threaded execution of futures or continuation-based tasks."
+"Interface to a facility for background multi-threaded execution of futures or completion callback-based tasks."
 by "Martin E. Nordberg III"
 shared interface ThreadPool
     satisfies Closeable
@@ -25,10 +25,10 @@ shared interface ThreadPool
         Anything(Exception) fail
     );
     
-    "Allows continuations to call back into this thread. Returns only after there are no more tasks in progress."
-    shared formal void receiveContinuations(
+    "Allows completion callbacks to call back into this thread. Returns only after there are no more tasks in progress."
+    shared formal void receiveCompletionCallbacks(
         "The maximum length of time to wait for a task to complete in milliseconds. 
-         Wait indefinitely if not provided. Note that if multiple continuations are received,
+         Wait indefinitely if not provided. Note that if multiple callbacks are received,
          this is the wait time for any one of them and has no effect on the total time spent."
         Integer? maxWaitTimeMs = null    
     );
