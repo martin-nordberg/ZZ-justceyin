@@ -54,7 +54,7 @@ class ThreadPoolImpl( ThreadPoolType threadPoolType )
     }
     
     "Repeatedly computes values in a background thread; calls a callback in the original thread for each result."
-    shared actual void executeAndContinue<T>(
+    shared actual void executeAndCallback<T>(
         "The task to execute in a background thread and then call back into the foreground thread."
         Anything( Anything(T), Anything(Exception) ) task,
         "Function to be called in the event of successful execution of the task."
@@ -114,6 +114,52 @@ class ThreadPoolImpl( ThreadPoolType threadPoolType )
         foregroundThreadId = javaCurrentThread().id;
     }
 
+    "Repeatedly (zero to n times) computes values in a background thread; results are available from a blocking iterator/queue."
+    shared actual Iterable<T> produceAndConsume<T>(
+        "The task to execute in a background thread and then call back with results queued by the iterator."
+        Anything( Anything(T), Anything(Exception) ) task,
+        "The size of the queue of results between producer and consumer"
+        Integer queueSize
+    ) {
+        CallbackIterator<T> callbackIterator = CallbackIterator<T>( queueSize );
+        
+        "Queues a failed completion callback."
+        void failLater( Exception e ) {
+            callbackIterator.fail( e );
+        }
+        
+        "Queues a successful completion callback."
+        void succeedLater( T result ) {
+            callbackIterator.put( result );
+        }
+        
+        "Wraps the task so that completion callbacks are queued."
+        void taskWrapper() {
+            try {
+                callbackIterator.registerBackgroundThread();
+                task( succeedLater, failLater );
+            }
+            catch ( Exception e ) {
+                failLater( e );
+            }
+            finally {
+                callbackIterator.finish();
+            }
+        }
+        
+        // submit the task for background thread execution
+        executor.submit( CallableAdapter(taskWrapper) );
+
+        // wrap the resulting iterator in a (one time use) iterable        
+        object result
+            satisfies Iterable<T> 
+        {
+            shared actual Iterator<T> iterator() => callbackIterator;
+        }
+        
+        return result;
+    }
+    
     "Allows completions to call back into this thread. Returns only after there are no more tasks in progress."
     shared actual void receiveCompletionCallbacks(
         "The maximum length of time to wait for a task to complete in milliseconds. 

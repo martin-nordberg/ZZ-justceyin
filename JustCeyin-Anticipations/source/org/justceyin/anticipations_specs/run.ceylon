@@ -48,7 +48,8 @@ void run() {
     
         value suite = CompositeSpecification( {
                           FutureSpecification(),
-                          CompletionCallbackSpecification()
+                          CompletionCallbackSpecification(),
+                          ProducerConsumerSpecification()
                       } );
         runSpecification( log, suite );
     

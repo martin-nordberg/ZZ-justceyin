@@ -48,7 +48,7 @@ shared class CompletionCallbackSpecification()
         try /*( pool )*/ {
             pool.open();
             
-            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
             
             pool.receiveCompletionCallbacks();
         
@@ -76,9 +76,9 @@ shared class CompletionCallbackSpecification()
         try /*( pool )*/ {
             pool.open();
             
-            pool.executeAndContinue<String>( task, success, failure );
-            pool.executeAndContinue<String>( task, success, failure );
-            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
             
             pool.receiveCompletionCallbacks();
         
@@ -111,7 +111,7 @@ shared class CompletionCallbackSpecification()
         try /*( pool )*/ {
             pool.open();
             
-            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
             
             pool.receiveCompletionCallbacks();
         
@@ -141,8 +141,8 @@ shared class CompletionCallbackSpecification()
             completionCount += 1;
             if ( taskCount < 16 ) {
                 taskCount += 2;
-                pool.executeAndContinue<String>( task, success, failure );
-                pool.executeAndContinue<String>( task, success, failure );
+                pool.executeAndCallback<String>( task, success, failure );
+                pool.executeAndCallback<String>( task, success, failure );
             }
         }
         
@@ -150,8 +150,8 @@ shared class CompletionCallbackSpecification()
             pool.open();
             
             taskCount += 2;
-            pool.executeAndContinue<String>( task, success, failure );
-            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
             
             pool.receiveCompletionCallbacks();
         
@@ -182,7 +182,7 @@ shared class CompletionCallbackSpecification()
         try /*( pool )*/ {
             pool.open();
             
-            pool.executeAndContinue<[String,String]>( task, success, failure );
+            pool.executeAndCallback<[String,String]>( task, success, failure );
             
             pool.receiveCompletionCallbacks();
         
@@ -216,7 +216,7 @@ shared class CompletionCallbackSpecification()
         try /*( pool )*/ {
             pool.open();
             
-            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
             
             pool.receiveCompletionCallbacks();
         
@@ -248,7 +248,7 @@ shared class CompletionCallbackSpecification()
         try /*( pool )*/ {
             pool.open();
             
-            pool.executeAndContinue<String>( task, success, failure );
+            pool.executeAndCallback<String>( task, success, failure );
             
             pool.receiveCompletionCallbacks();
         

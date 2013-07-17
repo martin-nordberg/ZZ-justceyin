@@ -16,13 +16,23 @@ shared interface ThreadPool
     );
     
     "Repeatedly (zero to n times) computes values in a background thread; calls a callback in the original thread for each result."
-    shared formal void executeAndContinue<T>(
+    shared formal void executeAndCallback<T>(
         "The task to execute in a background thread and then call back into the foreground thread."
         Anything( Anything(T), Anything(Exception) ) task,
         "Function to be called in the event of successful execution of the task."
         Anything(T) succeed,
         "Function to be called in the event of an exception in the execution of the task."
         Anything(Exception) fail
+    );
+    
+    "Repeatedly (zero to n times) computes (produces) values in a background thread; results are available from
+     a blocking iterator/queue that operates in the foreground thread. Note that because it is backed by a queue,
+     the iterable result can only be traversed once."
+    shared formal Iterable<T> produceAndConsume<T>(
+        "The task to execute in a background thread and then call back with results queued by the iterator."
+        Anything( Anything(T), Anything(Exception) ) task,
+        "The size of the queue of results between producer and consumer"
+        Integer queueSize = 256
     );
     
     "Allows completion callbacks to call back into this thread. Returns only after there are no more tasks in progress."

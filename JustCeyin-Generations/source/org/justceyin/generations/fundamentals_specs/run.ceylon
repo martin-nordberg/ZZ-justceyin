@@ -37,7 +37,7 @@ void runSpecification( TextWriter log, Specification specification ) {
 }
 
 "Run the module `org.justceyin.foundations_specs`."
-void xrun() {
+void run() {
 
     // create the output folder if needed
     value logPath = current.childPath( "logs" );
@@ -66,8 +66,8 @@ void xrun() {
     }
 }
 
-"Run the module `org.justceyin.foundations_specs`."
-void run() {
+"An experiment with iterables"
+void xrun() {
     {Character*} input = "Some text";
 
     [Character,Integer] (Character) makeIndexer() {
