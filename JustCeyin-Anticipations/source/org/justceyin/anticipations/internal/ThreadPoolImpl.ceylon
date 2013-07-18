@@ -150,7 +150,9 @@ class ThreadPoolImpl( ThreadPoolType threadPoolType )
         // submit the task for background thread execution
         executor.submit( CallableAdapter(taskWrapper) );
 
-        // wrap the resulting iterator in a (one time use) iterable        
+        // wrap the resulting iterator in a (one time use) iterable
+        // TBD: Use the OneTimeIterable class from org.justceyin.foundations if a module dependency
+        //      becomes justifiable for other needs.        
         object result
             satisfies Iterable<T> 
         {

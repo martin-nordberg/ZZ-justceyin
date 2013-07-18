@@ -1,8 +1,8 @@
 "
  Package of facilities for concurrent task execution. A thin and narrow wrapper around java.util.concurrent.
  
- The central facility of this package is the concept of a `ThreadPool`. Once created, a thread pool offers two
- ways to compute results in its background threads: futures and completion callbacks.
+ The central facility of this package is the concept of a `ThreadPool`. Once created, a thread pool offers
+ three ways to compute results in its background threads: futures and completion callbacks.
  
  **Futures**
  
@@ -81,11 +81,52 @@
          pool.open();
          
          // start up the two tasks
-         pool.executeAndContinue<String>( task1, success, failure );
-         pool.executeAndContinue<String>( task2, success, failure );
+         pool.executeAndContinue<MyThing>( task1, success, failure );
+         pool.executeAndContinue<MyThing>( task2, success, failure );
          
          // handle callbacks until both tasks are done
          pool.receiveCompletionCallbacks();
+     }
+     finally {
+         pool.close( null );
+     }
+
+ \`\`\`
+ 
+ **Producer/Consumer Queues**
+ 
+ A background task can be set up to produce results that are fed through a thread-safe queue into
+ the foreground thread, where they can be retrieved by an ordinary (but one-time use) Iterable.
+ The background thread blocks when the queue is full and the foreground thread blocks when the queue
+ is empty. Client code looks like it is using an ordinary iterable result, and producer code has
+ the look of a typical coroutine using a yield-like callback capability inside an ordinary loop.
+ 
+ \`\`\`
+ 
+     // a background producer task with multiple callbacks
+     void producerTask( Anything(MyThing) yield, Anything(Exception) fail ) {
+         while ( /* more to do ... */ ) {
+             try {
+                 MyThing result = ...;
+                 yield( result )
+             }
+             catch ( Exception e ) {
+                 fail(e);
+             }
+         }
+     }
+
+     ThreadPool pool = makeThreadPool();
+        
+     try /*( pool )*/ {
+         pool.open();
+ 
+         // start the producer/consumer queue and background task
+         {MyThing*} results = pool.produceAndConsume<MyThing>( producerTask );
+        
+         for ( result in results ) {
+             // do stuff with result ...
+         }
      }
      finally {
          pool.close( null );
