@@ -13,7 +13,7 @@ import org.justceyin.tests.expectations {
     TestResultLog 
 }
 
-"Exercises all Date constraints."
+"Exercises all DateTime constraints."
 shared void runDateTimeConstraintTests( TestResultLog log ) {
     
     DateTime now = rightNow().dateTime();

@@ -26,6 +26,9 @@ import org.justceyin.generations.fundamentals_specs.indentation {
 import org.justceyin.generations.fundamentals_specs.lexing { 
     LexerSpecification 
 }
+import org.justceyin.generations.fundamentals_specs.scanning { 
+    ScanBufferSpecification 
+}
 
 
 "Runs a specification; prints the report; ensures a successful outcome."
@@ -33,7 +36,10 @@ void runSpecification( TextWriter log, Specification specification ) {
     value runResult = SimpleSpecificationRunner( specification ).run();
     value report = SimpleTextReporter().report( runResult );
     log.writeLine( report );
-    assert( runResult.isSuccess );
+    if ( !runResult.isSuccess ) {
+        print( report );
+        assert ( false );
+    }
 }
 
 "Run the module `org.justceyin.foundations_specs`."
@@ -54,6 +60,7 @@ void run() {
     
         value suite = CompositeSpecification( {
                           IndentingWriterSpecification(),
+                          ScanBufferSpecification(),
                           LexerSpecification()
                       } );
         runSpecification( log, suite );

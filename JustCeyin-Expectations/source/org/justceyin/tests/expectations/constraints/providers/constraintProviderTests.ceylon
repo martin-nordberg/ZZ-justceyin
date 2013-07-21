@@ -13,6 +13,9 @@ shared void runConstraintProviderTests( TestResultLog log ) {
     log.writeLine( " Boolean Constraints:" );
     runBooleanConstraintTests( log );
 
+    log.writeLine( " Character Constraints:" );
+    runCharacterConstraintTests( log );
+
     log.writeLine( " Date Constraints:" );
     runDateConstraintTests( log );
 

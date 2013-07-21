@@ -27,7 +27,10 @@ void runSpecification( TextWriter log, Specification specification ) {
     value runResult = SimpleSpecificationRunner( specification ).run();
     value report = SimpleTextReporter().report( runResult );
     log.writeLine( report );
-    assert( runResult.isSuccess );
+    if ( !runResult.isSuccess ) {
+        print( report );
+        assert ( false );
+    }
 }
 
 doc "Run the module `org.justceyin.anticipations_specs`."

@@ -17,7 +17,7 @@ shared abstract class Lexer<Language>(
 
 }
 
-"Helper function maps recognizers by their strating character."
+"Helper function maps recognizers by their starting character."
 Map<Character,{Recognizer<Language>+}> assembleRecognizers<Language>( {Recognizer<Language>+} recognizers ) {
 
     HashMap<Character,{Recognizer<Language>+}> result = HashMap<Character,{Recognizer<Language>+}>();

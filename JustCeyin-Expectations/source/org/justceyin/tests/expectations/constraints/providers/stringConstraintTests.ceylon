@@ -10,7 +10,7 @@ import org.justceyin.tests.expectations {
     TestResultLog 
 }
 
-"Exercises all integer constraints."
+"Exercises all string constraints."
 shared void runStringConstraintTests( TestResultLog log ) {
     String emptyStr = "";
     String shortStr = "A";
