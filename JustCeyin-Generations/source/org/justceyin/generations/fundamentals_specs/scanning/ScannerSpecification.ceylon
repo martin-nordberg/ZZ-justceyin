@@ -12,21 +12,21 @@ import org.justceyin.expectations {
     expect 
 }
 import org.justceyin.generations.fundamentals.scanning { 
-    ScanBuffer 
+    Scanner 
 }
 
 "Specification exercises a Lexer implementation."
 by "Martin E. Nordberg III"
-shared class ScanBufferSpecification() 
+shared class ScannerSpecification() 
     satisfies ImperativeSpecification {
     
-    shared actual String title = "ScanBuffer Specification";
+    shared actual String title = "Scanner Specification";
 
     "A scanner reads character one at a time in order."
     void testLookAheadAndAdvance( void outcomes( ConstraintCheckResult* results ) ) {
         String input = "0123456789";
         
-        ScanBuffer scanner = ScanBuffer( 4, 2, input.iterator() );
+        Scanner scanner = Scanner( 4, 2, input.iterator() );
         
         scanner.initialize();
         

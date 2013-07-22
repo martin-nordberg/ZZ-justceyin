@@ -27,7 +27,8 @@ import org.justceyin.generations.fundamentals_specs.lexing {
     LexerSpecification 
 }
 import org.justceyin.generations.fundamentals_specs.scanning { 
-    ScanBufferSpecification 
+    ScannerSpecification,
+    SourcedScannerSpecification 
 }
 
 
@@ -60,7 +61,8 @@ void run() {
     
         value suite = CompositeSpecification( {
                           IndentingWriterSpecification(),
-                          ScanBufferSpecification(),
+                          ScannerSpecification(),
+                          SourcedScannerSpecification(),
                           LexerSpecification()
                       } );
         runSpecification( log, suite );

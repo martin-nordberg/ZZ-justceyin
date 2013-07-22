@@ -1,6 +1,6 @@
 
 
-shared class SourcedScanBuffer(
+shared class SourcedScanner(
     "The forward size of the buffer of scanned characters"
     Integer lookAheadSize,
     "The backward size of the buffer of scanned characters"
@@ -10,7 +10,7 @@ shared class SourcedScanBuffer(
     "The name of the source"
     String sourceName
 )
-    extends ScanBuffer( lookAheadSize, lookBehindSize, input)
+    extends Scanner( lookAheadSize, lookBehindSize, input)
 {
     value size = lookAheadSize + lookBehindSize;
     
@@ -43,19 +43,18 @@ shared class SourcedScanBuffer(
     }
     
     shared actual class ScannedCharacter(
-        ScanBuffer buffer,
         Integer index
     )
-        extends super.ScannedCharacter( buffer, index )
+        extends super.ScannedCharacter( index )
     {
         
-        shared Integer column {
+        shared Integer sourceColumn {
             Integer? result = outer.columnBuffer[ index ];
             assert ( exists result );
             return result;
         }
         
-        shared Integer line {
+        shared Integer sourceLine {
             Integer? result = outer.lineBuffer[ index ];
             assert ( exists result );
             return result;
@@ -65,6 +64,12 @@ shared class SourcedScanBuffer(
             return outer.sourceName;
         }
         
+    }
+
+    shared actual ScannedCharacter lookAhead( Integer n ) {
+        value result = super.lookAhead( n );
+        assert ( is ScannedCharacter result );
+        return result;
     }
 
 }
