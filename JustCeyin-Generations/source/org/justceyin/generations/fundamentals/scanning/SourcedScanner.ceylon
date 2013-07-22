@@ -13,7 +13,7 @@ shared class SourcedScanner(
     "The name of the source"
     String sourceName
 )
-    extends Scanner( lookAheadSize, lookBehindSize, input)
+    extends AbstractScanner<ScannedCharacter>( lookAheadSize, lookBehindSize, input)
 {
     "The total size of the scanner output buffer."
     value size = lookAheadSize + lookBehindSize;
@@ -76,13 +76,6 @@ shared class SourcedScanner(
             return outer.sourceName;
         }
         
-    }
-
-    "Retrieve the character a given look ahead distance in the buffer."
-    shared actual ScannedCharacter lookAhead( Integer n ) {
-        value result = super.lookAhead( n );
-        assert ( is ScannedCharacter result ); // TBD: should not be needed (whole method)
-        return result;
     }
 
 }

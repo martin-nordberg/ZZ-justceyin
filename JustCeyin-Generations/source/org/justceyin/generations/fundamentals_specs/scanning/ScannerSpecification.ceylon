@@ -12,10 +12,10 @@ import org.justceyin.expectations {
     expect 
 }
 import org.justceyin.generations.fundamentals.scanning { 
-    Scanner 
+    Scanner
 }
 
-"Specification exercises a Lexer implementation."
+"Specification exercises a basic scanner implementation."
 by "Martin E. Nordberg III"
 shared class ScannerSpecification() 
     satisfies ImperativeSpecification {
