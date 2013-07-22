@@ -57,6 +57,7 @@ shared class Scanner(
     
     "Class defining a character returned from the scanner."
     shared default class ScannedCharacter(
+        "Index into the scanner's buffer where the character is held temporarily."
         Integer index
     ) {
         "The scanned character."

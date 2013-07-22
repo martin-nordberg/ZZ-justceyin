@@ -26,7 +26,7 @@ shared class SourcedScannerSpecification()
 
     "A sourced scanner returns correct line and column numbers."
     void testTypicalUsage( void outcomes( ConstraintCheckResult* results ) ) {
-        String input = "0123\n456\n789";
+        String input = "0123\n567\n890";
         
         SourcedScanner scanner = SourcedScanner( 4, 2, input.iterator(), "Example" );
         
@@ -81,7 +81,7 @@ shared class SourcedScannerSpecification()
             expect( ch3a.character ).named( "lookAhead[3a]" ).toBe( aCharacter.withValue('3') ),
             expect( ch3a.sourceLine ).named( "lookAhead[3a] line" ).toBe( anInteger.withValue(1) ),
             expect( ch3a.sourceColumn ).named( "lookAhead[3a] column" ).toBe( anInteger.withValue(4) ),
-            expect( ch4a.character ).named( "lookAhead[2]" ).toBe( aCharacter.withValue('4') ),
+            expect( ch4a.character ).named( "lookAhead[2]" ).toBe( aCharacter.withValue('\n') ),
             expect( ch4a.sourceLine ).named( "lookAhead[4a] line" ).toBe( anInteger.withValue(2) ),
             expect( ch4a.sourceColumn ).named( "lookAhead[4a] column" ).toBe( anInteger.withValue(1) ),
             expect( ch5a.character ).named( "lookAhead[5] line" ).toBe( aCharacter.withValue('5') ),
