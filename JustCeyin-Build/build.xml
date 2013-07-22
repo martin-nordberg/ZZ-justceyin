@@ -57,16 +57,20 @@
                  classpathref="ant-tasks"/>
     </target>
 
-
-    <!-- Clean -->
-    <target name="clean">
-        <delete dir="./logs"/>
-        <delete dir="./modules"/>
+    
+    <!-- Revise Build Info -->
+    <target name="reversion">
         <propertyfile file="buildinfo.properties"
                       comment="Just Ceyin Build Info">
             <entry  key="BUILDINFO-NUMBER" type="int" default="0001" operation="+" pattern="0"/>
             <entry  key="BUILDINFO-DATE" type="date" value="now" pattern="YYYY.MM.dd"/>
         </propertyfile>
+    </target>
+
+    <!-- Clean -->
+    <target name="clean">
+        <delete dir="./logs"/>
+        <delete dir="./modules"/>
         <touch>
             <fileset dir="..">
                 <include name="**/*.template"/>
@@ -236,7 +240,7 @@
     <!-- PUBLISH -->
     <target name="publish"
             description="Clean build and publish all modules and documentation"
-            depends="clean, all">
+            depends="reversion, clean, all">
         <delete dir="./published-modules"/>
         <mkdir dir="./published-modules"/>
         <zip destfile="./published-modules/org.justceyin.expectations.${BUILDINFO-VERSION}.${BUILDINFO-NUMBER}-${BUILDINFO-DATE}.zip"
