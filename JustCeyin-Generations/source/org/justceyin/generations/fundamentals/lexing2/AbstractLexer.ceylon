@@ -2,6 +2,10 @@
 import ceylon.collection { 
     HashMap 
 }
+import org.justceyin.generations.fundamentals.scanning { 
+    endOfInput, 
+    Scanner
+}
 
 shared abstract class AbstractLexer<Language>(
     {String|TokenRecognizer<Language>+} recognizers
@@ -19,29 +23,73 @@ shared abstract class AbstractLexer<Language>(
         "The input to be lexed."
         Iterator<Character> input
     ) {
-        variable Character|Finished inputChar = input.next();
-        while ( inputChar != finished ) {
+        value scanner = Scanner( 4, 4, input );
+        
+        while ( scanner.lookAhead( 0 ) != endOfInput ) {
             
             // consume white space
-            while ( is Character ch = inputChar ) {
-                if ( !ch.whitespace ) {
-                    break;
-                }
-                inputChar = input.next();
+            while ( scanner.lookAhead( 0 ).character.whitespace ) {
+                scanner.advance( 1 );
+            }
+
+            // get the first character of the next token
+            value ch0 = scanner.lookAhead( 0 );
+
+            // quit if end of input
+            if ( ch0 == endOfInput ) {
+                break;
             }
 
             // recognize a token
-            if ( is Character ch1 = inputChar ) {
-
-                // recognize a token
-                if ( exists recognizers = recognizersByStartingChar[ch1] ) {
-                    // TBD
-                }
-                else {
-                    // TBD: unrecognized char
-                }
+            this.recognizeToken( yield, scanner, ch0 );
+        }
+    }
+    
+    "Recognizes the next token from the input."
+    void recognizeToken(
+        "Callback function receives tokens recognized by the lexer."
+        Anything(Token<Language>) yield,
+        Scanner scanner,
+        Scanner.ScannedCharacter lookAhead0
+    ) {
+        // look up the recognizers from the starting character
+        if ( exists recognizers = this.recognizersByStartingChar[lookAhead0.character] ) {
+            for ( recognizer in recognizers ) {
+                switch ( recognizer )
+                  case ( is String ) {
+                    if ( this.recognizeString( recognizer, yield, scanner, lookAhead0 ) ) {
+                        break;
+                    }
+                  }
+                  case ( is TokenRecognizer<Language> ) {
+                    // TBD: call recognizer   
+                  }
             }
         }
+        else {
+            yield( UnrecognizedCharacterToken<Language>( lookAhead0.character ) );
+            scanner.advance( 1 );
+        }
+    }
+    
+    Boolean recognizeString( 
+        String tokenText,
+        "Callback function receives tokens recognized by the lexer."
+        Anything(Token<Language>) yield,
+        Scanner scanner,
+        Scanner.ScannedCharacter lookAhead0
+    ) {
+       Integer i = 1;
+       while ( i < tokenText.size ) {
+           assert ( exists ch = tokenText[i] );
+           if ( ch != scanner.lookAhead(i).character ) {
+                return false;
+           }
+       }
+       
+       yield( /*TBD*/ );
+       
+       return true;
     }
 
 }
